@@ -1,0 +1,265 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+  assign two_columns = section.settings.two_columns_desktop
+-%}
+
+<section class="landing-faq landing-faq--{{ section.id }}">
+  <div class="landing-faq__inner">
+    {%- if section.settings.title != blank -%}
+      <h2 class="landing-faq__title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+    {%- if section.settings.intro != blank -%}
+      <div class="landing-faq__intro">{{ section.settings.intro }}</div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      {%- comment -%}
+        Two lists (odd / even questions) so each desktop column keeps its own height when a card opens.
+        On mobile the lists dissolve (display: contents) and --n restores the original order.
+      {%- endcomment -%}
+      <div class="landing-faq__lists">
+        <ul class="landing-faq__list" role="list">
+          {%- for block in section.blocks -%}
+            {%- assign position = forloop.index0 | modulo: 2 -%}
+            {%- if position == 0 -%}
+              {% render 'landing-faq-item', block: block, order: forloop.index %}
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+        <ul class="landing-faq__list" role="list">
+          {%- for block in section.blocks -%}
+            {%- assign position = forloop.index0 | modulo: 2 -%}
+            {%- if position == 1 -%}
+              {% render 'landing-faq-item', block: block, order: forloop.index %}
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-faq--{{ section.id }} {
+    --lf-card: {{ section.settings.card_color }};
+    --lf-border: {{ section.settings.border_color }};
+    --lf-shadow: {{ section.settings.shadow_color }};
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    font-size: 18px;
+    line-height: 1.5;
+  }
+  .landing-faq__inner { max-width: 1820px; margin-inline: auto; padding: 36px 22.5px; }
+  .landing-faq__title {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1;
+    text-align: center;
+    text-transform: none;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+  .landing-faq__intro { margin-top: 22.5px; font-size: 18px; line-height: 1.375; text-align: center; }
+  .landing-faq__lists {
+    display: flex;
+    flex-direction: column;
+    gap: 22.5px;
+    margin: 22.5px auto 0;
+    {%- unless two_columns %}
+    max-width: 672px;
+    {%- endunless %}
+  }
+  .landing-faq__list { display: contents; margin: 0; padding: 0; list-style: none; }
+
+  /* Card with an offset block behind it */
+  .landing-faq__item {
+    position: relative;
+    isolation: isolate;
+    order: var(--n);
+    height: fit-content;
+    list-style: none;
+  }
+  .landing-faq__item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    box-sizing: border-box;
+    border: 2px solid var(--lf-border);
+    background: var(--lf-shadow);
+    transform: translate(13px, 15px);
+  }
+  .landing-faq__card {
+    box-sizing: border-box;
+    padding: 18px;
+    border: 2px solid var(--lf-border);
+    background: var(--lf-card);
+  }
+  .landing-faq__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22.5px;
+    cursor: pointer;
+    list-style: none;
+  }
+  .landing-faq__summary::-webkit-details-marker { display: none; }
+  .landing-faq__summary:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+  .landing-faq__question {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1;
+    text-align: left;
+    text-transform: none;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+  .landing-faq__chevron { flex: none; width: 22.5px; height: 22.5px; transition: transform 0.15s ease; }
+  .landing-faq__chevron svg { display: block; width: 100%; height: 100%; }
+  .landing-faq__card[open] .landing-faq__chevron { transform: rotate(180deg); }
+  @media (prefers-reduced-motion: reduce) { .landing-faq__chevron { transition: none; } }
+
+  .landing-faq__answer { margin-top: 18px; font-size: 18px; line-height: 1.5; }
+  .landing-faq__answer > * + * { margin-top: 22.5px; }
+  .landing-faq__answer p { margin: 0; }
+  .landing-faq__answer p + p,
+  .landing-faq__answer p + ul { margin-top: 22.5px; }
+  .landing-faq__answer strong { font-weight: 700; }
+  .landing-faq__answer ul { margin: 0; padding-left: 22.5px; list-style: disc inside; }
+  .landing-faq__answer li { margin-bottom: 9px; }
+  .landing-faq__answer a { color: inherit; text-decoration: underline; }
+
+  @media (min-width: 990px) {
+    .landing-faq__inner { padding: 72px 45px; }
+    .landing-faq__lists { margin-top: 45px; }
+    .landing-faq__question { font-size: 24px; }
+    {%- if two_columns %}
+    .landing-faq__lists { display: grid; grid-template-columns: 1fr 1fr; gap: 45px; max-width: 1440px; }
+    .landing-faq__list { display: flex; flex-direction: column; gap: 45px; }
+    .landing-faq__item { order: 0; }
+    {%- endif %}
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: FAQ",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 50,
+  "settings": [
+    { "type": "inline_richtext", "id": "title", "label": "Heading", "default": "Pogosta vprašanja" },
+    {
+      "type": "inline_richtext",
+      "id": "intro",
+      "label": "Text under heading",
+      "default": "Spodaj poiščite najpogosteje zastavljena vprašanja."
+    },
+    { "type": "checkbox", "id": "two_columns_desktop", "label": "Two columns on desktop", "default": true },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#000000" },
+    { "type": "color", "id": "card_color", "label": "Card", "default": "#ffffff" },
+    { "type": "color", "id": "border_color", "label": "Card border", "default": "#000000" },
+    { "type": "color", "id": "shadow_color", "label": "Card offset block", "default": "#ee614c" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Question", "default": "Question" },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Answer</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: FAQ",
+      "blocks": [
+        {"type": "question", "settings": {"title": "Za katero starostno skupino je ta knjiga najprimernejša?", "answer": "<p>Ta knjiga je namenjena otrokom, starim <strong>od 1 do 10 let</strong> – v teh letih si možgani ustvarijo najmočnejše čustvene spomine in vaša prisotnost je najpomembnejša. Zlata leta, ko se jim še vedno zdiš zanimiv.<br />Dovolj stari, da se zabavajo, dovolj mladi, da verjamejo, da ste superjunak.</p>"}},
+        {"type": "question", "settings": {"title": "Ali deluje tudi za malčke?", "answer": "<p>Da. Če se lahko smejijo, kažejo, škropijo ali nežno uničujejo stvari – izpolnjujejo pogoje.</p>"}},
+        {"type": "question", "settings": {"title": "Ali to deluje tudi za starejše otroke (8–10+ let)?", "answer": "<p>Vsekakor. Starejši otroci se še bolj posvetijo misijam, skrivnostnosti, izzivom in zbiranju nalepk.</p>"}},
+        {"type": "question", "settings": {"title": "Je ta knjiga primerna za očime, nadomestne fotre ali fotre, ki so z otroki le ob koncih tedna?", "answer": "<p>Seveda.<br />Fotr je vsak, ki se <strong>pojavi in ustvarja spomine</strong>.</p><p>Ta knjiga je primerna za:</p><ul><li>očime,</li><li>ločene fotre,</li><li>fotre ob vikendih,</li><li>so-starše,</li><li>posvojitelje,</li><li>bodoče fotre.</li></ul>"}},
+        {"type": "question", "settings": {"title": "Ali deluje tudi za mame?", "answer": "<p>Da – vendar bodo mame imele svojo različico knjige.</p>"}},
+        {"type": "question", "settings": {"title": "Je ta knjiga primerna za novopečene fotre ali izkušene veterane?", "answer": "<p>Oboje! Novopečeni fotri bodo našli nasvete za preživetje, izkušeni fotri bodo izboljšali svoje starševske veščine, vsi pa bodo prejeli bonus točke od svojih partneric. Zmaga na vseh frontah.</p>"}},
+        {"type": "question", "settings": {"title": "Kako ta knjiga dejansko pomaga otrokom, da se spomnijo fotra?", "answer": "<p>Otroci si spominov ne shranijo z besedami. Shranijo si <strong>čustvene, presenetljive trenutke</strong>. Ta knjiga namenoma vključuje:</p><ul><li>trganje strani,</li><li>šoke + presenečenja,</li><li>norčavost,</li><li>smeh,</li><li>majhne zmage,</li><li>in ritual nalepk, ki <em>zaklene spomin</em>.</li></ul><p>Plakat deluje kot <strong>dnevni opomnik</strong> in krepi spomin vsakič, ko ga vaš otrok vidi.</p>"}},
+        {"type": "question", "settings": {"title": "Kakšna je psihološka korist za otroke?", "answer": "<p>Raziskave kažejo, da otroci, ki si s starši pogosto izmenjujejo <strong>pozitivne, čutno bogate izkušnje</strong>, razvijejo:</p><ul><li>večjo čustveno varnost,</li><li>močnejšo samozavest,</li><li>globlje zaupanje,</li><li>boljšo odpornost,</li><li>in močnejšo dolgoročno vez.</li></ul><p>Ta knjiga ponuja te izkušnje <strong>brez načrtovanja, krivde ali duševne obremenitve</strong>.</p>"}},
+        {"type": "question", "settings": {"title": "Kakšna je psihološka korist za fotre?", "answer": "<p>Knjiga fotrom pomaga, da:</p><ul><li>se počutijo kompetentne,</li><li>se izognejo utrujenosti ob odločanju,</li><li>so dosledno prisotni,</li><li>doživijo majhne zmage,</li><li>gradijo povezanost brez pritiska.</li></ul>"}},
+        {"type": "question", "settings": {"title": "Kako to pomaga pri povezovanju?", "answer": "<p>Povezovanje se zgodi z <strong>deljenjem čustvenih izkušenj</strong>.<br />Ta knjiga vam jih ponuja 28.</p><p>Vsaka misija se konča z nalepko — vizualnim sidrom, ki sporoča: <em>\"Oče je to naredil z mano.\"</em></p>"}},
+        {"type": "question", "settings": {"title": "Se bo moj otrok res spominjal tega?", "answer": "<p>Da. Raziskave kažejo, da čustvene, senzorične dejavnosti z visoko stopnjo angažiranosti tvorijo močnejše spomine.</p><p>In plakat vsakodnevno <strong>osvežuje</strong> spomin.</p>"}},
+        {"type": "question", "settings": {"title": "Je ta knjiga zares uporabna ali pa je samo še eno očetovsko darilo za šalo?", "answer": "<p>Veseli smo, da ste vprašali! Seveda, smešno je kot hudič, a pod sarkazmom se skriva kup resnično koristnih dejavnosti po korakih. To je praktično starševstvo, postreženo s ščepcem smeha.</p>"}},
+        {"type": "question", "settings": {"title": "Zakaj je boljše od igrač?", "answer": "<p>Igrače zbledijo. Izkušnje ostanejo. Ta knjiga ustvarja <strong>spomine, ki jih imajo otroci za vse življenje</strong>.</p>"}},
+        {"type": "question", "settings": {"title": "Zakaj je ta knjiga več kot le darilo za fotra?", "answer": "<p>Ni samo darilo zanj — je naložba v najsrečnejše spomine vašega otroka.</p>"}},
+        {"type": "question", "settings": {"title": "Je to knjiga o starševstvu?", "answer": "<p>Je več kot to. To je sistem ustvarjanja večnih spominov med fotrom in otrokom.</p>"}},
+        {"type": "question", "settings": {"title": "Kaj je spominski motor fotr-otrok?", "answer": "<p>To je sistem, ki je v središču knjige – preprosta zanka, podprta z znanostjo, ki vsak majhen trenutek spremeni v ključni spomin, ki ga bo vaš otrok ohranil za vse življenje.</p>"}},
+        {"type": "question", "settings": {"title": "Kako deluje pomnilniški pogon?", "answer": "<p>Skozi šeststopenjski cikel, zasnovan glede na to, kako si otroci dejansko ustvarjajo spomine: <strong>Čuti → Delaj → Smej se → Zmagaj → Nalepka → Zapomni si.</strong></p>"}},
+        {"type": "question", "settings": {"title": "Zakaj je ta pomnilniški pogon tako zmogljiv?", "answer": "<p>Ker aktivira natančno kombinacijo, ki dokazano ustvarja dolgotrajne čustvene spomine: <strong>čute + čustva + domišljijo + dosežke + ponavljanje</strong>.</p>"}},
+        {"type": "question", "settings": {"title": "Kolikokrat lahko ponovno uporabimo knjigo?", "answer": "<p>To je <strong>knjiga za enkratno uporabo, sestavljena iz misij, ki se iztrgajo</strong> – izkušnja je izdelek.<br />Misije so enkratne – iztrgate jih, izvedete jih, obdržite jih. Knjiga postane trofeja spominov, ne pa ponovljiva delovna knjiga.</p><p>Spomini? Ti trajajo večno (prav tako kot vaš plakat najboljši Fotr).</p>"}},
+        {"type": "question", "settings": {"title": "Kaj je vključeno v knjigo?", "answer": "<ul><li><strong>28 misij za iztrgati</strong></li><li><strong>Veliki plakat »najboljši Fotr«</strong></li><li><strong>Paket nalepk</strong></li><li><strong>Scenariji + navodila + presenečenja</strong></li><li><strong>Sistem QR za shranjevanje spominov</strong></li></ul>"}},
+        {"type": "question", "settings": {"title": "Bo mojemu otroku sploh mar za plakat?", "answer": "<p>Da. Plakat postane:</p><ul><li>sledilnik napredka,</li><li>stena ponosa,</li><li>tovarna spominov</li><li>in dnevna doza dopamina.</li></ul>"}},
+        {"type": "question", "settings": {"title": "Zakaj je nalepka tako pomembna?", "answer": "<p>Nalepka je <strong>psihološko sidro</strong>.<br />Spomin utrdi preko:</p><ul><li>nagrade,</li><li>rituala,</li><li>lastništva,</li><li>fizičnega dejanja.</li></ul><p>Otroci si trenutke <strong>bolje</strong> zapomnijo, če jih označijo.</p>"}},
+        {"type": "question", "settings": {"title": "Kaj je narobe s trganjem strani? Ali uničujem knjigo?", "answer": "<p>Tako je. Toda zamislite si to kot produktivno uničenje. Kot iztrgate misijo ste se povsem zavezali. Je kot sežiganje ladij, vendar manj dramatično.</p>"}},
+        {"type": "question", "settings": {"title": "Ali lahko naročim dodatne nalepke?", "answer": "<p>Tako je. Če imate več otrok, ste izgubili polovico nalepk pod kavčem ali pa jih je vaš otrok vse porabil na psu – smo vam na voljo. Dodatni kompleti nalepk so naprodaj ločeno.</p>"}},
+        {"type": "question", "settings": {"title": "Kaj pa, če sem preobremenjen/a ali zelo zaposlen/a?", "answer": "<p>Popolno. Misije so namerno:</p><ul><li>hitre za pripraviti,</li><li>preproste za udejaniti</li><li>visoko povezovalne.<br />Eno lahko opravite v <strong>5 minutah</strong>.</li></ul>"}},
+        {"type": "question", "settings": {"title": "Ali potrebujem posebno orodje ali opremo? Ali pa obisk Bauhausa?", "answer": "<p>Ne. Vse je zasnovano okoli <strong>stvari, ki jih že imate doma</strong>. Najslabši scenarij? <strong>Način MacGyver.</strong> Otroci to obožujejo.</p>"}},
+        {"type": "question", "settings": {"title": "Koliko časa trajajo te dejavnosti? Moj urnik je kaos.", "answer": "<p>Smo vam na voljo. Vsaka aktivnost jasno označuje, ali gre za hitrih in preprostih pet minut ali celodnevno pustolovščino. Izberite glede na vašo trenutno stopnjo kaosa.</p>"}},
+        {"type": "question", "settings": {"title": "Je varno?", "answer": "<p>Da — vendar uporabite zdrav starševski razum.<br />Nismo odgovorni, če bo kdo segreval voščenke v mikrovalovni pečici.</p>"}},
+        {"type": "question", "settings": {"title": "Bo veliko pospravljanja?", "answer": "<p>Nekaj. Brez bleščic.<br />Nismo kruti.</p>"}},
+        {"type": "question", "settings": {"title": "Kaj pa, če ima moj otrok kratek razpon pozornosti?", "answer": "<p>Odlično – misije so hitre in prilagodljive. In presenetljive in zabavne.</p>"}},
+        {"type": "question", "settings": {"title": "Kaj pa, če se mi zdi nerodno izvajati naloge?", "answer": "<p>Vaš otrok ne obsoja. Želi si samo VAS.</p>"}},
+        {"type": "question", "settings": {"title": "Ali je ta knjiga primerna tudi za fotre, ki niso »spretni«?", "answer": "<p>Seveda. Nič kaj obrtniškega talenta ni potrebno. Če znaš prebrati stavek, iztrgati stran in najti lepilni trak, si kvalificiran. To ni Pinterest – to je očetovstvo. Ustvarjeno za prave moške, ki nimajo pištole za vroče lepljenje.</p>"}},
+        {"type": "question", "settings": {"title": "Je to dobro darilo za fotre?", "answer": "<p>Je eno najboljših daril za fotre, ker:</p><ul><li>ustvarja spomine,</li><li>krepi samozavest,</li><li>zmanjšuje psihično obremenitev,</li><li>očeta postavlja v vlogo junaka zgodbe.</li></ul>"}},
+        {"type": "question", "settings": {"title": "Ali bo mojemu partnerju to všeč?", "answer": "<p>Da – zmanjša duševno obremenitev in fotru omogoči jasen in enostaven način za navezovanje stikov.</p>"}},
+        {"type": "question", "settings": {"title": "Zakaj naj to kupim danes?", "answer": "<p>Ker bodo otroci majhni le enkrat! Ključni spomini se ustvarijo v kratkih obdobjih – ta knjiga vam odpre te trenutke in jih spremeni v spomine, ki jih bodo ohranili za vse življenje.</p>"}},
+        {"type": "question", "settings": {"title": "Ne mara brati. Zakaj naj kupim to knjigo?", "answer": "<p>Ker je to knjiga za fotre, ki ne marajo knjig. Brez dolgih pridig o starševstvu. Brez teorije. Samo 28 zabavnih in preprostih misij, ki jih izbere, iztrga in izvede z otroki.<br />Minimalno branja. Maksimalen status legende.</p>"}},
+        {"type": "question", "settings": {"title": "Ali jo bo dejansko prebral?", "answer": "<p>Da. Napisali so jo komiki, kar pomeni, da je znanstveno optimizirana za maksimalno uživanje v branju na stranišču.</p>"}},
+        {"type": "question", "settings": {"title": "Kje je narejena ta mojstrovina in koliko časa bo trajalo, da bo pristala na mojem pragu?", "answer": "<p>Z ljubeznijo ročno izdelano (večinoma s strani izčrpanih fotrov) v Evropi. Pošiljamo po vsem svetu – čas dostave je odvisen od vaše lokacije in od tega, ali se bo poštar odločil ustaviti na kavi na poti.</p>"}}
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,145 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+-%}
+
+<section class="landing-pillars landing-pillars--{{ section.id }}">
+  <ul class="landing-pillars__list" role="list">
+    {%- for block in section.blocks -%}
+      <li class="landing-pillars__item" {{ block.shopify_attributes }}>
+        {%- if block.settings.title != blank -%}
+          <h3 class="landing-pillars__title">{{ block.settings.title }}</h3>
+        {%- endif -%}
+        {%- if block.settings.text != blank -%}
+          <p class="landing-pillars__text">{{ block.settings.text }}</p>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-pillars--{{ section.id }} {
+    --lpl-stripe: {{ section.settings.stripe_width }}px;
+    background: repeating-linear-gradient(
+      -45deg,
+      {{ section.settings.background_color }} 0 var(--lpl-stripe),
+      {{ section.settings.stripe_color }} var(--lpl-stripe) calc(var(--lpl-stripe) * 2)
+    );
+    color: {{ section.settings.text_color }};
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    text-align: center;
+  }
+  .landing-pillars__list {
+    display: grid;
+    gap: 32px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 36px 18px;
+    list-style: none;
+  }
+  .landing-pillars__item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .landing-pillars__title {
+    margin: 0;
+    font-family: inherit;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.05;
+    text-transform: none;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+  .landing-pillars__text {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.05;
+    overflow-wrap: break-word;
+  }
+
+  @media (min-width: 750px) {
+    .landing-pillars__list { grid-template-columns: repeat(2, 1fr); max-width: 900px; }
+  }
+  @media (min-width: 990px) {
+    .landing-pillars__list { grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 1200px; padding: 56px 24px; }
+    .landing-pillars__title { font-size: 32px; }
+    .landing-pillars__text { font-size: 18px; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Pillars",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#2b2d45" },
+    { "type": "color", "id": "stripe_color", "label": "Stripes", "default": "#94494b" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#fef1d5" },
+    {
+      "type": "range",
+      "id": "stripe_width",
+      "label": "Stripe width (px)",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "default": 34
+    },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Pillar",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Title" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Pillars",
+      "blocks": [
+        { "type": "pillar", "settings": { "title": "AKCIJA", "text": "Skupaj ušpičita nekaj nevsakdanjega" } },
+        { "type": "pillar", "settings": { "title": "ČUSTVA", "text": "Smeh, presenečenje in ponos ob vajinem podvigu" } },
+        { "type": "pillar", "settings": { "title": "RITUAL", "text": "Nalepka, ki zacementira trenutek" } },
+        { "type": "pillar", "settings": { "title": "OPOMNIK", "text": "Plakat, ki ga ohranja živega" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

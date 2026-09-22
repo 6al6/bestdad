@@ -1,0 +1,417 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    {%- if request.page_type == 'index' -%}
+      {%- comment -%}
+        Send homepage visitors straight to the landing page. Placed first in <head>,
+        before anything else loads, so it fires as fast as possible. The meta refresh
+        covers visitors with JavaScript disabled; the script covers everyone else and
+        uses replace() so the redirect doesn't add a "back" step in browser history.
+        window.location.search is appended so ad/UTM query parameters survive.
+      {%- endcomment -%}
+      <meta http-equiv="refresh" content="0; url=/pages/landing">
+      <script>window.location.replace('/pages/landing' + window.location.search);</script>
+    {%- endif -%}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+    {%- liquid
+      assign main_font = settings.type_main_font
+      assign main_font_bold = main_font | font_modify: 'weight', 'bold'
+      assign heading_font = settings.type_heading_font
+    -%}
+
+    {%- if settings.favicon != blank -%}
+      <link
+        rel="icon"
+        type="image/png"
+        href="{{ settings.favicon | image_url: width: '32x32' }}"
+      >
+    {%- endif -%}
+
+    {%- unless settings.type_header_font.system?
+      and settings.type_body_font.system?
+    -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %}
+        &ndash; tagged "{{ current_tags | join: ', ' }}"
+      {%- endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %}
+        &ndash; {{ shop.name -}}
+      {%- endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {%- render 'meta-tags' -%}
+{%- liquid
+  assign site_name = shop.name
+  if request.locale.iso_code == 'sl'
+    assign site_name = 'Najboljši Fotr'
+  endif
+-%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ site_name }}",
+  "url": "{{ request.origin }}"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "{{ site_name }}",
+  "url": "{{ request.origin }}",
+  "logo": "https:{{ settings.favicon | image_url: width: 512 }}",
+  "sameAs": [
+    "https://www.facebook.com/bestdadbook",
+    "https://www.instagram.com/bestdadbook",
+    "https://www.tiktok.com/@bestdadbook",
+    "https://www.youtube.com/@BestDadBook"
+  ]
+}
+</script>
+
+    {% comment %}
+      This script tag contains options for es-modules-shim, which is loaded
+      automatically by Shopify.
+    {% endcomment %}
+    <script type="esms-options">
+      {
+        "noLoadEventRetriggers": true
+      }
+    </script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "vendor": "{{ 'vendor.bundle.min.js' | asset_url }}",
+          "deferrable-data": "{{ 'deferrable-data.bundle.js' | asset_url }}",
+          "product": "{{ 'island-product.bundle.js' | asset_url }}",
+          "product-model": "{{ 'island-product-model.bundle.js' | asset_url }}"
+        }
+      }
+    </script>
+
+    {{ content_for_header }}
+
+    {{ 'base.bundle.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'custom-font.css' | asset_url | stylesheet_tag: preload: true }}
+
+    {% render 'js-bridge' %}
+
+    <script>
+      document.documentElement.className =
+        document.documentElement.className.replace('no-js', 'js');
+    </script>
+
+    <script>
+      function debounce(fn, wait) {
+        let t;
+        return (...args) => {
+          clearTimeout(t);
+          t = setTimeout(() => fn.apply(this, args), wait);
+        };
+      }
+    </script>
+
+    <script src="{{ 'utils.js' | asset_url }}" defer></script>
+
+    {% if request.design_mode %}
+      <script src="{{ 'shapes-animations.js' | asset_url }}" defer></script>
+      <script
+        src="{{ 'theme-editor-support.js' | asset_url }}"
+        type="module"
+      ></script>
+    {% endif %}
+
+    {% if template contains 'customers' %}
+      {% comment %}theme-check-disable ParserBlockingScript{% endcomment %}
+      {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+      {{ 'customer_area.js' | shopify_asset_url | script_tag }}
+      {% comment %}theme-check-enable ParserBlockingScript{% endcomment %}
+    {% endif %}
+
+    <script>
+      window.themeEventsDebugMode = false;
+    </script>
+    <script src="{{ 'theme-events.js' | asset_url }}" async defer></script>
+
+    <style>
+      :root {
+        --max-site-width: 1820px;
+      }
+    </style>
+
+    {% style %}
+      {{ main_font | font_face: font_display: 'swap' }}
+      {{ heading_font | font_face: font_display: 'swap' }}
+
+      {%- liquid
+        assign main_font_bolder = main_font | font_modify: 'weight', 'bolder'
+        assign main_font_italic = main_font | font_modify: 'style', 'italic'
+        assign main_font_bold_italic = main_font_bold | font_modify: 'style', 'italic'
+
+        if main_font_bold
+          echo main_font_bold | font_face: font_display: 'swap'
+        endif
+        if main_font_italic
+          echo main_font_italic | font_face: font_display: 'swap'
+        endif
+        if main_font_bold_italic
+          echo main_font_bold_italic | font_face: font_display: 'swap'
+        endif
+        if main_font_bolder
+          echo main_font_bolder | font_face: font_display: 'swap'
+        endif
+      -%}
+
+      {% if settings.heading_uppercase -%}
+        {%- capture heading_capitalize -%}uppercase{%- endcapture -%}
+      {% else -%}
+        {%- capture heading_capitalize -%}none{%- endcapture -%}
+      {% endif -%}
+      {%- capture heading_letterspacing -%}{{ settings.heading_letterspacing | divided_by: 1000.0 }}{% unless settings.heading_letterspacing == 0 -%}em{% endunless -%}{%- endcapture -%}
+
+      :root {
+        --heading-font-stack: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+        --heading-font-weight: {{ heading_font.weight }};
+        --heading-font-style: {{ heading_font.style }};
+        --heading-letterspacing: {{ heading_letterspacing }};
+        --heading-capitalize: {{ heading_capitalize }};
+        --main-font-stack: {{ main_font.family }}, {{ main_font.fallback_families }};
+        --main-font-weight: {{ main_font.weight }};
+        --main-font-style: {{ main_font.style }};
+      }
+    {% endstyle %}
+
+    {%- liquid
+      render 'css-bridge'
+      render 'critical-css'
+    -%}
+
+    <style id="manual-critical-css">
+      [x-cloak] {
+        display: none;
+      }
+
+      data-island {
+        display: block;
+      }
+
+      [data-parallax-container] {
+        will-change: opacity;
+        opacity: 0;
+        transition: opacity 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+      }
+      .no-js [data-parallax-container],
+      [data-parallax-container].animated {
+        opacity: 1;
+      }
+
+      @media (prefers-reduced-motion) {
+        [data-parallax-container] {
+          opacity: 1;
+        }
+      }
+    </style>
+
+    {% # theme-check-disable AssetPreload %}
+    {% unless heading_font.system? %}
+      <link
+        rel="preload"
+        as="font"
+        href="{{ heading_font | font_url }}"
+        type="font/woff2"
+        crossorigin
+      >
+    {% endunless %}
+    {% unless main_font.system? %}
+      <link
+        rel="preload"
+        as="font"
+        href="{{ main_font | font_url }}"
+        type="font/woff2"
+        crossorigin
+      >
+    {% endunless %}
+    {% # theme-check-enable AssetPreload %}
+  </head>
+
+  <body data-color-scheme="scheme1">
+    {%- if settings.show_on_sale_badge -%}
+      {%- render 'static-sticker-defs',
+        shape: settings.on_sale_badge_shape,
+        id: 'on-sale'
+      -%}
+    {%- endif -%}
+    {%- if settings.show_sold_out_badge -%}
+      {%- render 'static-sticker-defs',
+        shape: settings.sold_out_badge_shape,
+        id: 'sold-out'
+      -%}
+    {%- endif -%}
+    {%- render 'static-sticker-defs',
+      shape: settings.metafield_badge_shape,
+      id: 'metafield-badge'
+    -%}
+
+    <a class="skip-link" href="#MainContent">
+      {{- 'general.accessibility.skip_to_content' | t -}}
+    </a>
+    {% if template.suffix == 'landing_m_v1' or template.suffix == 'landing_f_v1' or template.suffix == 'landing_g_v1' %}
+      {% sections 'header-group-landing' %}
+    {% elsif template.suffix == 'landing' %}
+    {% elsif template.suffix == 'landing' %}
+    {%- comment -%} New landing page: no site header. Its own "Landing: Header bar" section is used instead. {%- endcomment -%}
+      {%- comment -%} New landing page: no site header. Its own "Landing: Header bar" section is used instead. {%- endcomment -%}
+    {% elsif template.suffix == 'ugc-2' %}
+      {% sections 'header-group-ugc' %}
+    {% else %}
+      {% sections 'header-group' %}
+    {% endif %}
+
+
+    {% render 'header-group-support' %}
+    <main id="MainContent" class="overflow-hidden">
+      {{ content_for_layout }}
+    </main>
+
+    {%- sections 'footer-group' -%}
+    {%- sections 'overlay-group' -%}
+
+    <div
+      id="screenreader-announce"
+      class="sr-only"
+      aria-live="polite"
+      role="status"
+    ></div>
+
+    <ul hidden>
+      <li id="a11y-refresh-page-message">
+        {{ 'general.accessibility.refresh_page' | t }}
+      </li>
+      <li id="a11y-selection-message">
+        {{ 'general.accessibility.selection_help' | t }}
+      </li>
+    </ul>
+
+    {% comment %} Modal containers {% endcomment %}
+    {% liquid
+      render 'left-drawer'
+      render 'right-drawer'
+      render 'modal'
+      render 'popup'
+    %}
+
+    {%- if settings.cart_type == 'modal' -%}
+      {% render 'drawer-cart' %}
+    {%- endif -%}
+
+    <script src="{{ 'global.bundle.js' | asset_url }}" type="module"></script>
+
+{% if template == 'page.landing_f_v1'
+   or template == 'page.landing_g_v1'
+   or template == 'page.landing_m_v1'
+%}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  function isMobile() {
+    return window.innerWidth <= 767;
+  }
+
+  if (!isMobile()) return;
+
+  const originalBtn = document.querySelector(
+    'a[href="#dad-book-product-anchor"][class*="ai-floating-button-"]'
+  );
+
+  if (!originalBtn) return;
+
+  const anchor = document.getElementById("dad-book-product-anchor");
+  const footerEl = document.querySelector("footer");
+
+  const stickyWrapper = document.createElement("div");
+  stickyWrapper.id = "sticky-buy-wrapper";
+  stickyWrapper.style.cssText = `
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 12px;
+    background: white;
+    display: none;
+    z-index: 999999999;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.08);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  `;
+
+  const stickyBtn = originalBtn.cloneNode(true);
+  stickyBtn.classList.add("sticky-buy-btn");
+  stickyBtn.style.setProperty("visibility", "visible", "important");
+  stickyBtn.style.setProperty("pointer-events", "auto", "important");
+
+  stickyWrapper.appendChild(stickyBtn);
+  document.body.appendChild(stickyWrapper);
+
+  function isVisible(el) {
+    if (!el) return false;
+    const rect = el.getBoundingClientRect();
+    return rect.bottom > 0 && rect.top < window.innerHeight;
+  }
+
+  function showSticky() {
+    stickyWrapper.style.display = "flex";
+    if (footerEl) footerEl.style.paddingBottom = "60px";
+  }
+
+  function hideSticky() {
+    stickyWrapper.style.display = "none";
+    if (footerEl) footerEl.style.paddingBottom = "";
+  }
+
+  function handleScroll() {
+    if (!isMobile()) {
+      hideSticky();
+      return;
+    }
+
+    const originalRect = originalBtn.getBoundingClientRect();
+    const anchorVisible = isVisible(anchor);
+
+    if (originalRect.top < 0 && !anchorVisible) {
+      showSticky();
+    } else {
+      hideSticky();
+    }
+  }
+
+  window.addEventListener("scroll", handleScroll);
+  window.addEventListener("resize", handleScroll);
+});
+</script>
+
+
+{% endif %}
+
+
+
+  </body>
+</html>

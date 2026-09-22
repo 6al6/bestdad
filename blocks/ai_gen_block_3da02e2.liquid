@@ -1,0 +1,674 @@
+{% doc %}
+  @prompt
+    reate a custom Shopify section containing a single block that renders as a normal HTML floating badge above other content. The badge must remain a regular DOM element — fully selectable, inspectable, and never merged into the background image. It must not use canvas, filters, blending, or anything that flattens it into the section. The badge has a rounded rectangle base with a raised top tab, and inside that top tab there is a row of stars. The user must be able to upload or choose a star image (PNG or SVG) and define desktop and mobile star sizes. Add a vertical star-offset control that moves the stars up or down, and the raised top tab must move together with the stars so the shape stays correct. Below the stars is the text area with full WYSIWYG controls (bold, italic, underline, font size, line breaks) and text alignment options (left, center, right). The badge should allow choosing different shapes using Shopify’s default shape options. Provide separate desktop and mobile settings for font size, padding, width, spacing, alignment, and for badge positioning. The badge must use position: absolute only with editable top/left values so it can be freely placed anywhere over the section. Keep pointer events normal so the text inside is selectable. Include an adjustable z-index so the badge appears above other blocks while still behaving as a standard HTML element. Add optional settings for shadows, opacity, gradients, and a custom CSS field for advanced styling., Add the stars icons in already, Add in custom width for star area, and the option if the star area drops shadow seperate from the text area.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-floating-badge-{{ ai_gen_id }} {
+    position: absolute;
+    z-index: {{ block.settings.z_index }};
+    pointer-events: auto;
+    opacity: {{ block.settings.opacity }};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-floating-badge-{{ ai_gen_id }} {
+      top: {{ block.settings.desktop_top }}%;
+      left: {{ block.settings.desktop_left }}%;
+      width: {{ block.settings.desktop_width }}px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-floating-badge-{{ ai_gen_id }} {
+      top: {{ block.settings.mobile_top }}%;
+      left: {{ block.settings.mobile_left }}%;
+      width: {{ block.settings.mobile_width }}px;
+    }
+  }
+
+  .ai-floating-badge-stars-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: {{ block.settings.star_alignment }};
+    align-items: center;
+    gap: {{ block.settings.star_spacing }}px;
+    padding: {{ block.settings.star_tab_padding }}px;
+    background: {{ block.settings.star_tab_background }};
+    border-radius: {{ block.settings.star_tab_border_radius }}px {{ block.settings.star_tab_border_radius }}px 0 0;
+    position: relative;
+    {% if block.settings.star_tab_gradient != blank %}
+      background: {{ block.settings.star_tab_gradient }};
+    {% endif %}
+    {% if block.settings.enable_star_shadow %}
+      box-shadow: {{ block.settings.star_shadow_x }}px {{ block.settings.star_shadow_y }}px {{ block.settings.star_shadow_blur }}px {{ block.settings.star_shadow_color }};
+    {% endif %}
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-floating-badge-stars-{{ ai_gen_id }} {
+      transform: translateY({{ block.settings.desktop_star_offset }}px);
+      width: {{ block.settings.desktop_star_area_width }}%;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-floating-badge-stars-{{ ai_gen_id }} {
+      transform: translateY({{ block.settings.mobile_star_offset }}px);
+      width: {{ block.settings.mobile_star_area_width }}%;
+    }
+  }
+
+  .ai-floating-badge-star-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    color: {{ block.settings.star_color }};
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-floating-badge-star-{{ ai_gen_id }} {
+      width: {{ block.settings.desktop_star_size }}px;
+      height: {{ block.settings.desktop_star_size }}px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-floating-badge-star-{{ ai_gen_id }} {
+      width: {{ block.settings.mobile_star_size }}px;
+      height: {{ block.settings.mobile_star_size }}px;
+    }
+  }
+
+  .ai-floating-badge-star-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .ai-floating-badge-star-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+
+  .ai-floating-badge-content-{{ ai_gen_id }} {
+    background: {{ block.settings.badge_background }};
+    width: 100%;
+    text-align: {{ block.settings.text_alignment }};
+    user-select: text;
+    {% if block.settings.badge_gradient != blank %}
+      background: {{ block.settings.badge_gradient }};
+    {% endif %}
+    {% if block.settings.enable_badge_shadow %}
+      box-shadow: {{ block.settings.badge_shadow_x }}px {{ block.settings.badge_shadow_y }}px {{ block.settings.badge_shadow_blur }}px {{ block.settings.badge_shadow_color }};
+    {% endif %}
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-floating-badge-content-{{ ai_gen_id }} {
+      padding: {{ block.settings.desktop_padding }}px;
+      border-radius: {{ block.settings.desktop_border_radius }}px;
+      margin-top: {{ block.settings.desktop_star_offset }}px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-floating-badge-content-{{ ai_gen_id }} {
+      padding: {{ block.settings.mobile_padding }}px;
+      border-radius: {{ block.settings.mobile_border_radius }}px;
+      margin-top: {{ block.settings.mobile_star_offset }}px;
+    }
+  }
+
+  .ai-floating-badge-text-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    margin: 0;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-floating-badge-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.desktop_font_size }}px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-floating-badge-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.mobile_font_size }}px;
+    }
+  }
+
+  .ai-floating-badge-shape-{{ ai_gen_id }} {
+    {% if block.settings.badge_shape == 'circle' %}
+      border-radius: 50%;
+    {% elsif block.settings.badge_shape == 'rounded' %}
+      border-radius: 20px;
+    {% elsif block.settings.badge_shape == 'pill' %}
+      border-radius: 9999px;
+    {% endif %}
+  }
+
+  {% if block.settings.custom_css != blank %}
+    {{ block.settings.custom_css }}
+  {% endif %}
+{% endstyle %}
+
+<div
+  class="ai-floating-badge-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-floating-badge-stars-{{ ai_gen_id }} ai-floating-badge-shape-{{ ai_gen_id }}">
+    {% for i in (1..block.settings.star_count) %}
+      <div class="ai-floating-badge-star-{{ ai_gen_id }}">
+        {% if block.settings.star_image != blank %}
+          <img
+            src="{{ block.settings.star_image | image_url: width: 200 }}"
+            alt="Star {{ i }}"
+            loading="lazy"
+            width="{{ block.settings.desktop_star_size }}"
+            height="{{ block.settings.desktop_star_size }}"
+          >
+        {% else %}
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="ai-floating-badge-content-{{ ai_gen_id }} ai-floating-badge-shape-{{ ai_gen_id }}">
+    {% if block.settings.badge_text != blank %}
+      <div class="ai-floating-badge-text-{{ ai_gen_id }}">
+        {{ block.settings.badge_text }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Floating badge",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Stars"
+    },
+    {
+      "type": "image_picker",
+      "id": "star_image",
+      "label": "Star image"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#FFD700"
+    },
+    {
+      "type": "range",
+      "id": "star_count",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "label": "Number of stars",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "desktop_star_size",
+      "min": 10,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop star size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "mobile_star_size",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile star size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "star_spacing",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Star spacing",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "star_alignment",
+      "label": "Star alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "desktop_star_offset",
+      "min": -50,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop star vertical offset",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mobile_star_offset",
+      "min": -50,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile star vertical offset",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Star tab style"
+    },
+    {
+      "type": "range",
+      "id": "desktop_star_area_width",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Desktop star area width",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "mobile_star_area_width",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Mobile star area width",
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "star_tab_background",
+      "label": "Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color_background",
+      "id": "star_tab_gradient",
+      "label": "Gradient"
+    },
+    {
+      "type": "range",
+      "id": "star_tab_padding",
+      "min": 4,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "star_tab_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Star area shadow"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_star_shadow",
+      "label": "Enable shadow",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "star_shadow_x",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Shadow X offset",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "star_shadow_y",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Shadow Y offset",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "star_shadow_blur",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Shadow blur",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "star_shadow_color",
+      "label": "Shadow color",
+      "default": "rgba(0,0,0,0.15)"
+    },
+    {
+      "type": "header",
+      "content": "Text content"
+    },
+    {
+      "type": "richtext",
+      "id": "badge_text",
+      "label": "Text",
+      "default": "<p><strong>Best Seller</strong></p>"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "desktop_font_size",
+      "min": 10,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop font size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_font_size",
+      "min": 10,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile font size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Badge style"
+    },
+    {
+      "type": "select",
+      "id": "badge_shape",
+      "label": "Shape",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "rounded",
+          "label": "Rounded"
+        },
+        {
+          "value": "pill",
+          "label": "Pill"
+        },
+        {
+          "value": "circle",
+          "label": "Circle"
+        }
+      ],
+      "default": "rounded"
+    },
+    {
+      "type": "color",
+      "id": "badge_background",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color_background",
+      "id": "badge_gradient",
+      "label": "Gradient"
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding",
+      "min": 4,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop padding",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "desktop_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop border radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "mobile_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile border radius",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Badge shadow"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_badge_shadow",
+      "label": "Enable shadow",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "badge_shadow_x",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Shadow X offset",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "badge_shadow_y",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Shadow Y offset",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "badge_shadow_blur",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Shadow blur",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "badge_shadow_color",
+      "label": "Shadow color",
+      "default": "rgba(0,0,0,0.15)"
+    },
+    {
+      "type": "header",
+      "content": "Desktop positioning"
+    },
+    {
+      "type": "range",
+      "id": "desktop_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Top position",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Left position",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_width",
+      "min": 100,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Width",
+      "default": 200
+    },
+    {
+      "type": "header",
+      "content": "Mobile positioning"
+    },
+    {
+      "type": "range",
+      "id": "mobile_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Top position",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Left position",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "mobile_width",
+      "min": 80,
+      "max": 350,
+      "step": 10,
+      "unit": "px",
+      "label": "Width",
+      "default": 150
+    },
+    {
+      "type": "header",
+      "content": "Advanced"
+    },
+    {
+      "type": "range",
+      "id": "z_index",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "label": "Z-index",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Opacity",
+      "default": 1
+    },
+    {
+      "type": "html",
+      "id": "custom_css",
+      "label": "Custom CSS"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Floating badge"
+    }
+  ]
+}
+{% endschema %}

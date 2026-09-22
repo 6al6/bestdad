@@ -1,0 +1,180 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+-%}
+
+<section class="landing-testimonial landing-testimonial--{{ section.id }}">
+  <div class="landing-testimonial__inner">
+    {%- if section.settings.avatar != blank -%}
+      <div class="landing-testimonial__avatar">
+        {{-
+          section.settings.avatar
+          | image_url: width: 320
+          | image_tag: width: 80, height: 54, loading: 'lazy', widths: '160, 240, 320', sizes: '80px', alt: section.settings.avatar.alt
+        -}}
+      </div>
+    {%- endif -%}
+
+    <div class="landing-testimonial__body">
+      {%- if section.settings.quote != blank -%}
+        <blockquote class="landing-testimonial__quote">{{ section.settings.quote | escape | newline_to_br }}</blockquote>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="landing-testimonial__text">{{ section.settings.text }}</div>
+      {%- endif -%}
+      {%- if section.settings.author != blank or section.settings.author_role != blank -%}
+        <div class="landing-testimonial__author">
+          {%- if section.settings.author != blank -%}
+            <p class="landing-testimonial__name">{{ section.settings.author }}</p>
+          {%- endif -%}
+          {%- if section.settings.author_role != blank -%}
+            <p class="landing-testimonial__role">{{ section.settings.author_role }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-testimonial--{{ section.id }} {
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    text-align: center;
+  }
+  .landing-testimonial__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 40px 18px;
+  }
+  .landing-testimonial__avatar img {
+    display: block;
+    box-sizing: border-box;
+    width: 80px;
+    height: 72px;
+    border: 1.2px solid {{ section.settings.avatar_border_color }};
+    border-radius: 4px;
+    object-fit: cover;
+  }
+  .landing-testimonial__body {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
+  }
+  .landing-testimonial__quote {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.05;
+    overflow-wrap: break-word;
+  }
+  .landing-testimonial__text {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .landing-testimonial__text p { margin: 0; }
+  .landing-testimonial__text p + p { margin-top: 1em; }
+  .landing-testimonial__text strong { font-weight: 700; }
+  .landing-testimonial__author {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    font-size: 16px;
+    line-height: 120%;
+    letter-spacing: 0;
+    text-align: center;
+  }
+  .landing-testimonial__name,
+  .landing-testimonial__role { margin: 0; }
+  .landing-testimonial__name {
+    font-weight: 700;
+    font-style: normal;
+    color: {{ section.settings.text_color }};
+  }
+  .landing-testimonial__role {
+    font-weight: 400;
+    font-style: italic;
+    color: {{ section.settings.role_color }};
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Avatar quote",
+  "tag": "section",
+  "class": "landing-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "avatar",
+      "label": "Author photo",
+      "info": "Shown small above the quote, landscape crop (about 80 x 54)."
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Title",
+      "info": "Shown large in the heading font. A new line here becomes a line break.",
+      "default": "»To je najbrž najboljše, kar si ustvaril.«"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "info": "Normal text under the title. Use Bold and Italic as needed.",
+      "default": "<p>Tekst pod naslovom.</p>"
+    },
+    { "type": "text", "id": "author", "label": "Name", "default": "Desa Muck" },
+    {
+      "type": "text",
+      "id": "author_role",
+      "label": "Job",
+      "default": "pisateljica, dramatičarka, publicistka, igralka, scenaristka in publicistka"
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#2b2d45" },
+    { "type": "color", "id": "text_color", "label": "Title, text and name", "default": "#ffffff" },
+    { "type": "color", "id": "role_color", "label": "Job", "default": "#fef1d5" },
+    { "type": "color", "id": "avatar_border_color", "label": "Photo border", "default": "#fef1d5" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "presets": [{ "name": "Landing: Avatar quote" }]
+}
+{% endschema %}

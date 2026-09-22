@@ -1,0 +1,294 @@
+{% doc %}
+  @prompt
+    generate a block of text which is completely customizable separately for mobile and desktop. It will have a background card and the text on it. The text editor also needs to have all functionality, so bold, italics, and such. And it needs to be completely editable where it is on the x and y-axis as well as how wide and tall it is. It needs to overlay all layers.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-overlay-text-card-{{ ai_gen_id }} {
+    position: absolute;
+    z-index: 9999;
+    background-color: {{ block.settings.card_background_color }};
+    border-radius: {{ block.settings.card_border_radius }}px;
+    padding: {{ block.settings.card_padding }}px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-overlay-text-card-{{ ai_gen_id }} {
+      top: {{ block.settings.desktop_position_y }}%;
+      left: {{ block.settings.desktop_position_x }}%;
+      width: {{ block.settings.desktop_width }}px;
+      min-height: {{ block.settings.desktop_height }}px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-overlay-text-card-{{ ai_gen_id }} {
+      top: {{ block.settings.mobile_position_y }}%;
+      left: {{ block.settings.mobile_position_x }}%;
+      width: {{ block.settings.mobile_width }}px;
+      min-height: {{ block.settings.mobile_height }}px;
+    }
+  }
+
+  .ai-overlay-text-content-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-overlay-text-content-{{ ai_gen_id }} {
+      font-size: {{ block.settings.desktop_font_size }}px;
+      line-height: {{ block.settings.desktop_line_height }};
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-overlay-text-content-{{ ai_gen_id }} {
+      font-size: {{ block.settings.mobile_font_size }}px;
+      line-height: {{ block.settings.mobile_line_height }};
+    }
+  }
+
+  .ai-overlay-text-content-{{ ai_gen_id }} p {
+    margin: 0 0 1em 0;
+  }
+
+  .ai-overlay-text-content-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-overlay-text-content-{{ ai_gen_id }} strong {
+    font-weight: bold;
+  }
+
+  .ai-overlay-text-content-{{ ai_gen_id }} em {
+    font-style: italic;
+  }
+
+  .ai-overlay-text-content-{{ ai_gen_id }} u {
+    text-decoration: underline;
+  }
+
+  .ai-overlay-text-content-{{ ai_gen_id }} a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  .ai-overlay-text-content-{{ ai_gen_id }} ul,
+  .ai-overlay-text-content-{{ ai_gen_id }} ol {
+    margin: 0 0 1em 1.5em;
+    padding: 0;
+  }
+
+  .ai-overlay-text-content-{{ ai_gen_id }} li {
+    margin-bottom: 0.5em;
+  }
+
+  .ai-overlay-text-content-{{ ai_gen_id }} h1,
+  .ai-overlay-text-content-{{ ai_gen_id }} h2,
+  .ai-overlay-text-content-{{ ai_gen_id }} h3,
+  .ai-overlay-text-content-{{ ai_gen_id }} h4,
+  .ai-overlay-text-content-{{ ai_gen_id }} h5,
+  .ai-overlay-text-content-{{ ai_gen_id }} h6 {
+    margin: 0 0 0.5em 0;
+    font-weight: bold;
+  }
+{% endstyle %}
+
+<div
+  class="ai-overlay-text-card-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-overlay-text-content-{{ ai_gen_id }}">
+    {{ block.settings.text_content }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Overlay text card",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "richtext",
+      "id": "text_content",
+      "label": "Text",
+      "default": "<p>Add your custom text here. You can use <strong>bold</strong>, <em>italic</em>, and other formatting.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Desktop layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_position_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Horizontal position",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_position_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Vertical position",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_width",
+      "min": 100,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "label": "Width",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "min": 50,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "label": "Minimum height",
+      "default": 150
+    },
+    {
+      "type": "range",
+      "id": "desktop_font_size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_line_height",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "label": "Line height",
+      "default": 1.5
+    },
+    {
+      "type": "header",
+      "content": "Mobile layout"
+    },
+    {
+      "type": "range",
+      "id": "mobile_position_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Horizontal position",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "mobile_position_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Vertical position",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "mobile_width",
+      "min": 100,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Width",
+      "default": 280
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "min": 50,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Minimum height",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "mobile_font_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_line_height",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "label": "Line height",
+      "default": 1.4
+    },
+    {
+      "type": "header",
+      "content": "Card style"
+    },
+    {
+      "type": "color",
+      "id": "card_background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Overlay text card"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,265 @@
+{% doc %}
+  @prompt
+    Create a custom Shopify section containing a single block that renders as a normal HTML floating badge with just a text entry and no stars. The badge must remain a regular DOM element — fully selectable, inspectable, and never merged into the background image. It must not use canvas, filters, blending, or anything that flattens it into the section. The badge is a simple shape (for example a rounded rectangle) and must allow choosing different shapes using Shopify’s default shape options. Inside the badge there is one text area with full WYSIWYG controls (bold, italic, underline, font size, line breaks, multi-line text) and text-alignment options (left, center, right). Provide separate desktop and mobile settings for all key values such as font size, padding, width, spacing, alignment, and badge positioning. The badge must use position: absolute only, with editable top/left values so it can be freely placed anywhere above the section while remaining a standard HTML element. Keep pointer events normal so the text inside is selectable. Include an adjustable z-index so the badge appears above other blocks but is not sticky or fixed. Add optional settings for shadows, opacity, gradients, and a custom CSS field for advanced styling on both desktop and mobile.
+    , Remove the settings to just the basics:
+    - Text editor
+    - Pading
+    - X, Y position
+    - Corner shape
+    - Colors of shape and of text
+    - All tehse settings seperate for mobile and desktop, Add in text size, add in also box size / width
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-floating-badge-{{ ai_gen_id }} {
+    position: absolute;
+    z-index: 10;
+    pointer-events: auto;
+    display: inline-block;
+    max-width: 100%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-floating-badge-{{ ai_gen_id }} {
+      top: {{ block.settings.desktop_y }}%;
+      left: {{ block.settings.desktop_x }}%;
+      width: {{ block.settings.desktop_width }}px;
+    }
+
+    .ai-floating-badge-inner-{{ ai_gen_id }} {
+      background: {{ block.settings.desktop_background }};
+      padding: {{ block.settings.desktop_padding }}px;
+      border-radius: {{ block.settings.desktop_corner_radius }}px;
+    }
+
+    .ai-floating-badge-text-{{ ai_gen_id }} {
+      color: {{ block.settings.desktop_text_color }};
+      font-size: {{ block.settings.desktop_text_size }}px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-floating-badge-{{ ai_gen_id }} {
+      top: {{ block.settings.mobile_y }}%;
+      left: {{ block.settings.mobile_x }}%;
+      width: {{ block.settings.mobile_width }}px;
+    }
+
+    .ai-floating-badge-inner-{{ ai_gen_id }} {
+      background: {{ block.settings.mobile_background }};
+      padding: {{ block.settings.mobile_padding }}px;
+      border-radius: {{ block.settings.mobile_corner_radius }}px;
+    }
+
+    .ai-floating-badge-text-{{ ai_gen_id }} {
+      color: {{ block.settings.mobile_text_color }};
+      font-size: {{ block.settings.mobile_text_size }}px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+  }
+
+  .ai-floating-badge-text-{{ ai_gen_id }} * {
+    margin: 0;
+    padding: 0;
+  }
+
+  .ai-floating-badge-text-{{ ai_gen_id }} p {
+    margin-bottom: 0.5em;
+  }
+
+  .ai-floating-badge-text-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
+  }
+{% endstyle %}
+
+<div class="ai-floating-badge-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-floating-badge-inner-{{ ai_gen_id }}">
+    <div class="ai-floating-badge-text-{{ ai_gen_id }}">
+      {% if block.settings.badge_text != blank %}
+        {{ block.settings.badge_text }}
+      {% else %}
+        <p>Add your badge text</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Floating badge",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "richtext",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "<p><strong>New</strong></p>"
+    },
+    {
+      "type": "header",
+      "content": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "desktop_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "X position",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Y position",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_width",
+      "min": 50,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Width",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding",
+      "min": 5,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "desktop_corner_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Corner radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "desktop_text_size",
+      "min": 10,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Text size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "desktop_background",
+      "label": "Background color",
+      "default": "#eb3131"
+    },
+    {
+      "type": "color",
+      "id": "desktop_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "X position",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Y position",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_width",
+      "min": 50,
+      "max": 350,
+      "step": 10,
+      "unit": "px",
+      "label": "Width",
+      "default": 150
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_corner_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Corner radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "mobile_text_size",
+      "min": 10,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Text size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "mobile_background",
+      "label": "Background color",
+      "default": "#eb3131"
+    },
+    {
+      "type": "color",
+      "id": "mobile_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Floating badge"
+    }
+  ]
+}
+{% endschema %}

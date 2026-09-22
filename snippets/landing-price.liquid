@@ -1,0 +1,23 @@
+{% doc %}
+  Formats a price the same way `| money` does, except for EUR (the Slovenian
+  market), where the client wants the € symbol placed after the amount instead
+  of before it.
+
+  This can't be solved with Settings > General > Change currency formatting:
+  that setting is one shared template used for every currency the shop sells
+  in, Shopify just swaps in the right symbol and code. Editing it to move the
+  € after the amount would also move the $ after the amount for the US/Canada
+  market, which isn't wanted. So the EUR-only placement is handled here
+  instead, and every other currency keeps using the store's own setting
+  untouched.
+
+  @param {number} amount - A price in the shop's smallest currency unit (cents), e.g. variant.price
+  @param {boolean} [trim_zeros] - Drop a trailing .00, like money_without_trailing_zeros. Ignored for EUR, which always shows 2 decimals (standard for it).
+{% enddoc %}
+{%- if localization.country.currency.iso_code == 'EUR' -%}
+  {{- amount | money_without_currency -}}&nbsp;€
+{%- elsif trim_zeros -%}
+  {{- amount | money_without_trailing_zeros -}}
+{%- else -%}
+  {{- amount | money -}}
+{%- endif -%}

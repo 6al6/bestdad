@@ -1,0 +1,474 @@
+{% doc %}
+  @prompt
+    Create a custom Shopify section with a single block that works as a fully customizable floating review badge. The badge shape is a rounded rectangle with a raised top tab for the stars: the main body is a pill-style rounded rectangle, and at its top center there is a slightly elevated bump that smoothly blends into the body so it feels like one continuous shape. The stars sit inside this bump so the top area looks visually lifted above the rest of the badge. The block must provide full WYSIWYG rich-text control for the copy (bold, italic, underline, line breaks, font-size changes, multiple lines). All colors must be editable, including background, text, star color, and shadow color. The badge needs separate desktop and mobile settings for all key layout values: X position, Y position, width, height, padding, font size, star size, alignment, and spacing. The block must support free positioning using numeric controls for top and left (accepting px, %, vw, or vh) plus width and height inputs. It must include an adjustable z-index so the badge can overlay every other block in the section, and it should default to a high z-index. Add a toggle to switch between absolute, fixed, and relative positioning, with absolute as the default. The badge must have editable border-radius settings for both the main body corners and the raised tab corners so the designer can match a soft, smooth look. Include options for box-shadow strength, opacity, optional background gradient, and a custom CSS text area with support for different rules on desktop and mobile. Add an image picker for the star graphic (PNG or SVG), with independent desktop and mobile size controls and a setting for spacing between stars. Inside the badge layout, place the stars inside the raised tab at the top, and position the rich-text block below them, with controls for horizontal alignment (left/center/right) and vertical spacing so the text and stars together can be fine-tuned
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-floating-badge-{{ ai_gen_id }} {
+    position: {{ block.settings.position_type }};
+    z-index: {{ block.settings.z_index }};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: {{ block.settings.badge_width_mobile }};
+    {% if block.settings.enable_gradient %}
+      background: linear-gradient(135deg, {{ block.settings.background_color }}, {{ block.settings.gradient_color }});
+    {% else %}
+      background-color: {{ block.settings.background_color }};
+    {% endif %}
+    border-radius: {{ block.settings.body_border_radius }}px;
+    padding: {{ block.settings.padding_mobile }};
+    box-shadow: 0 {{ block.settings.shadow_strength }}px {{ block.settings.shadow_strength | times: 2 }}px rgba({{ block.settings.shadow_color | color_extract: 'red' }}, {{ block.settings.shadow_color | color_extract: 'green' }}, {{ block.settings.shadow_color | color_extract: 'blue' }}, {{ block.settings.shadow_opacity }});
+    top: {{ block.settings.y_position_mobile }};
+    left: {{ block.settings.x_position_mobile }};
+    height: {{ block.settings.badge_height_mobile }};
+  }
+
+  .ai-floating-badge-tab-{{ ai_gen_id }} {
+    position: relative;
+    top: calc(-{{ block.settings.padding_mobile }} - {{ block.settings.tab_height_mobile }});
+    margin-bottom: calc(-{{ block.settings.tab_height_mobile }});
+    background-color: {{ block.settings.tab_background_color }};
+    border-radius: {{ block.settings.tab_border_radius }}px {{ block.settings.tab_border_radius }}px 0 0;
+    padding: {{ block.settings.tab_padding_mobile }};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: {{ block.settings.star_spacing_mobile }};
+    min-height: {{ block.settings.tab_height_mobile }};
+  }
+
+  .ai-floating-badge-star-{{ ai_gen_id }} {
+    width: {{ block.settings.star_size_mobile }};
+    height: {{ block.settings.star_size_mobile }};
+    object-fit: contain;
+  }
+
+  .ai-floating-badge-content-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.font_size_mobile }};
+    text-align: {{ block.settings.text_alignment }};
+    margin-top: {{ block.settings.vertical_spacing_mobile }};
+    width: 100%;
+  }
+
+  .ai-floating-badge-content-{{ ai_gen_id }} p {
+    margin: 0;
+  }
+
+  {% if block.settings.custom_css_mobile != blank %}
+    {{ block.settings.custom_css_mobile }}
+  {% endif %}
+
+  @media screen and (min-width: 750px) {
+    .ai-floating-badge-{{ ai_gen_id }} {
+      width: {{ block.settings.badge_width_desktop }};
+      padding: {{ block.settings.padding_desktop }};
+      top: {{ block.settings.y_position_desktop }};
+      left: {{ block.settings.x_position_desktop }};
+      height: {{ block.settings.badge_height_desktop }};
+    }
+
+    .ai-floating-badge-tab-{{ ai_gen_id }} {
+      top: calc(-{{ block.settings.padding_desktop }} - {{ block.settings.tab_height_desktop }});
+      margin-bottom: calc(-{{ block.settings.tab_height_desktop }});
+      padding: {{ block.settings.tab_padding_desktop }};
+      gap: {{ block.settings.star_spacing_desktop }};
+      min-height: {{ block.settings.tab_height_desktop }};
+    }
+
+    .ai-floating-badge-star-{{ ai_gen_id }} {
+      width: {{ block.settings.star_size_desktop }};
+      height: {{ block.settings.star_size_desktop }};
+    }
+
+    .ai-floating-badge-content-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size_desktop }};
+      margin-top: {{ block.settings.vertical_spacing_desktop }};
+    }
+
+    {% if block.settings.custom_css_desktop != blank %}
+      {{ block.settings.custom_css_desktop }}
+    {% endif %}
+  }
+{% endstyle %}
+
+<div class="ai-floating-badge-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-floating-badge-tab-{{ ai_gen_id }}">
+    {% if block.settings.star_image %}
+      {% for i in (1..block.settings.star_count) %}
+        <img
+          src="{{ block.settings.star_image | image_url: width: 100 }}"
+          alt="Star {{ i }}"
+          class="ai-floating-badge-star-{{ ai_gen_id }}"
+          loading="lazy"
+        >
+      {% endfor %}
+    {% else %}
+      {% for i in (1..block.settings.star_count) %}
+        <svg class="ai-floating-badge-star-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="{{ block.settings.star_color }}" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+        </svg>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <div class="ai-floating-badge-content-{{ ai_gen_id }}">
+    {{ block.settings.badge_text }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Floating review badge",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Position"
+    },
+    {
+      "type": "select",
+      "id": "position_type",
+      "label": "Position type",
+      "options": [
+        {
+          "value": "absolute",
+          "label": "Absolute"
+        },
+        {
+          "value": "fixed",
+          "label": "Fixed"
+        },
+        {
+          "value": "relative",
+          "label": "Relative"
+        }
+      ],
+      "default": "absolute"
+    },
+    {
+      "type": "range",
+      "id": "z_index",
+      "min": 10,
+      "max": 1000,
+      "step": 10,
+      "label": "Z-index",
+      "default": 990
+    },
+    {
+      "type": "text",
+      "id": "x_position_desktop",
+      "label": "Desktop X position",
+      "default": "20px",
+      "info": "Use px, %, vw, or vh"
+    },
+    {
+      "type": "text",
+      "id": "y_position_desktop",
+      "label": "Desktop Y position",
+      "default": "20px",
+      "info": "Use px, %, vw, or vh"
+    },
+    {
+      "type": "text",
+      "id": "x_position_mobile",
+      "label": "Mobile X position",
+      "default": "10px",
+      "info": "Use px, %, vw, or vh"
+    },
+    {
+      "type": "text",
+      "id": "y_position_mobile",
+      "label": "Mobile Y position",
+      "default": "10px",
+      "info": "Use px, %, vw, or vh"
+    },
+    {
+      "type": "header",
+      "content": "Desktop dimensions"
+    },
+    {
+      "type": "text",
+      "id": "badge_width_desktop",
+      "label": "Width",
+      "default": "200px",
+      "info": "Use px, %, vw, or vh"
+    },
+    {
+      "type": "text",
+      "id": "badge_height_desktop",
+      "label": "Height",
+      "default": "auto",
+      "info": "Use px, auto, %, vw, or vh"
+    },
+    {
+      "type": "text",
+      "id": "padding_desktop",
+      "label": "Padding",
+      "default": "20px"
+    },
+    {
+      "type": "text",
+      "id": "tab_height_desktop",
+      "label": "Tab height",
+      "default": "40px"
+    },
+    {
+      "type": "text",
+      "id": "tab_padding_desktop",
+      "label": "Tab padding",
+      "default": "8px 16px"
+    },
+    {
+      "type": "header",
+      "content": "Mobile dimensions"
+    },
+    {
+      "type": "text",
+      "id": "badge_width_mobile",
+      "label": "Width",
+      "default": "150px",
+      "info": "Use px, %, vw, or vh"
+    },
+    {
+      "type": "text",
+      "id": "badge_height_mobile",
+      "label": "Height",
+      "default": "auto",
+      "info": "Use px, auto, %, vw, or vh"
+    },
+    {
+      "type": "text",
+      "id": "padding_mobile",
+      "label": "Padding",
+      "default": "15px"
+    },
+    {
+      "type": "text",
+      "id": "tab_height_mobile",
+      "label": "Tab height",
+      "default": "30px"
+    },
+    {
+      "type": "text",
+      "id": "tab_padding_mobile",
+      "label": "Tab padding",
+      "default": "6px 12px"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_gradient",
+      "label": "Enable gradient",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "gradient_color",
+      "label": "Gradient end color",
+      "default": "#f0f0f0"
+    },
+    {
+      "type": "color",
+      "id": "tab_background_color",
+      "label": "Tab background",
+      "default": "#FFD700"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star",
+      "default": "#FFD700"
+    },
+    {
+      "type": "color",
+      "id": "shadow_color",
+      "label": "Shadow",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Border radius"
+    },
+    {
+      "type": "range",
+      "id": "body_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Body corners",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "tab_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Tab corners",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Shadow"
+    },
+    {
+      "type": "range",
+      "id": "shadow_strength",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Strength",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "shadow_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Opacity",
+      "default": 0.3
+    },
+    {
+      "type": "header",
+      "content": "Stars"
+    },
+    {
+      "type": "image_picker",
+      "id": "star_image",
+      "label": "Star image",
+      "info": "Leave empty to use default star SVG"
+    },
+    {
+      "type": "range",
+      "id": "star_count",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "label": "Number of stars",
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "star_size_desktop",
+      "label": "Desktop star size",
+      "default": "20px"
+    },
+    {
+      "type": "text",
+      "id": "star_size_mobile",
+      "label": "Mobile star size",
+      "default": "16px"
+    },
+    {
+      "type": "text",
+      "id": "star_spacing_desktop",
+      "label": "Desktop star spacing",
+      "default": "4px"
+    },
+    {
+      "type": "text",
+      "id": "star_spacing_mobile",
+      "label": "Mobile star spacing",
+      "default": "3px"
+    },
+    {
+      "type": "header",
+      "content": "Text content"
+    },
+    {
+      "type": "richtext",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "<p><strong>5.0</strong> Rating</p><p>2,500+ Reviews</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "text",
+      "id": "font_size_desktop",
+      "label": "Desktop font size",
+      "default": "14px"
+    },
+    {
+      "type": "text",
+      "id": "font_size_mobile",
+      "label": "Mobile font size",
+      "default": "12px"
+    },
+    {
+      "type": "text",
+      "id": "vertical_spacing_desktop",
+      "label": "Desktop vertical spacing",
+      "default": "8px",
+      "info": "Space between stars and text"
+    },
+    {
+      "type": "text",
+      "id": "vertical_spacing_mobile",
+      "label": "Mobile vertical spacing",
+      "default": "6px",
+      "info": "Space between stars and text"
+    },
+    {
+      "type": "header",
+      "content": "Custom CSS"
+    },
+    {
+      "type": "html",
+      "id": "custom_css_desktop",
+      "label": "Desktop custom CSS",
+      "info": "Add custom CSS rules for desktop only"
+    },
+    {
+      "type": "html",
+      "id": "custom_css_mobile",
+      "label": "Mobile custom CSS",
+      "info": "Add custom CSS rules for mobile only"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Floating review badge"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,261 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+<section class="landing-reviews landing-reviews--{{ section.id }}">
+  <div class="landing-reviews__inner">
+    {%- if section.settings.heading_avatar != blank or section.settings.heading != blank -%}
+      <div class="landing-reviews__intro">
+        {%- if section.settings.heading_avatar != blank -%}
+          {{-
+            section.settings.heading_avatar
+            | image_url: width: 320
+            | image_tag: class: 'landing-reviews__avatar', width: 80, height: 54, loading: 'lazy', widths: '160, 240, 320', sizes: '80px', alt: section.settings.heading_avatar.alt
+          -}}
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="landing-reviews__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="landing-reviews__list" role="list">
+        {%- for block in section.blocks -%}
+          <li class="landing-reviews__card" {{ block.shopify_attributes }}>
+            <div class="landing-reviews__card-body">
+              {%- if block.settings.avatar != blank -%}
+                {{-
+                  block.settings.avatar
+                  | image_url: width: 320
+                  | image_tag: class: 'landing-reviews__avatar', width: 80, height: 54, loading: 'lazy', widths: '160, 240, 320', sizes: '80px', alt: block.settings.avatar.alt | default: block.settings.name
+                -}}
+              {%- endif -%}
+              {%- if block.settings.show_stars -%}
+                <div class="landing-reviews__stars">{% render 'landing-stars' %}</div>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <div class="landing-reviews__text">{{ block.settings.text }}</div>
+              {%- endif -%}
+            </div>
+            {%- if block.settings.name != blank -%}
+              <p class="landing-reviews__name">{{ block.settings.name }}</p>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.show_button and section.settings.button_label != blank -%}
+      <div class="landing-reviews__cta">
+        {% render 'landing-button', label: section.settings.button_label, link: section.settings.button_link, new_tab: true %}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-reviews--{{ section.id }} {
+    --lr-text: {{ section.settings.text_color }};
+    --lr-border: {{ section.settings.avatar_border_color }};
+    --lb-bg: {{ section.settings.button_bg_color }};
+    --lb-text: {{ section.settings.button_text_color }};
+    --lb-border: {{ section.settings.background_color }};
+    --lb-shadow: {{ section.settings.text_color }};
+    --lb-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    text-align: center;
+  }
+  .landing-reviews__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 32px 18px 60px;
+  }
+  .landing-reviews__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .landing-reviews__avatar {
+    display: block;
+    box-sizing: border-box;
+    width: 80px;
+    height: 54px;
+    border: 1.2px solid var(--lr-border);
+    border-radius: 8px;
+    object-fit: cover;
+    object-position: top;
+  }
+  .landing-reviews__heading {
+    max-width: 800px;
+    margin: 0 auto;
+    color: {{ section.settings.heading_color }};
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.05;
+    text-transform: none;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+  .landing-reviews__list {
+    display: grid;
+    gap: 61px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .landing-reviews__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .landing-reviews__card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .landing-reviews__cta { width: 100%; max-width: 420px; margin-inline: auto; }
+  .landing-reviews__stars { color: {{ section.settings.stars_color }}; }
+  .landing-reviews__text {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .landing-reviews__text b,
+  .landing-reviews__text strong { font-weight: 700; }
+  .landing-reviews__text p { margin: 0 0 12px; }
+  .landing-reviews__text p:last-child { margin-bottom: 0; }
+  .landing-reviews__name {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-size: 18px;
+    line-height: 1.05;
+  }
+
+  @media (min-width: 990px) {
+    .landing-reviews__inner { max-width: 1200px; padding: 64px 24px; gap: 80px;}
+    .landing-reviews__list { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 48px; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Reviews",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "header", "content": "Heading" },
+    {
+      "type": "image_picker",
+      "id": "heading_avatar",
+      "label": "Photo above heading",
+      "info": "Landscape crop, about 80 x 54."
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Ne verjemi samo Ladu. Tole pravijo tisti, ki so komplet že preizkusili."
+    },
+    { "type": "header", "content": "Review button" },
+    { "type": "checkbox", "id": "show_button", "label": "Show review button", "default": false },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Fotr, povej, kako je šlo" },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "Where the button leads, for example the page where people leave a review."
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#000000" },
+    { "type": "color", "id": "text_color", "label": "Review text and names", "default": "#2b2d45" },
+    { "type": "color", "id": "stars_color", "label": "Stars", "default": "#ee614c" },
+    { "type": "color", "id": "avatar_border_color", "label": "Photo border", "default": "#000000" },
+    { "type": "color", "id": "button_bg_color", "label": "Button background", "default": "#f72828" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "image_picker", "id": "avatar", "label": "Photo", "info": "Landscape crop, about 80 x 54." },
+        { "type": "checkbox", "id": "show_stars", "label": "Show 5 stars", "default": true },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Review",
+          "info": "Use bold to emphasise a sentence.",
+          "default": "<p>Review text</p>"
+        },
+        { "type": "text", "id": "name", "label": "Name", "default": "Name Surname" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "text": "<p>Med kolegi, hobiji in gradnjo startupov, ki bodo vsak trenutek eksplodirali — finančno, ne pravno — sem ugotovil, da mi doma zmanjkuje manevrskega prostora. Pričakovanja so rasla. Moja pripravljenost pa ne. <b>Ta knjiga mi je dala epski sistem po korakih.</b> Ne bom rekel, da sem rešil otrokovo prihodnost. Bom pa rekel, da sem sklad za terapijo elegantno preusmeril drugam.</p>",
+            "name": "Sebastjan Oblak"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "text": "<p><b>Kupila sem jo za šalo. Zdaj pa moj mož misli, da je očka leta.</b> To knjigo sem vzela, ker sem mislila, da bo smešno darilce. In naslednje, česar se zavem, je, da moj mož in najin otrok gradita trdnjave, izvajata \"misije\" in se tako glasno smejita, da ju slišijo sosedje. Ona je obsedena. On dejansko načrtuje aktivnosti. Jaz pa dobim uro miru. Najboljši nakup, kar sem ga naredila letos.</p>",
+            "name": "Špela Škerl"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

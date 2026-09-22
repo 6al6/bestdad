@@ -1,0 +1,218 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+-%}
+
+<section class="landing-quote landing-quote--{{ section.id }}{% if section.settings.image_position == 'above' %} landing-quote--image-above{% endif %}{% if section.settings.author_font == 'heading' %} landing-quote--author-heading{% endif %}{% if section.settings.author_role_bold %} landing-quote--role-bold{% endif %}">
+  <div class="landing-quote__content">
+    {%- if section.settings.quote != blank -%}
+      <blockquote class="landing-quote__quote">{{ section.settings.quote | escape | newline_to_br }}</blockquote>
+    {%- endif -%}
+    {%- if section.settings.author != blank or section.settings.author_role != blank -%}
+      <div class="landing-quote__author">
+        {%- if section.settings.author != blank -%}
+          <p class="landing-quote__name">{{ section.settings.author }}</p>
+        {%- endif -%}
+        {%- if section.settings.author_role != blank -%}
+          <p class="landing-quote__role">{{ section.settings.author_role }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.image != blank -%}
+    <div class="landing-quote__media">
+      {{-
+        section.settings.image
+        | image_url: width: 1600
+        | image_tag:
+          loading: 'lazy',
+          widths: '400, 600, 800, 1000, 1200, 1600',
+          sizes: '(min-width: 990px) 520px, 100vw',
+          alt: section.settings.image.alt
+      -}}
+    </div>
+  {%- endif -%}
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-quote--{{ section.id }} {
+    --lq-bg: {{ section.settings.background_color }};
+    --lq-text: {{ section.settings.text_color }};
+    --lq-muted: {{ section.settings.role_color }};
+    background: var(--lq-bg);
+    color: var(--lq-text);
+    display: flex;
+    flex-direction: column;
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    text-align: {{ section.settings.text_align }};
+  }
+  .landing-quote--image-above .landing-quote__media { order: -1; }
+  .landing-quote--image-above .landing-quote__content { padding-bottom: 52px; }
+  .landing-quote__content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 40px 18px;
+  }
+  .landing-quote__quote {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.05;
+    overflow-wrap: break-word;
+  }
+  .landing-quote__author {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 16px;
+    line-height: 1.2;
+  }
+  .landing-quote__name,
+  .landing-quote__role { margin: 0; }
+  .landing-quote__name { font-weight: 700; }
+  .landing-quote__role { font-style: italic; color: var(--lq-muted); }
+  .landing-quote--role-bold .landing-quote__role { font-weight: 700; }
+  .landing-quote--author-heading .landing-quote__author {
+    gap: 10px;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    line-height: 1.05;
+  }
+  .landing-quote--author-heading .landing-quote__name { font-size: 24px; font-weight: 400; }
+  .landing-quote--author-heading .landing-quote__role { font-size: 14px; font-style: normal; }
+  .landing-quote__media img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (min-width: 990px) {
+    .landing-quote--{{ section.id }} {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .landing-quote__content,
+    .landing-quote--image-above .landing-quote__content {
+      justify-content: center;
+      padding: 64px;
+    }
+    .landing-quote__quote { font-size: 32px; }
+    .landing-quote__author { font-size: 20px; }
+    .landing-quote--author-heading .landing-quote__name { font-size: 32px; }
+    .landing-quote--author-heading .landing-quote__role { font-size: 18px; }
+    /* Smaller image with room on every side, centered in its column */
+    .landing-quote__media {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 64px;
+    }
+    .landing-quote__media img {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 520px;
+      height: auto;
+      border: 2px solid #fef1d5;
+      border-radius: 6px;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Quote with image",
+  "tag": "section",
+  "class": "landing-section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Quote",
+      "default": "»Nisem ekspert za vzgojo. Za neumnosti pa sem kar dobro usposobljen.«"
+    },
+    { "type": "text", "id": "author", "label": "Author name", "default": "Lado Bizovičar" },
+    {
+      "type": "text",
+      "id": "author_role",
+      "label": "Author description",
+      "default": "stric s televizije, fotr dveh punc in avtor knjige Najboljši fotr"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Optional."
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "info": "Below: image under the text on mobile and on the right on desktop. Above: image over the text on mobile and on the left on desktop.",
+      "options": [
+        { "value": "below", "label": "Below the text" },
+        { "value": "above", "label": "Above the text" }
+      ],
+      "default": "below"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "author_font",
+      "label": "Author style",
+      "options": [
+        { "value": "body", "label": "Bold name, italic description" },
+        { "value": "heading", "label": "Heading font (large name, small description)" }
+      ],
+      "default": "body"
+    },
+    { "type": "checkbox", "id": "author_role_bold", "label": "Bold author description", "default": false },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Quote and name", "default": "#000000" },
+    { "type": "color", "id": "role_color", "label": "Author description", "default": "#2b2d45" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "presets": [{ "name": "Landing: Quote with image" }]
+}
+{% endschema %}

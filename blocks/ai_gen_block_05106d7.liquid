@@ -1,0 +1,533 @@
+{% doc %}
+  @prompt
+    Create a custom Shopify section containing a single block that functions as a fully customizable floating badge. The badge has a rounded rectangle base with a raised top tab that holds a row of stars. Give the user full WYSIWYG rich-text controls (bold, italic, underline, font size, line breaks, multi-line text). All colors must be editable, including background, text, and star colors. Use Shopify’s default shape and border-radius options, simply ensure the block supports changing shape. Include separate desktop and mobile settings for all key values: font size, padding, width, alignment, spacing, and overall badge positioning. The badge must support free positioning using top/left controls so it can float anywhere. Include adjustable z-index so it overlays other blocks. Provide an image picker for the star graphic (PNG or SVG) with separate star sizes for desktop and mobile. Add a vertical star offset control that moves the stars up or down inside the badge, and the raised top tab must automatically follow this movement so the shape stays visually correct. When the stars shift vertically, the raised top bump shifts with them as one combined element. Place the text below the stars, with spacing controls between them. Add options for shadows, opacity, optional gradients, and a custom CSS input for advanced styling on both desktop and mobile., Create a custom Shopify section containing a single block that functions as a fully customizable floating badge. The badge has a rounded rectangle base with a raised top tab that holds a row of stars. Give the user full WYSIWYG rich-text controls (bold, italic, underline, font size, line breaks, multi-line text). All colors must be editable, including background, text, and star colors. Use Shopify’s default shape and border-radius settings. Include separate desktop and mobile settings for all key values: font size, padding, width, alignment, spacing, and overall badge positioning. The badge must support position: absolute only (no sticky, no fixed), so the user can place it freely anywhere above other content using editable top/left controls. Provide an adjustable z-index so it overlays other blocks. Add an image picker for the star graphic (PNG or SVG) with separate star sizes for desktop and mobile. Include a vertical star offset control that moves the stars up or down inside the badge, and the raised top tab must automatically follow this movement. The stars and tab always shift together as one shape. The text sits below the stars with spacing controls. Add optional controls for shadows, opacity, gradients, and a custom CSS field for advanced adjustments. The block must never become sticky or fixed under any circumstances.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-floating-badge-{{ ai_gen_id }} {
+    position: absolute;
+    top: {{ block.settings.position_top_desktop }}px;
+    left: {{ block.settings.position_left_desktop }}px;
+    z-index: {{ block.settings.z_index }};
+    width: {{ block.settings.badge_width_desktop }}px;
+    opacity: {{ block.settings.opacity }};
+    pointer-events: none;
+  }
+
+  .ai-floating-badge-container-{{ ai_gen_id }} {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: {{ block.settings.alignment_desktop }};
+  }
+
+  .ai-floating-badge-tab-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    padding: {{ block.settings.tab_padding_desktop }}px;
+    background: {{ block.settings.tab_background_color }};
+    {% if block.settings.enable_gradient %}
+      background: linear-gradient(135deg, {{ block.settings.tab_background_color }} 0%, {{ block.settings.gradient_color }} 100%);
+    {% endif %}
+    border-radius: {{ block.settings.border_radius }}px {{ block.settings.border_radius }}px 0 0;
+    {% if block.settings.enable_shadow %}
+      box-shadow: 0 {{ block.settings.shadow_offset_y }}px {{ block.settings.shadow_blur }}px rgba(0, 0, 0, {{ block.settings.shadow_opacity }});
+    {% endif %}
+    transform: translateY({{ block.settings.star_vertical_offset }}px);
+  }
+
+  .ai-floating-badge-stars-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: {{ block.settings.star_spacing_desktop }}px;
+  }
+
+  .ai-floating-badge-star-{{ ai_gen_id }} {
+    width: {{ block.settings.star_size_desktop }}px;
+    height: {{ block.settings.star_size_desktop }}px;
+    object-fit: contain;
+  }
+
+  .ai-floating-badge-star-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    fill: {{ block.settings.star_color }};
+  }
+
+  .ai-floating-badge-body-{{ ai_gen_id }} {
+    width: 100%;
+    padding: {{ block.settings.body_padding_desktop }}px;
+    background: {{ block.settings.body_background_color }};
+    {% if block.settings.enable_gradient %}
+      background: linear-gradient(135deg, {{ block.settings.body_background_color }} 0%, {{ block.settings.gradient_color }} 100%);
+    {% endif %}
+    border-radius: 0 0 {{ block.settings.border_radius }}px {{ block.settings.border_radius }}px;
+    {% if block.settings.enable_shadow %}
+      box-shadow: 0 {{ block.settings.shadow_offset_y }}px {{ block.settings.shadow_blur }}px rgba(0, 0, 0, {{ block.settings.shadow_opacity }});
+    {% endif %}
+    margin-top: {{ block.settings.star_vertical_offset }}px;
+  }
+
+  .ai-floating-badge-text-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.font_size_desktop }}px;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .ai-floating-badge-text-{{ ai_gen_id }} * {
+    color: inherit;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-floating-badge-{{ ai_gen_id }} {
+      top: {{ block.settings.position_top_mobile }}px;
+      left: {{ block.settings.position_left_mobile }}px;
+      width: {{ block.settings.badge_width_mobile }}px;
+    }
+
+    .ai-floating-badge-container-{{ ai_gen_id }} {
+      align-items: {{ block.settings.alignment_mobile }};
+    }
+
+    .ai-floating-badge-tab-{{ ai_gen_id }} {
+      padding: {{ block.settings.tab_padding_mobile }}px;
+    }
+
+    .ai-floating-badge-stars-{{ ai_gen_id }} {
+      gap: {{ block.settings.star_spacing_mobile }}px;
+    }
+
+    .ai-floating-badge-star-{{ ai_gen_id }} {
+      width: {{ block.settings.star_size_mobile }}px;
+      height: {{ block.settings.star_size_mobile }}px;
+    }
+
+    .ai-floating-badge-body-{{ ai_gen_id }} {
+      padding: {{ block.settings.body_padding_mobile }}px;
+    }
+
+    .ai-floating-badge-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size_mobile }}px;
+    }
+  }
+
+  {{ block.settings.custom_css }}
+{% endstyle %}
+
+<div class="ai-floating-badge-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-floating-badge-container-{{ ai_gen_id }}">
+    <div class="ai-floating-badge-tab-{{ ai_gen_id }}">
+      <div class="ai-floating-badge-stars-{{ ai_gen_id }}">
+        {% for i in (1..5) %}
+          <div class="ai-floating-badge-star-{{ ai_gen_id }}">
+            {% if block.settings.star_image %}
+              <img
+                src="{{ block.settings.star_image | image_url: width: 100 }}"
+                alt="Star"
+                loading="lazy"
+                width="100"
+                height="100"
+              >
+            {% else %}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="ai-floating-badge-body-{{ ai_gen_id }}">
+      <div class="ai-floating-badge-text-{{ ai_gen_id }}">
+        {{ block.settings.badge_text }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Floating badge",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "richtext",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "<p><strong>Best Seller</strong></p><p>Loved by thousands</p>"
+    },
+    {
+      "type": "header",
+      "content": "Stars"
+    },
+    {
+      "type": "image_picker",
+      "id": "star_image",
+      "label": "Star image"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#FFD700"
+    },
+    {
+      "type": "range",
+      "id": "star_size_desktop",
+      "min": 10,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Star size (desktop)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "star_size_mobile",
+      "min": 10,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Star size (mobile)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "star_spacing_desktop",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Star spacing (desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "star_spacing_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Star spacing (mobile)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "star_vertical_offset",
+      "min": -50,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Star vertical offset",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "tab_background_color",
+      "label": "Tab background",
+      "default": "#eb3131"
+    },
+    {
+      "type": "color",
+      "id": "body_background_color",
+      "label": "Body background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#162317"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_gradient",
+      "label": "Enable gradient",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "gradient_color",
+      "label": "Gradient end color",
+      "default": "#ff6b6b"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size (desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size (mobile)",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Layout desktop"
+    },
+    {
+      "type": "range",
+      "id": "badge_width_desktop",
+      "min": 100,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Badge width",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "tab_padding_desktop",
+      "min": 5,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Tab padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "body_padding_desktop",
+      "min": 5,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Body padding",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "alignment_desktop",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Layout mobile"
+    },
+    {
+      "type": "range",
+      "id": "badge_width_mobile",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Badge width",
+      "default": 160
+    },
+    {
+      "type": "range",
+      "id": "tab_padding_mobile",
+      "min": 5,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Tab padding",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "body_padding_mobile",
+      "min": 5,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Body padding",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "alignment_mobile",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Position desktop"
+    },
+    {
+      "type": "range",
+      "id": "position_top_desktop",
+      "min": 0,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "label": "Top position",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "position_left_desktop",
+      "min": 0,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "label": "Left position",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Position mobile"
+    },
+    {
+      "type": "range",
+      "id": "position_top_mobile",
+      "min": 0,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "label": "Top position",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "position_left_mobile",
+      "min": 0,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "label": "Left position",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Shape and style"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "z_index",
+      "min": 10,
+      "max": 1000,
+      "step": 10,
+      "label": "Z-index",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Opacity",
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Shadow"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_shadow",
+      "label": "Enable shadow",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "shadow_offset_y",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Shadow offset Y",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "shadow_blur",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Shadow blur",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "shadow_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Shadow opacity",
+      "default": 0.2
+    },
+    {
+      "type": "header",
+      "content": "Custom CSS"
+    },
+    {
+      "type": "html",
+      "id": "custom_css",
+      "label": "Custom CSS"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Floating badge"
+    }
+  ]
+}
+{% endschema %}

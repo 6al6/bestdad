@@ -1,0 +1,449 @@
+{% doc %}
+  @prompt
+    Create a button that has customizable color, shadow, shape, but it should be in the default pill shape of the whole team, and text inside of it. The text should be editable, and the button should link to a section somewhere below, so it needs to have linking. It also needs to be customizable regarding its position, x and y-axis, as well as its height and width. Also the text needs to be editable, as well as all functions need to be separate for mobile and desktop, except the, no, all functions. Also this button should be at the topmost layer of the whole section. The button is limited to this section only., add an outline option, thickness and color
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+
+  #sticky-buy-wrapper a {
+    position: relative!important;
+  }
+
+  .ai-floating-button-{{ ai_gen_id }} {
+    position: absolute;
+    z-index: 9999;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+
+  /*
+  @media screen and (min-width: 750px) {
+    .ai-floating-button-{{ ai_gen_id }} {
+      visibility: hidden;
+      pointer-events: none;
+    }
+  }
+  */
+
+  @media screen and (min-width: 750px) {
+    .ai-floating-button-{{ ai_gen_id }} {
+      left: {{ block.settings.desktop_x_position }}%;
+      top: {{ block.settings.desktop_y_position }}%;
+      width: {{ block.settings.desktop_width }}px;
+      height: {{ block.settings.desktop_height }}px;
+      background-color: {{ block.settings.desktop_bg_color }};
+      color: {{ block.settings.desktop_text_color }};
+      border-radius: {% if block.settings.desktop_shape == 'pill' %}9999px{% elsif block.settings.desktop_shape == 'rounded' %}0.5rem{% else %}0{% endif %};
+      box-shadow: {{ block.settings.desktop_shadow_x }}px {{ block.settings.desktop_shadow_y }}px {{ block.settings.desktop_shadow_blur }}px {{ block.settings.desktop_shadow_color }};
+      font-size: {{ block.settings.desktop_font_size }}px;
+      border: {{ block.settings.desktop_outline_thickness }}px solid {{ block.settings.desktop_outline_color }};
+    }
+
+    .ai-floating-button-{{ ai_gen_id }}:hover {
+      background-color: {{ block.settings.desktop_hover_bg_color }};
+      color: {{ block.settings.desktop_hover_text_color }};
+      transform: translateY(-2px);
+      box-shadow: {{ block.settings.desktop_shadow_x }}px {{ block.settings.desktop_shadow_y | plus: 2 }}px {{ block.settings.desktop_shadow_blur | plus: 2 }}px {{ block.settings.desktop_shadow_color }};
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-floating-button-{{ ai_gen_id }} {
+      left: {{ block.settings.mobile_x_position }}%;
+      top: {{ block.settings.mobile_y_position }}%;
+      width: {{ block.settings.mobile_width }}px;
+      height: {{ block.settings.mobile_height }}px;
+      background-color: {{ block.settings.mobile_bg_color }};
+      color: {{ block.settings.mobile_text_color }};
+      border-radius: {% if block.settings.mobile_shape == 'pill' %}9999px{% elsif block.settings.mobile_shape == 'rounded' %}0.5rem{% else %}0{% endif %};
+      box-shadow: {{ block.settings.mobile_shadow_x }}px {{ block.settings.mobile_shadow_y }}px {{ block.settings.mobile_shadow_blur }}px {{ block.settings.mobile_shadow_color }};
+      font-size: {{ block.settings.mobile_font_size }}px;
+      border: {{ block.settings.mobile_outline_thickness }}px solid {{ block.settings.mobile_outline_color }};
+    }
+
+    .ai-floating-button-{{ ai_gen_id }}:hover {
+      background-color: {{ block.settings.mobile_hover_bg_color }};
+      color: {{ block.settings.mobile_hover_text_color }};
+      transform: translateY(-2px);
+      box-shadow: {{ block.settings.mobile_shadow_x }}px {{ block.settings.mobile_shadow_y | plus: 2 }}px {{ block.settings.mobile_shadow_blur | plus: 2 }}px {{ block.settings.mobile_shadow_color }};
+    }
+  }
+{% endstyle %}
+
+{% assign product = all_products[block.settings.product] %}
+
+<a
+  href="{% if block.settings.button_link != blank %}{{ block.settings.button_link }}{% elsif product %}{{ product.url }}{% endif %}"
+  class="ai-floating-button-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  {% if product %}
+    {% if product.available %}
+      BUY NOW FOR
+      {% if product.compare_at_price > product.price %}
+        <span style="font-weight:700; margin-left:6px;">
+          {{ product.price | money }}
+        </span>
+        <span style="text-decoration: line-through; margin-left:6px; opacity:.6;">
+          {{ product.compare_at_price | money }}
+        </span>
+      {% else %}
+        {{ product.price | money }}
+      {% endif %}
+    {% else %}
+      SOLD OUT
+    {% endif %}
+  {% else %}
+    Select product
+  {% endif %}
+</a>
+
+
+{% schema %}
+{
+  "name": "Floating button",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Desktop settings"
+    },
+    {
+      "type": "range",
+      "id": "desktop_x_position",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Horizontal position",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "desktop_y_position",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Vertical position",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "desktop_width",
+      "min": 100,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Width",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Height",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "desktop_font_size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "desktop_shape",
+      "label": "Shape",
+      "options": [
+        {
+          "value": "pill",
+          "label": "Pill"
+        },
+        {
+          "value": "rounded",
+          "label": "Rounded"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        }
+      ],
+      "default": "pill"
+    },
+    {
+      "type": "color",
+      "id": "desktop_bg_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "desktop_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "desktop_hover_bg_color",
+      "label": "Hover background color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "desktop_hover_text_color",
+      "label": "Hover text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Desktop outline"
+    },
+    {
+      "type": "range",
+      "id": "desktop_outline_thickness",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Thickness",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "desktop_outline_color",
+      "label": "Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Desktop shadow"
+    },
+    {
+      "type": "range",
+      "id": "desktop_shadow_x",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Shadow X offset",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "desktop_shadow_y",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Shadow Y offset",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "desktop_shadow_blur",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Shadow blur",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "desktop_shadow_color",
+      "label": "Shadow color",
+      "default": "rgba(0, 0, 0, 0.3)"
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "range",
+      "id": "mobile_x_position",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Horizontal position",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_y_position",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Vertical position",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_width",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Width",
+      "default": 160
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "min": 35,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Height",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "mobile_font_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "mobile_shape",
+      "label": "Shape",
+      "options": [
+        {
+          "value": "pill",
+          "label": "Pill"
+        },
+        {
+          "value": "rounded",
+          "label": "Rounded"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        }
+      ],
+      "default": "pill"
+    },
+    {
+      "type": "color",
+      "id": "mobile_bg_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "mobile_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "mobile_hover_bg_color",
+      "label": "Hover background color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "mobile_hover_text_color",
+      "label": "Hover text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Mobile outline"
+    },
+    {
+      "type": "range",
+      "id": "mobile_outline_thickness",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Thickness",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "mobile_outline_color",
+      "label": "Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Mobile shadow"
+    },
+    {
+      "type": "range",
+      "id": "mobile_shadow_x",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Shadow X offset",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mobile_shadow_y",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Shadow Y offset",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "mobile_shadow_blur",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Shadow blur",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "mobile_shadow_color",
+      "label": "Shadow color",
+      "default": "rgba(0, 0, 0, 0.3)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Floating button"
+    }
+  ]
+}
+{% endschema %}

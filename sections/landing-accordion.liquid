@@ -1,0 +1,180 @@
+{%- liquid
+  assign body_font = settings.type_main_font
+-%}
+
+<section class="landing-accordion landing-accordion--{{ section.id }}">
+  <div class="landing-accordion__wrap">
+    <div class="landing-accordion__box">
+      {%- for block in section.blocks -%}
+        <details class="landing-accordion__item" {{ block.shopify_attributes }}>
+          <summary class="landing-accordion__summary">
+            <span class="landing-accordion__icon">{% render 'landing-icon', name: block.settings.icon %}</span>
+            <span class="landing-accordion__title">{{ block.settings.title }}</span>
+            <svg class="landing-accordion__chevron" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M5 9l7 7 7-7"/>
+            </svg>
+          </summary>
+          {%- if block.settings.content != blank -%}
+            <div class="landing-accordion__content">{{ block.settings.content }}</div>
+          {%- endif -%}
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-accordion--{{ section.id }} {
+    --la-box: {{ section.settings.box_color }};
+    --la-chip: {{ section.settings.chip_color }};
+    --la-text: {{ section.settings.text_color }};
+    background: {{ section.settings.background_color }};
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+  }
+  .landing-accordion__wrap {
+    isolation: isolate;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 30px 28px 46px 20px;
+  }
+  .landing-accordion__box {
+    position: relative;
+    box-sizing: border-box;
+    padding: 18px 21px 24px;
+    border: 1.5px solid var(--la-text);
+    background: var(--la-box);
+    color: var(--la-text);
+  }
+  /* Offset black box behind */
+  .landing-accordion__box::before {
+    content: '';
+    position: absolute;
+    inset: -1.5px;
+    z-index: -1;
+    border: 1.5px solid var(--la-text);
+    background: #000;
+    transform: translate(14px, 14px);
+  }
+  .landing-accordion__item { border-bottom: 1.5px solid var(--la-text); }
+  .landing-accordion__summary {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+    list-style: none;
+  }
+  .landing-accordion__summary::-webkit-details-marker { display: none; }
+  .landing-accordion__summary:focus-visible { outline: 2px solid var(--la-text); outline-offset: 2px; }
+  .landing-accordion__icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 39px;
+  }
+  .landing-accordion__icon svg { width: 26px; height: 26px; }
+  .landing-accordion__title {
+    padding: 10px;
+    font-size: 17px;
+    line-height: 1.05;
+  }
+  .landing-accordion__chevron { flex: none; margin-left: auto; transition: transform 0.2s ease; }
+  .landing-accordion__item[open] .landing-accordion__chevron { transform: rotate(180deg); }
+  .landing-accordion__content {
+    padding: 0 0 14px 39px;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  .landing-accordion__content p { margin: 0 0 0.75em; }
+  .landing-accordion__content p:last-child { margin-bottom: 0; }
+  .landing-accordion__content a { color: inherit; }
+  @media (prefers-reduced-motion: reduce) {
+    .landing-accordion__chevron { transition: none; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Info accordion",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#fef1d5" },
+    { "type": "color", "id": "box_color", "label": "Box", "default": "#dd6a54" },
+    { "type": "color", "id": "chip_color", "label": "Title highlight", "default": "#ee614c" },
+    { "type": "color", "id": "text_color", "label": "Text, icons and lines", "default": "#fef1d5" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "star", "label": "Star" },
+            { "value": "package", "label": "Package" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "clock", "label": "Clock" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "check", "label": "Check" }
+          ],
+          "default": "star"
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "Title" },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "info": "Shown when the item is opened."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Info accordion",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "star", "title": "Kaj najdeš v kompletu?", "content": "<p>Tukaj dodaj vsebino.</p>" } },
+        { "type": "item", "settings": { "icon": "package", "title": "Velikost in vsebina paketa", "content": "<p>Tukaj dodaj vsebino.</p>" } },
+        { "type": "item", "settings": { "icon": "truck", "title": "Dostava in vračila", "content": "<p>Tukaj dodaj vsebino.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

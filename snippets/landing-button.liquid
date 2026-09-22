@@ -1,0 +1,17 @@
+{% doc %}
+  Pill button used across the landing sections. Styles: assets/landing-shared.css
+  The parent section sets the --lb-* CSS variables.
+
+  @param {string} label - Button text (nothing renders if blank)
+  @param {string} [link] - Button URL (renders a link)
+  @param {string} [type] - Pass 'submit' to render a form submit button instead of a link
+  @param {boolean} [disabled] - Disables a submit button
+  @param {boolean} [new_tab] - Opens the link in a new tab
+{% enddoc %}
+{%- if label != blank -%}
+  {%- if type == 'submit' -%}
+    <button class="landing-button" type="submit"{% if disabled %} disabled{% endif %}><span>{{ label }}</span></button>
+  {%- else -%}
+    <a class="landing-button"{% if link != blank %} href="{{ link }}"{% if new_tab %} target="_blank" rel="noopener"{% endif %}{% endif %}><span>{{ label }}</span></a>
+  {%- endif -%}
+{%- endif -%}

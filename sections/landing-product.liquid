@@ -1,0 +1,971 @@
+{%- liquid
+  assign product = section.settings.product
+  # A different product for one language (optional)
+  if section.settings.alt_product != blank and request.locale.iso_code == section.settings.alt_language_code
+    assign product = section.settings.alt_product
+  endif
+  # A product picked in one language/market can fail to resolve in another (translated handles),
+  # so try every fallback handle (comma separated) until one resolves
+  if product == blank and section.settings.product_handle != blank
+    assign fallback_handles = section.settings.product_handle | split: ','
+    for fallback_handle in fallback_handles
+      assign handle_clean = fallback_handle | strip
+      assign candidate = all_products[handle_clean]
+      if candidate != blank
+        assign product = candidate
+        break
+      endif
+    endfor
+  endif
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+  assign is_dark = false
+  if section.settings.variant == 'dark'
+    assign is_dark = true
+  endif
+
+  # Palette per variant; every color setting overrides it when set
+  if is_dark
+    assign c_bg = '#2b2d45'
+    assign c_text = '#ffffff'
+    assign c_soft = '#fef1d5'
+    assign c_note = '#ffffff'
+  else
+    assign c_bg = '#fef1d5'
+    assign c_text = '#2b2d45'
+    assign c_soft = '#2b2d45'
+    assign c_note = '#f72828'
+  endif
+  assign c_bg = section.settings.background_color | default: c_bg
+  assign c_text = section.settings.text_color | default: c_text
+  assign c_soft = section.settings.soft_color | default: c_soft
+  assign c_note = section.settings.sale_note_color | default: c_note
+  assign c_accent = section.settings.accent_color | default: '#ee614c'
+  assign c_price = section.settings.price_color | default: '#f72828'
+  assign c_banner_text = section.settings.banner_text_color | default: '#fef1d5'
+  assign c_btn_bg = section.settings.button_bg_color | default: '#f72828'
+  assign c_btn_text = section.settings.button_text_color | default: '#ffffff'
+  assign c_border = section.settings.gallery_border_color | default: '#2b2d45'
+
+  # Bottom bar: where it is shown
+  assign bar_on_mobile = true
+  assign bar_on_desktop = true
+  if section.settings.bar_display == 'desktop'
+    assign bar_on_mobile = false
+  elsif section.settings.bar_display == 'mobile'
+    assign bar_on_desktop = false
+  endif
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+{%- if product == blank -%}
+  <!-- landing-product: no product found. Select one in the section settings or check the product handle. -->
+  {%- if request.design_mode -%}
+    <section class="landing-product landing-product--{{ section.id }}">
+      <p class="landing-product__empty">No product found. Select a product in this section's settings, or check that it is available in this language and market.</p>
+    </section>
+  {%- endif -%}
+{%- else -%}
+  {%- liquid
+    assign variant = product.selected_or_first_available_variant
+    assign form_id = 'landing-product-form-' | append: section.id
+    assign features = section.blocks | where: 'type', 'feature'
+    assign trust_items = section.blocks | where: 'type', 'trust'
+    assign on_sale = false
+    assign savings = ''
+    assign sold_out = false
+    unless variant.available
+      assign sold_out = true
+    endunless
+    if variant.compare_at_price > variant.price
+      assign on_sale = true
+      assign savings_amount = variant.compare_at_price | minus: variant.price
+      capture savings
+        render 'landing-price', amount: savings_amount, trim_zeros: true
+      endcapture
+    endif
+    assign title = section.settings.title | default: product.title
+    assign sold_out_label = 'products.product.sold_out' | t
+    assign button_label = section.settings.button_label
+    if sold_out
+      assign button_label = sold_out_label
+    endif
+  -%}
+
+  <section
+    class="landing-product landing-product--{{ section.id }}"
+    {% if section.settings.anchor_id != blank %}id="{{ section.settings.anchor_id }}"{% endif %}
+  >
+    <landing-product class="landing-product__grid">
+      <div class="landing-product__banner">
+        <div class="landing-product__banner-box">
+          {%- if section.settings.show_stars or section.settings.banner_text != blank -%}
+            <div class="landing-product__banner-proof">
+              {%- if section.settings.show_stars -%}
+                {% render 'landing-stars' %}
+              {%- endif -%}
+              {%- if section.settings.banner_text != blank -%}
+                <p class="landing-product__banner-text">{{ section.settings.banner_text }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+          <h2 class="landing-product__title">{{ title }}</h2>
+        </div>
+      </div>
+
+      <div class="landing-product__gallery">
+        <div class="landing-product__main">
+          {%- for image in product.images -%}
+            {%- liquid
+              assign image_class = 'landing-product__image'
+              if forloop.first
+                assign image_class = image_class | append: ' is-active'
+              endif
+            -%}
+            {{-
+              image
+              | image_url: width: 1170
+              | image_tag:
+                class: image_class,
+                loading: 'lazy',
+                widths: '390, 780, 1170',
+                sizes: '(min-width: 990px) 45vw, 100vw',
+                alt: image.alt | default: product.title
+            -}}
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'landing-product__image is-active' }}
+          {%- endfor -%}
+        </div>
+
+        {%- if product.images.size > 1 -%}
+          <div class="landing-product__thumbs" data-thumbs>
+            {%- for image in product.images -%}
+              <button
+                type="button"
+                class="landing-product__thumb{% if forloop.first %} is-active{% endif %}"
+                data-index="{{ forloop.index0 }}"
+                aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                aria-label="{{ product.title | escape }} {{ forloop.index }}"
+              >
+                {{-
+                  image
+                  | image_url: width: 160, height: 208, crop: 'center'
+                  | image_tag: width: 80, height: 104, loading: 'lazy', alt: ''
+                -}}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="landing-product__info">
+        {%- if section.settings.lead != blank -%}
+          <p class="landing-product__lead">{{ section.settings.lead }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.text != blank -%}
+          <p class="landing-product__text">{{ section.settings.text }}</p>
+        {%- endif -%}
+
+        {%- if features.size > 0 -%}
+          <ul class="landing-list landing-product__features" role="list">
+            {%- for block in section.blocks -%}
+              {%- case block.type -%}
+                {%- when 'feature' -%}
+                  <li class="landing-list__item" {{ block.shopify_attributes }}>
+                    {%- if block.settings.icon != blank -%}
+                      {{-
+                        block.settings.icon
+                        | image_url: width: 66
+                        | image_tag: class: 'landing-list__icon', width: 22, height: 22, loading: 'lazy', widths: '44, 66', sizes: '22px', alt: ''
+                      -}}
+                    {%- elsif block.settings.emoji != blank -%}
+                      <span class="landing-list__icon" aria-hidden="true">{{ block.settings.emoji }}</span>
+                    {%- endif -%}
+                    <span>{{ block.settings.text }}</span>
+                  </li>
+                {%- when 'divider' -%}
+                  <li class="landing-product__divider" role="separator" style="background: color-mix(in srgb, {{ block.settings.color }} {{ block.settings.opacity }}%, transparent);" {{ block.shopify_attributes }}></li>
+              {%- endcase -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        <div class="landing-product__price-box">
+          <div class="landing-product__prices">
+            <span class="landing-product__price-group">
+              <span class="landing-product__price" data-price>{% render 'landing-price', amount: variant.price %}</span>
+              <s class="landing-product__compare" data-compare{% unless on_sale %} hidden{% endunless %}>
+                {%- render 'landing-price', amount: variant.compare_at_price -%}
+              </s>
+            </span>
+            <span
+              class="landing-product__badge"
+              data-badge
+              data-template="{{ section.settings.savings_label | escape }}"
+              {% unless on_sale %}hidden{% endunless %}
+            >
+              {{- section.settings.savings_label | replace: '[amount]', savings -}}
+            </span>
+          </div>
+          {%- if section.settings.sale_note != blank -%}
+            <p class="landing-product__sale-note" data-sale-only{% unless on_sale %} hidden{% endunless %}>
+              {{- section.settings.sale_note -}}
+            </p>
+          {%- endif -%}
+        </div>
+
+        <div class="landing-product__cta">
+          {%- form 'product', product, id: form_id, class: 'landing-product__form' -%}
+            {%- if product.variants.size > 1 -%}
+              <select class="landing-product__variants" name="id" aria-label="{{ product.title | escape }}">
+                {%- for v in product.variants -%}
+                  {%- assign v_savings_amount = v.compare_at_price | minus: v.price -%}
+                  <option
+                    value="{{ v.id }}"
+                    data-price="{% render 'landing-price', amount: v.price %}"
+                    data-compare="{% if v.compare_at_price > v.price %}{% render 'landing-price', amount: v.compare_at_price %}{% endif %}"
+                    data-savings="{% if v.compare_at_price > v.price %}{% render 'landing-price', amount: v_savings_amount, trim_zeros: true %}{% endif %}"
+                    data-available="{{ v.available }}"
+                    {% if v == variant %}selected{% endif %}
+                    {% unless v.available %}disabled{% endunless %}
+                  >
+                    {{- v.title -}}
+                  </option>
+                {%- endfor -%}
+              </select>
+            {%- else -%}
+              <input type="hidden" name="id" value="{{ variant.id }}">
+            {%- endif -%}
+
+            <p class="landing-product__error" role="alert" data-error></p>
+
+            <div
+              class="landing-product__button"
+              data-label-add="{{ section.settings.button_label | escape }}"
+              data-label-sold-out="{{ sold_out_label | escape }}"
+            >
+              {% render 'landing-button', label: button_label, type: 'submit', disabled: sold_out %}
+            </div>
+          {%- endform -%}
+
+          {%- if section.settings.shipping_note != blank or section.settings.price_note != blank -%}
+            <div class="landing-product__notes">
+              {%- if section.settings.shipping_note != blank -%}
+                <p>{{ section.settings.shipping_note }}</p>
+              {%- endif -%}
+              {%- if section.settings.price_note != blank -%}
+                <p>{{ section.settings.price_note }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if trust_items.size > 0 -%}
+          <ul class="landing-product__trust" role="list">
+            {%- for block in trust_items -%}
+              <li class="landing-product__trust-item" {{ block.shopify_attributes }}>
+                <span class="landing-product__trust-icon">{% render 'landing-icon', name: block.settings.icon %}</span>
+                <span>{{ block.settings.text }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </landing-product>
+
+    {%- if section.settings.bar_enabled -%}
+      <div class="landing-product__bar landing-product__bar--{{ section.settings.bar_display }}">
+        {%- if section.settings.bar_background_image != blank -%}
+          {{-
+            section.settings.bar_background_image
+            | image_url: width: 1600
+            | image_tag: class: 'landing-product__bar-bg', loading: 'lazy', widths: '390, 780, 1200, 1600', sizes: '100vw', alt: ''
+          -}}
+        {%- endif -%}
+
+        <div class="landing-product__bar-inner">
+          {%- if section.settings.bar_label_1 != blank or section.settings.bar_label_2 != blank or section.settings.bar_label_3 != blank -%}
+            <ul class="landing-product__bar-chips" role="list">
+              {%- if section.settings.bar_label_1 != blank -%}
+                <li class="landing-product__bar-chip">{{ section.settings.bar_label_1 }}</li>
+              {%- endif -%}
+              {%- if section.settings.bar_label_2 != blank -%}
+                <li class="landing-product__bar-chip">{{ section.settings.bar_label_2 }}</li>
+              {%- endif -%}
+              {%- if section.settings.bar_label_3 != blank -%}
+                <li class="landing-product__bar-chip">{{ section.settings.bar_label_3 }}</li>
+              {%- endif -%}
+            </ul>
+          {%- endif -%}
+
+          {%- if section.settings.bar_photo != blank -%}
+            {{-
+              section.settings.bar_photo
+              | image_url: width: 320
+              | image_tag: class: 'landing-product__bar-photo', width: 80, height: 54, loading: 'lazy', widths: '160, 240, 320', sizes: '80px', alt: section.settings.bar_photo.alt
+            -}}
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.bar_link != blank -%}
+          <a class="landing-product__bar-link" href="{{ section.settings.bar_link }}" aria-label="{{ section.settings.bar_label_1 | escape }}"></a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </section>
+
+  {% render 'landing-divider' %}
+
+  <script src="{{ 'landing-product.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% style %}
+  .landing-product--{{ section.id }} {
+    --lp-bg: {{ c_bg }};
+    --lp-text: {{ c_text }};
+    --lp-soft: {{ c_soft }};
+    --lp-note: {{ c_note }};
+    --lp-accent: {{ c_accent }};
+    --lp-price: {{ c_price }};
+    --lp-banner-text: {{ c_banner_text }};
+    --lp-border: {{ c_border }};
+    --lpb-bg: {{ section.settings.bar_background_color }};
+    --lpb-chip-bg: {{ section.settings.bar_chip_color }};
+    --lpb-chip-text: {{ section.settings.bar_chip_text_color }};
+    --lpb-photo-border: {{ section.settings.bar_photo_border_color }};
+    --lp-heading-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --lp-body-font: {{ body_font.family }}, {{ body_font.fallback_families }};
+
+    --lb-bg: {{ c_btn_bg }};
+    --lb-text: {{ c_btn_text }};
+    --lb-border: {{ c_bg }};
+    --lb-shadow: {{ c_soft }};
+    --lb-font: var(--lp-heading-font);
+
+    --ll-align: flex-start;
+    --ll-gap: 4px;
+
+    {%- if is_dark %}
+    /* Dark: banner first, then gallery, then text */
+    --lp-banner-order: 1;
+    --lp-gallery-order: 2;
+    --lp-banner-pad: 52px 18px 36px;
+    --lp-gallery-pad: 0 18px;
+    --lp-info-pad: 32px 18px 40px;
+    --lp-info-gap: 24px;
+    --lp-box-margin: 0 10px 0 -6px;
+    --lp-box-pad: 20px 20px 24px 20px;
+    --lp-box-border: 2px;
+    --lp-box-align: center;
+    --lp-box-items: center;
+    --lp-title-size: 34px;
+    --lp-lead-mb: -8px;
+    --lp-text-lh: 1.5;
+    --lp-list-mt: 4px;
+    --lp-cta-mt: 16px;
+    --lp-trust-mt: -4px;
+    --lp-price-font: var(--lp-body-font);
+    --lp-price-size: 22px;
+    --lp-price-weight: 700;
+    --lp-compare-size: 19px;
+    --lp-group-gap: 6px;
+    --lp-badge-border: 0px;
+    --lb-shadow-width: 3px;
+    --lb-border-width: 2px;
+    {%- else %}
+    /* Light: gallery first, then banner, then text */
+    --lp-banner-order: 2;
+    --lp-gallery-order: 1;
+    --lp-banner-pad: 32px 22px 36px 10px;
+    --lp-gallery-pad: 40px 10px 0;
+    --lp-info-pad: 0 18px 32px;
+    --lp-info-gap: 20px;
+    --lp-box-margin: 0;
+    --lp-box-pad: 20px 20px 24px 20px;
+    --lp-box-border: 0px;
+    --lp-box-align: left;
+    --lp-box-items: flex-start;
+    --lp-title-size: 30px;
+    --lp-lead-mb: 0px;
+    --lp-text-lh: 1.45;
+    --lp-list-mt: -8px;
+    --lp-cta-mt: 4px;
+    --lp-trust-mt: 0px;
+    --lp-price-font: var(--lp-heading-font);
+    --lp-price-size: 20px;
+    --lp-price-weight: 400;
+    --lp-compare-size: 20px;
+    --lp-group-gap: 8px;
+    --lp-badge-border: 2px;
+    --lb-shadow-width: 4px;
+    --lb-border-width: 1.5px;
+    {%- endif %}
+
+    background: var(--lp-bg);
+    color: var(--lp-text);
+    font-family: var(--lp-body-font);
+  }
+  .landing-product__empty { margin: 0; padding: 40px 18px; text-align: center; }
+
+  /* Mobile order is set by --lp-*-order; desktop uses a two column grid (see media query) */
+  .landing-product__grid { display: flex; flex-direction: column; }
+  .landing-product__banner { order: var(--lp-banner-order); isolation: isolate; padding: var(--lp-banner-pad); }
+  .landing-product__gallery {
+    order: var(--lp-gallery-order);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: var(--lp-gallery-pad);
+  }
+  .landing-product__info {
+    order: 3;
+    display: flex;
+    flex-direction: column;
+    gap: var(--lp-info-gap);
+    padding: var(--lp-info-pad);
+  }
+
+  /* Banner: accent box with an offset black box behind it */
+  .landing-product__banner-box {
+    position: relative;
+    box-sizing: border-box;
+    margin: var(--lp-box-margin);
+    padding: var(--lp-box-pad);
+    border: 2px solid #fef1d5;
+    background: var(--lp-accent);
+    text-align: var(--lp-box-align);
+  }
+  .landing-product__banner-box::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    border: var(--lp-box-border) solid var(--lp-soft);
+    background: #000;
+    transform: translate(14px, 16px);
+  }
+  .landing-product__banner-proof {
+    display: flex;
+    flex-direction: column;
+    align-items: var(--lp-box-items);
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .landing-product__banner-proof .landing-stars { color: var(--lp-text); }
+  .landing-product__banner-text { margin: 0; font-size: 15px; line-height: 1.2; color: #fff; }
+  .landing-product__title {
+    margin: 0;
+    font-family: var(--lp-heading-font);
+    font-weight: 400;
+    font-size: var(--lp-title-size);
+    line-height: 1.05;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--lp-banner-text);
+    overflow-wrap: break-word;
+  }
+
+  /* Gallery */
+  .landing-product__main {
+    aspect-ratio: 390 / 500;
+    overflow: hidden;
+    border: 1.4px solid var(--lp-border);
+    border-radius: 8px;
+  }
+  .landing-product__image { display: none; width: 100%; height: 100%; object-fit: cover; }
+  .landing-product__image.is-active { display: block; }
+  .landing-product__thumbs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .landing-product__thumbs::-webkit-scrollbar { display: none; }
+  .landing-product__thumb {
+    flex: none;
+    width: 80px;
+    height: 104px;
+    padding: 0;
+    overflow: hidden;
+    border: 1.4px solid var(--lp-border);
+    border-radius: 8px;
+    background: none;
+    cursor: pointer;
+    opacity: 0.6;
+  }
+  .landing-product__thumb.is-active { opacity: 1; }
+  .landing-product__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+  /* Text */
+  .landing-product__lead {
+    margin: 0 0 var(--lp-lead-mb);
+    font-family: var(--lp-heading-font);
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  .landing-product__text { margin: 0; font-size: 17px; line-height: var(--lp-text-lh); }
+  .landing-product__features { margin-top: var(--lp-list-mt); }
+  /* Divider block: a 1px line between list items, centered in the gap */
+  .landing-product__divider { height: 1px; list-style: none; }
+
+  /* Prices */
+  .landing-product__price-box { display: flex; flex-direction: column; gap: 8px; }
+  .landing-product__prices { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+  .landing-product__price-group {
+    display: flex;
+    align-items: center;
+    gap: var(--lp-group-gap);
+    font-family: var(--lp-price-font);
+    line-height: 1.05;
+  }
+  .landing-product__price { font-size: var(--lp-price-size); font-weight: var(--lp-price-weight); color: var(--lp-price); }
+  .landing-product__compare { font-size: var(--lp-compare-size); font-weight: 400; color: var(--lp-soft); }
+  .landing-product__badge {
+    box-sizing: border-box;
+    padding: 9px 12px 8px;
+    border-radius: 4px;
+    background: var(--lp-accent);
+    color: #fff;
+    font-family: var(--lp-body-font);
+    font-size: 14px;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .landing-product__sale-note { margin: 0; font-size: 16px; line-height: 1.45; color: var(--lp-note); }
+
+  /* Add to cart */
+  .landing-product__cta { display: flex; flex-direction: column; gap: 10px; margin-top: var(--lp-cta-mt); }
+  .landing-product__form { display: flex; flex-direction: column; gap: 10px; margin: 0; }
+  .landing-product__variants {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px;
+    border: 1.5px solid var(--lp-soft);
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 16px;
+  }
+  .landing-product__error { margin: 0; color: var(--lp-note); font-size: 16px; line-height: 1.3; text-align: center; }
+  .landing-product__error:empty { display: none; }
+  .landing-product__notes { display: flex; flex-direction: column; gap: 2px; text-align: center; font-size: 16px; line-height: 1.45; }
+  .landing-product__notes p { margin: 0; }
+
+  /* Trust icons */
+  .landing-product__trust { display: flex; gap: 6px; margin: var(--lp-trust-mt) 0 0; padding: 0; list-style: none; color: var(--lp-soft); }
+  .landing-product__trust-item {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 13px;
+    font-size: 14px;
+    line-height: 1.45;
+    text-align: center;
+  }
+  .landing-product__trust-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--lp-soft);
+    color: var(--lp-bg);
+  }
+
+  /* Bottom bar: same look as the "Landing: Header bar" section, full width, 52px below the content */
+  .landing-product__bar {
+    position: relative;
+    overflow: hidden;
+    margin-top: 52px;
+    background: var(--lpb-bg);
+  }
+  .landing-product__bar-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .landing-product__bar-inner {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding: 20px 12px 20px;
+  }
+  .landing-product__bar-chips {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .landing-product__bar-chip {
+    padding: 7px 12px 8px;
+    border-radius: 4px;
+    background: var(--lpb-chip-bg);
+    color: var(--lpb-chip-text);
+    font-size: 14px;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .landing-product__bar-photo {
+    flex: none;
+    display: block;
+    box-sizing: border-box;
+    width: 80px;
+    height: 54px;
+    border: 1.2px solid var(--lpb-photo-border);
+    border-radius: 4px;
+    object-fit: cover;
+  }
+  .landing-product__bar-link { position: absolute; inset: 0; z-index: 1; }
+  @media (max-width: 989px) {
+    .landing-product__bar--desktop { display: none; }
+  }
+
+  @media (min-width: 990px) {
+    .landing-product--{{ section.id }} {
+      --lp-banner-pad: 0 16px 36px 0;
+      --lp-gallery-pad: 0;
+      --lp-info-pad: 0;
+      --lp-box-margin: 0;
+    }
+    .landing-product__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-rows: auto 1fr;
+      align-items: start;
+      column-gap: 48px;
+      max-width: 1200px;
+      margin-inline: auto;
+      padding: 64px 24px;
+    }
+    /* Gallery on the left, banner and text on the right (both variants) */
+    .landing-product__bar--mobile { display: none; }
+    .landing-product__bar-inner { align-items: center; padding: 12px 24px 12px; }
+    .landing-product__bar-chips { flex-direction: row; align-items: center; }
+    .landing-product__bar-chip { font-size: 16px; }
+    .landing-product__gallery { grid-column: 1; grid-row: 1 / span 2; order: 0; min-width: 0; }
+    /* Thumbnails wrap onto new lines instead of widening the gallery */
+    .landing-product__thumbs { flex-wrap: wrap; overflow: visible; }
+    .landing-product__banner { grid-column: 2; grid-row: 1; order: 0; }
+    .landing-product__info { grid-column: 2; grid-row: 2; order: 0; }
+  }
+
+  {%- if section.settings.bar_enabled and bar_on_mobile %}
+  @media (max-width: 989px) {
+    .landing-product--{{ section.id }} { --lp-info-pad: {% if is_dark %}32px 18px 0{% else %}0 18px 0{% endif %}; display: flow-root; }
+    /* Room below the bar so it does not sit on the bottom edge of the section */
+    .landing-product--{{ section.id }} .landing-product__bar { margin-bottom: 56px; }
+  }
+  {%- endif %}
+  {%- if section.settings.bar_enabled and bar_on_desktop %}
+  @media (min-width: 990px) {
+    .landing-product--{{ section.id }} .landing-product__grid { padding-bottom: 0; }
+  }
+  {%- endif %}
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Product",
+  "tag": "div",
+  "class": "landing-section",
+  "settings": [
+    { "type": "header", "content": "Product" },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Gallery images, price, variants and add to cart come from this product. Used for every language except the second language below."
+    },
+    {
+      "type": "product",
+      "id": "alt_product",
+      "label": "Product for the second language",
+      "info": "Optional. Shown instead of the product above when the page is viewed in the language code below."
+    },
+    {
+      "type": "text",
+      "id": "alt_language_code",
+      "label": "Second language code",
+      "info": "For example sl for Slovenian or en for English.",
+      "default": "sl"
+    },
+    {
+      "type": "text",
+      "id": "product_handle",
+      "label": "Product handles (fallback)",
+      "info": "Used when the product above cannot be found in the visitor's language or market. One or more handles separated by commas, tried in order.",
+      "default": "the-best-dad-book,knjiga-najboljsi-fotr-na-svetu-komplet-s-plakatom-in-nalepkami"
+    },
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "info": "Lets buttons link to this section with #id. Leave blank for none.",
+      "default": "product"
+    },
+    { "type": "header", "content": "Variant" },
+    {
+      "type": "select",
+      "id": "variant",
+      "label": "Variant",
+      "info": "Light: gallery first, banner below it. Dark: banner first, then gallery. The variant sets the default colors and styles. Adding the section from its own preset is the easiest way to get a variant.",
+      "options": [
+        { "value": "light", "label": "Light" },
+        { "value": "dark", "label": "Dark" }
+      ],
+      "default": "light"
+    },
+    { "type": "header", "content": "Banner" },
+    { "type": "checkbox", "id": "show_stars", "label": "Show 5 stars", "default": true },
+    {
+      "type": "text",
+      "id": "banner_text",
+      "label": "Text next to the stars",
+      "default": "Mednarodna uspešnica. Zdaj tudi v slovenščini."
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "info": "Leave blank to use the product title.",
+      "default": "Jaz sem najboljši fotr na svetu – komplet s plakatom in nalepkami."
+    },
+    { "type": "header", "content": "Text" },
+    {
+      "type": "textarea",
+      "id": "lead",
+      "label": "Lead text",
+      "info": "Optional, larger text above the description."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "To ni samo knjiga. To je fotrovski komplet za spomine, ki ostanejo."
+    },
+    { "type": "header", "content": "Price" },
+    {
+      "type": "text",
+      "id": "savings_label",
+      "label": "Savings badge",
+      "info": "[amount] is replaced with the saving (compare-at price minus price). Only shown when the product has a compare-at price.",
+      "default": "Prihrani [amount]"
+    },
+    {
+      "type": "text",
+      "id": "sale_note",
+      "label": "Note under price",
+      "info": "Only shown when the product is on sale.",
+      "default": "Znižana cena za prvih 100 kupcev!"
+    },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Prednaroči komplet" },
+    { "type": "text", "id": "shipping_note", "label": "Note under button (line 1)", "default": "Odprema prednaročil: 20.10." },
+    { "type": "text", "id": "price_note", "label": "Note under button (line 2)", "default": "* Najnižja cena v 30 dneh" },
+    { "type": "header", "content": "Bottom bar" },
+    {
+      "type": "checkbox",
+      "id": "bar_enabled",
+      "label": "Show bottom bar",
+      "info": "A full-width bar with labels and a photo, 52px below the trust icons.",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "bar_display",
+      "label": "Show bar on",
+      "options": [
+        { "value": "both", "label": "Desktop and mobile" },
+        { "value": "desktop", "label": "Desktop only" },
+        { "value": "mobile", "label": "Mobile only" }
+      ],
+      "default": "both"
+    },
+    { "type": "text", "id": "bar_label_1", "label": "Bar label 1", "default": "Odprta prednaročila!" },
+    { "type": "text", "id": "bar_label_2", "label": "Bar label 2", "default": "Popust za prvih 100 kupcev" },
+    { "type": "text", "id": "bar_label_3", "label": "Bar label 3", "info": "Optional. Leave a label empty to hide it." },
+    {
+      "type": "image_picker",
+      "id": "bar_background_image",
+      "label": "Bar background image",
+      "info": "Fills the whole bar. Wide image, about 1600 x 300."
+    },
+    {
+      "type": "image_picker",
+      "id": "bar_photo",
+      "label": "Bar photo on the right",
+      "info": "Landscape crop, about 80 x 54."
+    },
+    {
+      "type": "url",
+      "id": "bar_link",
+      "label": "Bar link",
+      "info": "Optional. Makes the whole bar clickable."
+    },
+    { "type": "color", "id": "bar_background_color", "label": "Bar background", "default": "#fef1d5" },
+    { "type": "color", "id": "bar_chip_color", "label": "Bar label background", "default": "#ee614c" },
+    { "type": "color", "id": "bar_chip_text_color", "label": "Bar label text", "default": "#ffffff" },
+    { "type": "color", "id": "bar_photo_border_color", "label": "Bar photo border", "default": "#2b2d45" },
+    { "type": "header", "content": "Color overrides" },
+    {
+      "type": "paragraph",
+      "content": "Leave a color empty to use the variant's default. Use Clear in the color picker to remove an override."
+    },
+    { "type": "color", "id": "background_color", "label": "Background" },
+    { "type": "color", "id": "text_color", "label": "Text" },
+    { "type": "color", "id": "soft_color", "label": "Secondary text, icons and lines" },
+    { "type": "color", "id": "accent_color", "label": "Banner and badge" },
+    { "type": "color", "id": "price_color", "label": "Price" },
+    { "type": "color", "id": "banner_text_color", "label": "Banner title" },
+    { "type": "color", "id": "sale_note_color", "label": "Sale note and errors" },
+    { "type": "color", "id": "gallery_border_color", "label": "Gallery borders" },
+    { "type": "color", "id": "button_bg_color", "label": "Button background" },
+    { "type": "color", "id": "button_text_color", "label": "Button text" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "List item",
+      "settings": [
+        { "type": "text", "id": "emoji", "label": "Emoji icon", "default": "✅" },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon image",
+          "info": "Optional. Replaces the emoji. Square, at least 66 x 66 px."
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Text",
+          "info": "Use bold for the first words. Clear the emoji for a line without an icon.",
+          "default": "<b>List item</b> text"
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divider",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "A thin line between list items. Drag this block so it sits below the list item you want it after."
+        },
+        { "type": "color", "id": "color", "label": "Line color", "default": "#2b2d45" },
+        {
+          "type": "range",
+          "id": "opacity",
+          "label": "Line opacity",
+          "unit": "%",
+          "min": 10,
+          "max": 100,
+          "step": 5,
+          "default": 40
+        }
+      ]
+    },
+    {
+      "type": "trust",
+      "name": "Trust icon",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "star", "label": "Star" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "clock", "label": "Clock" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "check", "label": "Check" },
+            { "value": "package", "label": "Package" }
+          ],
+          "default": "star"
+        },
+        { "type": "text", "id": "text", "label": "Text", "default": "Trust message" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Product (light)",
+      "settings": { "variant": "light" },
+      "blocks": [
+        { "type": "feature", "settings": { "emoji": "⛺", "text": "<b>Knjiga z 28 misijami</b> za fotra in otroka" } },
+        { "type": "feature", "settings": { "emoji": "🗒️", "text": "<b>Jasna navodila</b> po korakih" } },
+        { "type": "feature", "settings": { "emoji": "🏆", "text": "<b>28 nalepk</b> za opravljene misije" } },
+        { "type": "feature", "settings": { "emoji": "🔥", "text": "<b>Fotrovski megaplakat</b> skupnih dosežkov" } },
+        { "type": "feature", "settings": { "emoji": "✉️", "text": "<b>Božičkovo pismo</b>" } },
+        { "type": "feature", "settings": { "emoji": "❤️", "text": "<b>Kuverta</b> s Severnega pola" } },
+        { "type": "trust", "settings": { "icon": "star", "text": "Plakat in nalepke priložene" } },
+        { "type": "trust", "settings": { "icon": "heart", "text": "Varno plačilo" } },
+        { "type": "trust", "settings": { "icon": "clock", "text": "30-dnevna možnost vračila" } }
+      ]
+    },
+    {
+      "name": "Landing: Product (dark)",
+      "settings": {
+        "variant": "dark",
+        "show_stars": false,
+        "banner_text": "",
+        "title": "Več »A se spomniš?«, manj »Kaj bova pa zdaj?«",
+        "lead": "Ne obljubljamo popolnega očetovstva. Dobiš pa 28 priložnosti, da se pojaviš, nekaj izpelješ in si zares zraven.",
+        "text": "Manj iskanja idej, več skupnega smeha in dovolj dokazov, da si se fotrovstva dejansko lotil. Komplet navadni skupni čas spreminja v podvige, zgodbe in trenutke, ki dobijo svoje mesto tudi na steni."
+      },
+      "blocks": [
+        { "type": "feature", "settings": { "emoji": "⛺", "text": "<b>Knjiga z 28 misijami</b> za fotra in otroka" } },
+        { "type": "feature", "settings": { "emoji": "🗒️", "text": "<b>Jasna navodila</b> po korakih" } },
+        { "type": "feature", "settings": { "emoji": "🏆", "text": "<b>28 nalepk</b> za opravljene misije" } },
+        { "type": "feature", "settings": { "emoji": "🔥", "text": "<b>Fotrovski megaplakat</b> skupnih dosežkov" } },
+        { "type": "feature", "settings": { "emoji": "✉️", "text": "<b>Božičkovo pismo</b>" } },
+        { "type": "feature", "settings": { "emoji": "📬", "text": "<b>Kuverta</b> s Severnega pola" } },
+        { "type": "feature", "settings": { "emoji": "❤️", "text": "<b>Fotr, časa je manj, kot misliš …</b>" } },
+        { "type": "feature", "settings": { "emoji": "", "text": "… začni ustvarjati spomine." } },
+        { "type": "trust", "settings": { "icon": "star", "text": "Plakat in nalepke priložene" } },
+        { "type": "trust", "settings": { "icon": "heart", "text": "Varno plačilo" } },
+        { "type": "trust", "settings": { "icon": "clock", "text": "30-dnevna možnost vračila" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

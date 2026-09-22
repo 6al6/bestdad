@@ -1,0 +1,1486 @@
+{% doc %}
+  @prompt
+    I need a section which has:
+    - All the functions/options seperate for mobile and desktop
+    - Has the same font family for body and headlines as the whole theme
+    - Has the option to change the font size, type, color, etc.
+    
+    The section should have a full width picture, for which you can change the height. The picture has a text box overlayed, for which you can choose whether it is high up or down low - you choose the position of the text by choice. It overlays the picture. The text follows the theme s font and settings., The image can be different for the movile and desktop version.
+    The heading and body text can be jsut one rich text entry field, where there are options to format., Add the options for the text content whether it is centrally, left or right aligned. Add a slider for the text position height., Also add in the option to choose how wide the text box is. as well as the option to choose whether the text box color is transparent (no color)
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+
+  .ai-hero-text-overlay-{{ ai_gen_id }} {
+    max-width: 640px;
+  }
+
+  .ai-hero-image-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .ai-hero-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: {{ block.settings.mobile_image_height }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-hero-image-wrapper-{{ ai_gen_id }} {
+      height: {{ block.settings.desktop_image_height }}px;
+    }
+  }
+
+  .ai-hero-image-wrapper-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-hero-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ai-hero-image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 500px;
+    max-height: 500px;
+  }
+
+  .ai-hero-empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .ai-hero-text-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    z-index: 2;
+    padding: {{ block.settings.mobile_text_padding }}px;
+    width: {{ block.settings.mobile_text_box_width }}%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-hero-text-overlay-{{ ai_gen_id }} {
+      padding: {{ block.settings.desktop_text_padding }}px;
+      width: {{ block.settings.desktop_text_box_width }}%;
+    }
+  }
+
+  .ai-hero-text-overlay-{{ ai_gen_id }}--mobile-top-left {
+    top: {{ block.settings.mobile_vertical_position }}%;
+    left: 20px;
+    transform: translateY(-50%);
+  }
+
+  .ai-hero-text-overlay-{{ ai_gen_id }}--mobile-top-center {
+    top: {{ block.settings.mobile_vertical_position }}%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .ai-hero-text-overlay-{{ ai_gen_id }}--mobile-top-right {
+    top: {{ block.settings.mobile_vertical_position }}%;
+    right: 20px;
+    transform: translateY(-50%);
+  }
+
+  .ai-hero-text-overlay-{{ ai_gen_id }}--mobile-center-left {
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+  }
+
+  .ai-hero-text-overlay-{{ ai_gen_id }}--mobile-center-center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .ai-hero-text-overlay-{{ ai_gen_id }}--mobile-center-right {
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+  }
+
+  .ai-hero-text-overlay-{{ ai_gen_id }}--mobile-bottom-left {
+    bottom: calc(100% - {{ block.settings.mobile_vertical_position }}%);
+    left: 20px;
+    transform: translateY(50%);
+  }
+
+  .ai-hero-text-overlay-{{ ai_gen_id }}--mobile-bottom-center {
+    bottom: calc(100% - {{ block.settings.mobile_vertical_position }}%);
+    left: 50%;
+    transform: translate(-50%, 50%);
+  }
+
+  .ai-hero-text-overlay-{{ ai_gen_id }}--mobile-bottom-right {
+    bottom: calc(100% - {{ block.settings.mobile_vertical_position }}%);
+    right: 20px;
+    transform: translateY(50%);
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-hero-text-overlay-{{ ai_gen_id }}--desktop-top-left {
+      top: {{ block.settings.desktop_vertical_position }}%;
+      left: 40px;
+      bottom: auto;
+      right: auto;
+      transform: translateY(-50%);
+    }
+
+    .ai-hero-text-overlay-{{ ai_gen_id }}--desktop-top-center {
+      top: {{ block.settings.desktop_vertical_position }}%;
+      left: 50%;
+      bottom: auto;
+      right: auto;
+      transform: translate(-50%, -50%);
+    }
+
+    .ai-hero-text-overlay-{{ ai_gen_id }}--desktop-top-right {
+      top: {{ block.settings.desktop_vertical_position }}%;
+      right: 40px;
+      bottom: auto;
+      left: auto;
+      transform: translateY(-50%);
+    }
+
+    .ai-hero-text-overlay-{{ ai_gen_id }}--desktop-center-left {
+      top: 50%;
+      left: 40px;
+      bottom: auto;
+      right: auto;
+      transform: translateY(-50%);
+    }
+
+    .ai-hero-text-overlay-{{ ai_gen_id }}--desktop-center-center {
+      top: 50%;
+      left: 50%;
+      bottom: auto;
+      right: auto;
+      transform: translate(-50%, -50%);
+    }
+
+    .ai-hero-text-overlay-{{ ai_gen_id }}--desktop-center-right {
+      top: 50%;
+      right: 40px;
+      bottom: auto;
+      left: auto;
+      transform: translateY(-50%);
+    }
+
+    .ai-hero-text-overlay-{{ ai_gen_id }}--desktop-bottom-left {
+      bottom: calc(100% - {{ block.settings.desktop_vertical_position }}%);
+      left: 40px;
+      top: auto;
+      right: auto;
+      transform: translateY(50%);
+    }
+
+    .ai-hero-text-overlay-{{ ai_gen_id }}--desktop-bottom-center {
+      bottom: calc(100% - {{ block.settings.desktop_vertical_position }}%);
+      left: 50%;
+      top: auto;
+      right: auto;
+      transform: translate(-50%, 50%);
+    }
+
+    .ai-hero-text-overlay-{{ ai_gen_id }}--desktop-bottom-right {
+      bottom: calc(100% - {{ block.settings.desktop_vertical_position }}%);
+      right: 40px;
+      top: auto;
+      left: auto;
+      transform: translateY(50%);
+    }
+  }
+
+  .ai-hero-text-content-{{ ai_gen_id }} {
+    {% if block.settings.enable_text_background %}
+      background-color: {{ block.settings.text_background_color }};
+    {% else %}
+      background-color: transparent;
+    {% endif %}
+    padding: {{ block.settings.mobile_text_box_padding }}px;
+    border-radius: {{ block.settings.text_box_border_radius }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-hero-text-content-{{ ai_gen_id }} {
+      padding: {{ block.settings.desktop_text_box_padding }}px;
+    }
+  }
+
+  .ai-hero-richtext-{{ ai_gen_id }} {
+    font-family: {{ block.settings.text_font.family }}, {{ block.settings.text_font.fallback_families }};
+    font-weight: {{ block.settings.text_font.weight }};
+    font-style: {{ block.settings.text_font.style }};
+    color: {{ block.settings.text_color }};
+    line-height: 1.5;
+  }
+
+  .ai-hero-richtext-{{ ai_gen_id }}--mobile-left {
+    text-align: left;
+  }
+
+  .ai-hero-richtext-{{ ai_gen_id }}--mobile-center {
+    text-align: center;
+  }
+
+  .ai-hero-richtext-{{ ai_gen_id }}--mobile-right {
+    text-align: right;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-hero-richtext-{{ ai_gen_id }}--desktop-left {
+      text-align: left;
+    }
+
+    .ai-hero-richtext-{{ ai_gen_id }}--desktop-center {
+      text-align: center;
+    }
+
+    .ai-hero-richtext-{{ ai_gen_id }}--desktop-right {
+      text-align: right;
+    }
+  }
+
+  .ai-hero-richtext-{{ ai_gen_id }} h1,
+  .ai-hero-richtext-{{ ai_gen_id }} h2,
+  .ai-hero-richtext-{{ ai_gen_id }} h3,
+  .ai-hero-richtext-{{ ai_gen_id }} h4,
+  .ai-hero-richtext-{{ ai_gen_id }} h5,
+  .ai-hero-richtext-{{ ai_gen_id }} h6 {
+    font-family: {{ block.settings.heading_font.family }}, {{ block.settings.heading_font.fallback_families }};
+    font-weight: {{ block.settings.heading_font.weight }};
+    font-style: {{ block.settings.heading_font.style }};
+    color: {{ block.settings.heading_color }};
+    line-height: 1.2;
+    margin: 0 0 {{ block.settings.mobile_heading_spacing }}px 0;
+    {% if block.settings.heading_text_transform == 'uppercase' %}
+      text-transform: uppercase;
+    {% elsif block.settings.heading_text_transform == 'lowercase' %}
+      text-transform: lowercase;
+    {% elsif block.settings.heading_text_transform == 'capitalize' %}
+      text-transform: capitalize;
+    {% endif %}
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-hero-richtext-{{ ai_gen_id }} h1,
+    .ai-hero-richtext-{{ ai_gen_id }} h2,
+    .ai-hero-richtext-{{ ai_gen_id }} h3,
+    .ai-hero-richtext-{{ ai_gen_id }} h4,
+    .ai-hero-richtext-{{ ai_gen_id }} h5,
+    .ai-hero-richtext-{{ ai_gen_id }} h6 {
+      margin: 0 0 {{ block.settings.desktop_heading_spacing }}px 0;
+    }
+  }
+
+  .ai-hero-richtext-{{ ai_gen_id }} h1 {
+    font-size: {{ block.settings.mobile_h1_size }}px;
+  }
+
+  .ai-hero-richtext-{{ ai_gen_id }} h2 {
+    font-size: {{ block.settings.mobile_h2_size }}px;
+  }
+
+  .ai-hero-richtext-{{ ai_gen_id }} h3 {
+    font-size: {{ block.settings.mobile_h3_size }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-hero-richtext-{{ ai_gen_id }} h1 {
+      font-size: {{ block.settings.desktop_h1_size }}px;
+    }
+
+    .ai-hero-richtext-{{ ai_gen_id }} h2 {
+      font-size: {{ block.settings.desktop_h2_size }}px;
+    }
+
+    .ai-hero-richtext-{{ ai_gen_id }} h3 {
+      font-size: {{ block.settings.desktop_h3_size }}px;
+    }
+  }
+
+  .ai-hero-richtext-{{ ai_gen_id }} p {
+    font-size: {{ block.settings.mobile_body_size }}px;
+    margin: 0 0 {{ block.settings.mobile_paragraph_spacing }}px 0;
+    {% if block.settings.body_text_transform == 'uppercase' %}
+      text-transform: uppercase;
+    {% elsif block.settings.body_text_transform == 'lowercase' %}
+      text-transform: lowercase;
+    {% elsif block.settings.body_text_transform == 'capitalize' %}
+      text-transform: capitalize;
+    {% endif %}
+  }
+
+  .ai-hero-richtext-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-hero-richtext-{{ ai_gen_id }} p {
+      font-size: {{ block.settings.desktop_body_size }}px;
+      margin: 0 0 {{ block.settings.desktop_paragraph_spacing }}px 0;
+    }
+  }
+
+  .ai-hero-richtext-{{ ai_gen_id }} strong {
+    font-weight: 700;
+  }
+
+  .ai-hero-richtext-{{ ai_gen_id }} em {
+    font-style: italic;
+  }
+
+  .ai-hero-richtext-{{ ai_gen_id }} a {
+    color: {{ block.settings.link_color }};
+    text-decoration: underline;
+  }
+
+  .ai-hero-richtext-{{ ai_gen_id }} ul,
+  .ai-hero-richtext-{{ ai_gen_id }} ol {
+    margin: 0 0 {{ block.settings.mobile_paragraph_spacing }}px 0;
+    padding-left: 20px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-hero-richtext-{{ ai_gen_id }} ul,
+    .ai-hero-richtext-{{ ai_gen_id }} ol {
+      margin: 0 0 {{ block.settings.desktop_paragraph_spacing }}px 0;
+    }
+  }
+
+  .ai-hero-richtext-{{ ai_gen_id }} li {
+    font-size: {{ block.settings.mobile_body_size }}px;
+    margin-bottom: 8px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-hero-richtext-{{ ai_gen_id }} li {
+      font-size: {{ block.settings.desktop_body_size }}px;
+    }
+  }
+
+  .ai-floating-badge-{{ ai_gen_id }} {
+    z-index: 10;
+    pointer-events: auto;
+    display: inline-block;
+    max-width: 100%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-floating-badge-{{ ai_gen_id }} {
+      width: {{ block.settings.desktop_badge_width }}px;
+      margin-bottom: {{ block.settings.desktop_badge_margin_bottom }}px;
+    }
+
+    .ai-floating-badge-inner-{{ ai_gen_id }} {
+      background: {{ block.settings.desktop_badge_background }};
+      padding: {{ block.settings.desktop_badge_padding }}px;
+      border-radius: {{ block.settings.desktop_badge_corner_radius }}px;
+    }
+
+    .ai-floating-badge-text-{{ ai_gen_id }} {
+      color: {{ block.settings.desktop_badge_text_color }};
+      font-size: {{ block.settings.desktop_badge_text_size }}px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-floating-badge-{{ ai_gen_id }} {
+      width: {{ block.settings.mobile_badge_width }}px;
+      margin-bottom: {{ block.settings.mobile_badge_margin_bottom }}px;
+    }
+
+    .ai-floating-badge-inner-{{ ai_gen_id }} {
+      background: {{ block.settings.mobile_badge_background }};
+      padding: {{ block.settings.mobile_badge_padding }}px;
+      border-radius: {{ block.settings.mobile_badge_corner_radius }}px;
+    }
+
+    .ai-floating-badge-text-{{ ai_gen_id }} {
+      color: {{ block.settings.mobile_badge_text_color }};
+      font-size: {{ block.settings.mobile_badge_text_size }}px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+  }
+
+  .ai-floating-badge-text-{{ ai_gen_id }} * {
+    margin: 0;
+    padding: 0;
+  }
+
+  .ai-floating-badge-text-{{ ai_gen_id }} p {
+    margin-bottom: 0.5em;
+  }
+
+  .ai-floating-badge-text-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-sticker-container-{{ ai_gen_id }} {
+    position: absolute;
+    pointer-events: none;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  .ai-sticker-image-{{ ai_gen_id }} {
+    position: absolute;
+    pointer-events: auto;
+    transition: transform 0.1s ease-out;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-sticker-image-{{ ai_gen_id }} {
+      width: {{ block.settings.desktop_scale }}%;
+      top: {{ block.settings.desktop_y }}%;
+      left: {{ block.settings.desktop_x }}%;
+      transform: translate(-50%, -50%);
+      {% if block.settings.desktop_enable_shadow %}
+        filter: drop-shadow({{ block.settings.desktop_shadow_x }}px {{ block.settings.desktop_shadow_y }}px {{ block.settings.desktop_shadow_blur }}px rgba(0, 0, 0, {{ block.settings.desktop_shadow_opacity }}));
+      {% endif %}
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-sticker-image-{{ ai_gen_id }} {
+      width: {{ block.settings.mobile_scale }}%;
+      top: {{ block.settings.mobile_y }}%;
+      left: {{ block.settings.mobile_x }}%;
+      transform: translate(-50%, -50%);
+      {% if block.settings.mobile_enable_shadow %}
+        filter: drop-shadow({{ block.settings.mobile_shadow_x }}px {{ block.settings.mobile_shadow_y }}px {{ block.settings.mobile_shadow_blur }}px rgba(0, 0, 0, {{ block.settings.mobile_shadow_opacity }}));
+      {% endif %}
+    }
+  }
+
+  .ai-sticker-image-{{ ai_gen_id }} img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+{% endstyle %}
+
+<div class="ai-hero-image-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-hero-image-wrapper-{{ ai_gen_id }}">
+    {% if block.settings.mobile_image or block.settings.desktop_image %}
+      <picture>
+        {% if block.settings.desktop_image %}
+          <source
+            media="(min-width: 750px)"
+            srcset="{{ block.settings.desktop_image | image_url: width: 2500 }}"
+          >
+        {% endif %}
+        {% if block.settings.mobile_image %}
+          <source
+            media="(max-width: 749px)"
+            srcset="{{ block.settings.mobile_image | image_url: width: 1500 }}"
+          >
+        {% endif %}
+        <img
+          src="{{ block.settings.desktop_image | default: block.settings.mobile_image | image_url: width: 1500 }}"
+          alt="{{ block.settings.desktop_image.alt | default: block.settings.mobile_image.alt | escape }}"
+          loading="lazy"
+          class="ai-hero-responsive-image-{{ ai_gen_id }}"
+        >
+      </picture>
+    {% else %}
+      <div class="ai-hero-image-placeholder-{{ ai_gen_id }}">
+        {{ 'hero-apparel-1' | placeholder_svg_tag }}
+        <div class="ai-hero-empty-state-{{ ai_gen_id }}">
+          Add images to get started
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.text_content != blank %}
+      <div class="ai-hero-text-overlay-{{ ai_gen_id }} ai-hero-text-overlay-{{ ai_gen_id }}--mobile-{{ block.settings.mobile_text_position }} ai-hero-text-overlay-{{ ai_gen_id }}--desktop-{{ block.settings.desktop_text_position }}">
+        {% if block.settings.badge_text != blank %}
+          <div class="ai-floating-badge-{{ ai_gen_id }}">
+            <div class="ai-floating-badge-inner-{{ ai_gen_id }}">
+              <div class="ai-floating-badge-text-{{ ai_gen_id }}">
+                {{ block.settings.badge_text }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="ai-hero-text-content-{{ ai_gen_id }}">
+          <sticker-block-{{ ai_gen_id }}
+            class="ai-sticker-container-{{ ai_gen_id }}"
+            data-desktop-parallax="{{ block.settings.desktop_enable_parallax }}"
+            data-mobile-parallax="{{ block.settings.mobile_enable_parallax }}"
+            data-desktop-intensity="{{ block.settings.desktop_parallax_intensity }}"
+            data-mobile-intensity="{{ block.settings.mobile_parallax_intensity }}"
+          >
+            <div class="ai-sticker-image-{{ ai_gen_id }}">
+              {% if block.settings.sticker_desktop_image != blank %}
+                <img
+                  src="{{ block.settings.sticker_desktop_image | image_url: width: 800 }}"
+                  alt="{{ block.settings.sticker_desktop_image.alt | escape }}"
+                  loading="lazy"
+                  width="{{ block.settings.sticker_desktop_image.width }}"
+                  height="{{ block.settings.sticker_desktop_image.height }}"
+                  class="ai-sticker-desktop-{{ ai_gen_id }}"
+                  style="display: none;"
+                >
+              {% endif %}
+              {% if block.settings.sticker_mobile_image != blank %}
+                <img
+                  src="{{ block.settings.sticker_mobile_image | image_url: width: 600 }}"
+                  alt="{{ block.settings.sticker_mobile_image.alt | escape }}"
+                  loading="lazy"
+                  width="{{ block.settings.sticker_mobile_image.width }}"
+                  height="{{ block.settings.sticker_mobile_image.height }}"
+                  class="ai-sticker-mobile-{{ ai_gen_id }}"
+                  style="display: none;"
+                >
+              {% endif %}
+            </div>
+          </sticker-block-{{ ai_gen_id }}>
+
+          <div class="ai-hero-richtext-{{ ai_gen_id }} ai-hero-richtext-{{ ai_gen_id }}--mobile-{{ block.settings.mobile_text_align }} ai-hero-richtext-{{ ai_gen_id }}--desktop-{{ block.settings.desktop_text_align }}">
+            {{ block.settings.text_content }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  (function() {
+    class StickerBlock{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.desktopParallax = this.dataset.desktopParallax === 'true';
+        this.mobileParallax = this.dataset.mobileParallax === 'true';
+        this.desktopIntensity = parseFloat(this.dataset.desktopIntensity) / 100;
+        this.mobileIntensity = parseFloat(this.dataset.mobileIntensity) / 100;
+        this.stickerImage = this.querySelector('.ai-sticker-image-{{ ai_gen_id }}');
+        this.isMobile = window.innerWidth < 750;
+        this.handleScroll = this.handleScroll.bind(this);
+        this.handleResize = this.handleResize.bind(this);
+      }
+
+      connectedCallback() {
+        this.updateImageVisibility();
+        
+        if ((this.isMobile && this.mobileParallax) || (!this.isMobile && this.desktopParallax)) {
+          window.addEventListener('scroll', this.handleScroll, { passive: true });
+        }
+        
+        window.addEventListener('resize', this.handleResize);
+      }
+
+      disconnectedCallback() {
+        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('resize', this.handleResize);
+      }
+
+      updateImageVisibility() {
+        const desktopImg = this.querySelector('.ai-sticker-desktop-{{ ai_gen_id }}');
+        const mobileImg = this.querySelector('.ai-sticker-mobile-{{ ai_gen_id }}');
+        
+        if (this.isMobile) {
+          if (mobileImg) {
+            mobileImg.style.display = 'block';
+          }
+          if (desktopImg) {
+            desktopImg.style.display = 'none';
+          }
+        } else {
+          if (desktopImg) {
+            desktopImg.style.display = 'block';
+          }
+          if (mobileImg) {
+            mobileImg.style.display = 'none';
+          }
+        }
+      }
+
+      handleResize() {
+        const wasMobile = this.isMobile;
+        this.isMobile = window.innerWidth < 750;
+        
+        if (wasMobile !== this.isMobile) {
+          this.updateImageVisibility();
+          
+          window.removeEventListener('scroll', this.handleScroll);
+          
+          if ((this.isMobile && this.mobileParallax) || (!this.isMobile && this.desktopParallax)) {
+            window.addEventListener('scroll', this.handleScroll, { passive: true });
+          } else {
+            this.stickerImage.style.transform = '';
+          }
+        }
+      }
+
+      handleScroll() {
+        if (!this.stickerImage) return;
+
+        const shouldParallax = (this.isMobile && this.mobileParallax) || (!this.isMobile && this.desktopParallax);
+        
+        if (!shouldParallax) return;
+
+        const intensity = this.isMobile ? this.mobileIntensity : this.desktopIntensity;
+        const rect = this.getBoundingClientRect();
+        const scrolled = window.pageYOffset || document.documentElement.scrollTop;
+        const elementTop = rect.top + scrolled;
+        const elementHeight = rect.height;
+        const windowHeight = window.innerHeight;
+        
+        const scrollProgress = (scrolled + windowHeight - elementTop) / (windowHeight + elementHeight);
+        
+        if (scrollProgress >= 0 && scrollProgress <= 1) {
+          const movement = (scrollProgress - 0.5) * 100 * intensity;
+          this.stickerImage.style.transform = `translate(-50%, calc(-50% + ${movement}px))`;
+        }
+      }
+    }
+
+    customElements.define('sticker-block-{{ ai_gen_id }}', StickerBlock{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero image with text",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "min": 200,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Mobile height",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "desktop_image_height",
+      "min": 300,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "label": "Desktop height",
+      "default": 600
+    },
+    {
+      "type": "header",
+      "content": "Text content"
+    },
+    {
+      "type": "richtext",
+      "id": "text_content",
+      "label": "Text",
+      "default": "<h2>Welcome to our store</h2><p>Discover our amazing products</p>"
+    },
+    {
+      "type": "header",
+      "content": "Floating badge"
+    },
+    {
+      "type": "richtext",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "<p>Badge</p>"
+    },
+    {
+      "type": "header",
+      "content": "Badge - Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_badge_width",
+      "min": 50,
+      "max": 350,
+      "step": 10,
+      "unit": "px",
+      "label": "Width",
+      "default": 150
+    },
+    {
+      "type": "range",
+      "id": "mobile_badge_padding",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_badge_corner_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Corner radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "mobile_badge_text_size",
+      "min": 10,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Text size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_badge_margin_bottom",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin bottom",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "mobile_badge_background",
+      "label": "Background color",
+      "default": "#eb3131"
+    },
+    {
+      "type": "color",
+      "id": "mobile_badge_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Badge - Desktop"
+    },
+    {
+      "type": "range",
+      "id": "desktop_badge_width",
+      "min": 50,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Width",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "desktop_badge_padding",
+      "min": 5,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "desktop_badge_corner_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Corner radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "desktop_badge_text_size",
+      "min": 10,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Text size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_badge_margin_bottom",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin bottom",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "desktop_badge_background",
+      "label": "Background color",
+      "default": "#eb3131"
+    },
+    {
+      "type": "color",
+      "id": "desktop_badge_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Text position - Mobile"
+    },
+    {
+      "type": "select",
+      "id": "mobile_text_position",
+      "label": "Horizontal position",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Left"
+        },
+        {
+          "value": "top-center",
+          "label": "Center"
+        },
+        {
+          "value": "top-right",
+          "label": "Right"
+        }
+      ],
+      "default": "top-center"
+    },
+    {
+      "type": "range",
+      "id": "mobile_vertical_position",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Vertical position",
+      "default": 50
+    },
+    {
+      "type": "select",
+      "id": "mobile_text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "mobile_text_box_width",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Text box width",
+      "default": 90
+    },
+    {
+      "type": "header",
+      "content": "Text position - Desktop"
+    },
+    {
+      "type": "select",
+      "id": "desktop_text_position",
+      "label": "Horizontal position",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Left"
+        },
+        {
+          "value": "top-center",
+          "label": "Center"
+        },
+        {
+          "value": "top-right",
+          "label": "Right"
+        }
+      ],
+      "default": "top-left"
+    },
+    {
+      "type": "range",
+      "id": "desktop_vertical_position",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Vertical position",
+      "default": 50
+    },
+    {
+      "type": "select",
+      "id": "desktop_text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "desktop_text_box_width",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Text box width",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Text box style"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_text_background",
+      "label": "Enable background color",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "text_background_color",
+      "label": "Background color",
+      "default": "rgba(255, 255, 255, 0.9)"
+    },
+    {
+      "type": "range",
+      "id": "text_box_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "mobile_text_box_padding",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "desktop_text_box_padding",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Desktop padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_text_padding",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile outer padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "desktop_text_padding",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Desktop outer padding",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Heading style - Mobile"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Font",
+      "default": "prompt_n9"
+    },
+    {
+      "type": "range",
+      "id": "mobile_h1_size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "H1 size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "mobile_h2_size",
+      "min": 18,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "H2 size",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "mobile_h3_size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "H3 size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Heading style - Desktop"
+    },
+    {
+      "type": "range",
+      "id": "desktop_h1_size",
+      "min": 24,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "H1 size",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "desktop_h2_size",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "H2 size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "desktop_h3_size",
+      "min": 18,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "H3 size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_spacing",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Heading formatting"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Color",
+      "default": "#162317"
+    },
+    {
+      "type": "select",
+      "id": "heading_text_transform",
+      "label": "Text transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "Body text style - Mobile"
+    },
+    {
+      "type": "font_picker",
+      "id": "text_font",
+      "label": "Font",
+      "default": "inter_n4"
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_paragraph_spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Paragraph spacing",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Body text style - Desktop"
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "min": 12,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "desktop_paragraph_spacing",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Paragraph spacing",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Body text formatting"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Color",
+      "default": "#162317"
+    },
+    {
+      "type": "select",
+      "id": "body_text_transform",
+      "label": "Text transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link color",
+      "default": "#162317"
+    },
+    {
+      "type": "header",
+      "content": "Sticker - Desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "sticker_desktop_image",
+      "label": "Image"
+    },
+    {
+      "type": "range",
+      "id": "desktop_scale",
+      "min": 5,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Scale",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "desktop_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Horizontal position",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "desktop_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Vertical position",
+      "default": 50
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop_enable_shadow",
+      "label": "Enable drop shadow",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "desktop_shadow_x",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Shadow horizontal offset",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "desktop_shadow_y",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Shadow vertical offset",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_shadow_blur",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Shadow blur",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "desktop_shadow_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Shadow opacity",
+      "default": 0.3
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop_enable_parallax",
+      "label": "Enable parallax",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "desktop_parallax_intensity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Parallax intensity",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Sticker - Mobile"
+    },
+    {
+      "type": "image_picker",
+      "id": "sticker_mobile_image",
+      "label": "Image"
+    },
+    {
+      "type": "range",
+      "id": "mobile_scale",
+      "min": 5,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Scale",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "mobile_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Horizontal position",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Vertical position",
+      "default": 50
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_enable_shadow",
+      "label": "Enable drop shadow",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "mobile_shadow_x",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Shadow horizontal offset",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mobile_shadow_y",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Shadow vertical offset",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "mobile_shadow_blur",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Shadow blur",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_shadow_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Shadow opacity",
+      "default": 0.3
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_enable_parallax",
+      "label": "Enable parallax",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "mobile_parallax_intensity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Parallax intensity",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero image with text"
+    }
+  ]
+}
+{% endschema %}

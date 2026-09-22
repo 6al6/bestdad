@@ -1,0 +1,230 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+<section class="landing-offer landing-offer--{{ section.id }}">
+  {%- if section.settings.banner_text != blank -%}
+    <div class="landing-offer__banner">
+      <p class="landing-offer__banner-text">{{ section.settings.banner_text | escape | newline_to_br }}</p>
+    </div>
+  {%- endif -%}
+
+  <div class="landing-offer__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="landing-offer__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.body != blank -%}
+      <div class="landing-offer__rte landing-marker">{{ section.settings.body }}</div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="landing-list" role="list">
+        {%- for block in section.blocks -%}
+          <li class="landing-list__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon != blank -%}
+              {{-
+                block.settings.icon
+                | image_url: width: 66
+                | image_tag: class: 'landing-list__icon', width: 22, height: 22, loading: 'lazy', widths: '44, 66', sizes: '22px', alt: ''
+              -}}
+            {%- elsif block.settings.emoji != blank -%}
+              <span class="landing-list__icon" aria-hidden="true">{{ block.settings.emoji }}</span>
+            {%- endif -%}
+            <span>{{ block.settings.text }}</span>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.closing != blank -%}
+      <div class="landing-offer__rte landing-marker">{{ section.settings.closing }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-offer--{{ section.id }} {
+    --lm-color: color-mix(in srgb, {{ section.settings.marker_color }} {{ section.settings.marker_opacity }}%, transparent);
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+  }
+  .landing-offer__banner {
+      padding: 40px 24px 27px 16px;
+  }
+  .landing-offer__banner-text {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-height: 197px;
+    max-width: 564px;
+    margin: 0 auto;
+    padding: 32px 10px;
+    border: 1.5px solid {{ section.settings.banner_border_color }};
+    background: {{ section.settings.banner_bg_color }};
+    color: {{ section.settings.banner_text_color }};
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-size: 32px;
+    line-height: 1.05;
+    text-align: center;
+    overflow-wrap: break-word;
+  }
+  /* Offset outline box behind the banner */
+  .landing-offer__banner-text::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    box-sizing: border-box;
+    border: 1.5px solid {{ section.settings.banner_border_color }};
+    background: {{ section.settings.banner_shadow_color }};
+    transform: translate(14px, 16px);
+  }
+  .landing-offer__banner { isolation: isolate; }
+  .landing-offer__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 13px 18px 40px;
+  }
+  .landing-offer__heading {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.5;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .landing-offer__rte {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .landing-offer__rte p { margin: 0 0 1.5em; }
+  .landing-offer__rte p:last-child { margin-bottom: 0; }
+  .landing-offer__rte strong { font-weight: 700; }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Offer",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 10,
+  "settings": [
+    { "type": "header", "content": "Banner" },
+    {
+      "type": "textarea",
+      "id": "banner_text",
+      "label": "Banner text",
+      "info": "Each line break starts a new line in the banner.",
+      "default": "28 odgovorov\nna vprašanje:\n»Kaj bova danes počela?«"
+    },
+    { "type": "header", "content": "Text" },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Si pripravljen postati najboljši fotr v otrokovem svetu?"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Text",
+      "info": "Use Underline to highlight a phrase with the marker color.",
+      "default": "<p>Ni ti treba biti kreativec, animator ali mojster Pinteresta, da z otrokom izpelješ nekaj, kar si bo za vedno zapomnil. Zato obstaja <strong>komplet <em>Jaz sem najboljši fotr na svetu.</em></strong></p><p>To ni knjiga, ki ti razlaga, kaj delaš narobe. Daje ti 28 pripravljenih misij z jasnimi navodili. <u>Odpreš knjigo, izbereš misijo in gresta v akcijo.</u> Brez googlanja, ChatGPTja in šestnajstih odprtih zavihkov.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "closing",
+      "label": "Closing text (below the list)",
+      "default": "<p><u>Igrače bo pozabil. Vajine neumnosti si bo zapomnil.</u></p>"
+    },
+    { "type": "header", "content": "Banner colors" },
+    { "type": "color", "id": "banner_bg_color", "label": "Banner background", "default": "#ee614c" },
+    { "type": "color", "id": "banner_text_color", "label": "Banner text", "default": "#fef1d5" },
+    { "type": "color", "id": "banner_border_color", "label": "Banner border", "default": "#fef1d5" },
+    { "type": "color", "id": "banner_shadow_color", "label": "Banner offset box", "default": "#000000" },
+    { "type": "header", "content": "Section colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#2b2d45" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
+    { "type": "color", "id": "marker_color", "label": "Marker highlight", "default": "#ee614c" },
+    {
+      "type": "range",
+      "id": "marker_opacity",
+      "label": "Marker opacity (%)",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "default": 100
+    },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "List item",
+      "settings": [
+        { "type": "text", "id": "emoji", "label": "Emoji icon", "default": "✅" },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon image",
+          "info": "Optional. Replaces the emoji. Square, at least 66 x 66 px."
+        },
+        { "type": "text", "id": "text", "label": "Text", "default": "List item" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Offer",
+      "blocks": [
+        { "type": "benefit", "settings": { "emoji": "🗒️", "text": "Pripravljene ideje in jasna navodila." } },
+        { "type": "benefit", "settings": { "emoji": "🏆", "text": "Zabava za oba." } },
+        { "type": "benefit", "settings": { "emoji": "👥", "text": "Otrok dobi fotra. Telefon malo miru." } },
+        { "type": "benefit", "settings": { "emoji": "❤️", "text": "Spomini za vse življenje. Garantirano!" } },
+        { "type": "benefit", "settings": { "emoji": "🌟", "text": "Še ena nalepka. »Oči, kdaj bova spet?«" } },
+        { "type": "benefit", "settings": { "emoji": "🎁", "text": "Plakat, ki vsak dan obudi vajine spomine." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

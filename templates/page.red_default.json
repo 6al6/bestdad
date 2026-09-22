@@ -1,0 +1,650 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */{
+  "sections": {
+    "featured_product_34D8cy": {
+      "type": "featured-product",
+      "blocks": {
+        "star_rating_JNpT6n": {
+          "type": "star_rating",
+          "settings": {
+            "display_on_card": false
+          }
+        },
+        "title_jzGGNp": {
+          "type": "title",
+          "settings": {
+            "display_on_card": false,
+            "text_align": "text-left"
+          }
+        },
+        "description_Bq7Urm": {
+          "type": "description",
+          "settings": {
+            "display_on_card": false,
+            "truncate_description": false,
+            "text_align": "text-left"
+          }
+        },
+        "features_list_a8mz3b": {
+          "type": "features_list",
+          "settings": {
+            "display_on_card": false,
+            "uppercase_text": false,
+            "title_1": "📖 Easy to use step-by-step scripts",
+            "title_2": "🏕️ 28 activities to choose from",
+            "title_3": "⏰ From 5 mins to 2 hours, plenty of choice",
+            "title_4": "✅ Guaranteed Legendaddy title",
+            "title_5": "🎁 The perfect gift for new dads",
+            "title_6": "",
+            "border_between_rows": true,
+            "border_top_bottom": false
+          }
+        },
+        "price_YQnE6X": {
+          "type": "price",
+          "settings": {
+            "display_on_card": false,
+            "show_on_sale_sticker": false,
+            "text_align": "text-center"
+          }
+        },
+        "variant_picker_3izqKA": {
+          "type": "variant_picker",
+          "settings": {
+            "display_on_card": false,
+            "option_style": "drop_down",
+            "full_width_buttons": false,
+            "hide_option_labels": true,
+            "enable_color_swatches": false
+          }
+        },
+        "quantity_selector_YFH8iR": {
+          "type": "quantity_selector",
+          "settings": {
+            "display_on_card": false,
+            "show_label": true
+          }
+        },
+        "buy_buttons_b8pVnL": {
+          "type": "buy_buttons",
+          "settings": {
+            "display_on_card": true,
+            "enable_payment_button": false,
+            "show_price": false,
+            "show_compare_at_price": false,
+            "show_pickup_availability": false,
+            "show_gift_card_recipient": false
+          }
+        },
+        "icon_row_PLAHTW": {
+          "type": "icon_row",
+          "settings": {
+            "display_on_card": false,
+            "uppercase_text": false,
+            "icon_alignment": "justify-center",
+            "icon_thickness": 1.4,
+            "background_color": "bg-scheme-text text-scheme-background",
+            "show_border": true,
+            "icon_size": "h-12 w-12",
+            "icon_1": "globe",
+            "text_1": "Made in the EU",
+            "icon_2": "truck",
+            "text_2": "Shipping globally",
+            "icon_3": "clock",
+            "text_3": "Limited-Time Offer",
+            "icon_4": "heart",
+            "text_4": "",
+            "icon_5": "ruler",
+            "text_5": ""
+          }
+        },
+        "collapsible_tab_bdInfo1": {
+          "type": "collapsible_tab",
+          "settings": {
+            "display_on_card": true,
+            "icon": "star",
+            "heading": "What’s Inside",
+            "uppercase_text": false,
+            "content": "<p>A tear-out mission book built for real dads and their kids.</p><p>Inside, you’ll find funny, practical challenges designed to turn ordinary moments into memorable dad–kid adventures. Complete missions, collect stickers, fill the achievement poster and work your way towards the ultimate title: <strong>Best Dad in the World</strong>.</p><p>No perfect parenting required. Just questionable decisions, real bonding and stories worth remembering.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_bdInfo2": {
+          "type": "collapsible_tab",
+          "settings": {
+            "display_on_card": true,
+            "icon": "box",
+            "heading": "Size & What’s Included",
+            "uppercase_text": false,
+            "content": "<p><strong>Book dimensions</strong></p><p>6.3 × 9 × 0.6 in (16 × 22.8 × 1.5 cm)<br/><br/>Weight: 1.0 lb (460 g)</p><p><strong>Included in the package</strong></p><p>The tear-out mission book<br/><br/>One Dad Achievement Poster<br/><br/>One themed sticker pack<br/><br/>One custom sticker envelope</p><p>Everything needed to start completing missions and earning Dad Supremacy immediately.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_bdInfo3": {
+          "type": "collapsible_tab",
+          "settings": {
+            "display_on_card": true,
+            "icon": "truck",
+            "heading": "Shipping & Returns",
+            "uppercase_text": false,
+            "content": "<p>Orders are normally shipped on the next business day and delivered within approximately <strong>5–7 business days</strong>.</p><p>We offer a <strong>30-day return period</strong> on full-price items. To qualify for a return, the book must remain unused, unopened and in its original plastic wrapping. No pages may be removed, no stickers used, and the poster must be unused and unmarked.</p><p>Return shipping costs are covered by the customer. Sale items, discounted products, gift cards and personalized items cannot be returned.</p><p>To request a return or report a damaged or incorrect order, contact <strong>info@bestdadbook.com</strong> before sending anything back. Approved refunds are issued to the original payment method after the returned item has been received and inspected.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "star_rating_JNpT6n",
+        "title_jzGGNp",
+        "description_Bq7Urm",
+        "features_list_a8mz3b",
+        "price_YQnE6X",
+        "variant_picker_3izqKA",
+        "quantity_selector_YFH8iR",
+        "buy_buttons_b8pVnL",
+        "icon_row_PLAHTW",
+        "collapsible_tab_bdInfo1",
+        "collapsible_tab_bdInfo2",
+        "collapsible_tab_bdInfo3"
+      ],
+      "name": "t:sections.featured_product.name",
+      "settings": {
+        "title": "",
+        "product": "the-best-dad-book",
+        "crop": "",
+        "image_shape": "default",
+        "media_mobile_width": "w-full",
+        "desktop_media_width": "lg:col-span-6_lg:col-span-6",
+        "enable_video_looping": true,
+        "thumbnails_position": "left",
+        "thumbnail_crop": "aspect-w-1 aspect-h-1",
+        "thumbnail_shape": "default",
+        "hide_media_shadow": false,
+        "thumbnail_size": "standard",
+        "show_thumbnails_on_mobile": false,
+        "mobile_thumbnails_layout": "grid",
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "rich_text_4tjcLL": {
+      "type": "rich-text",
+      "custom_css": [
+        "p {text-align: left;}",
+        "h2 {line-height: 1;}"
+      ],
+      "name": "t:sections.rich_text.name",
+      "settings": {
+        "title": "The ultimate guide to legendaddy status",
+        "heading_size": "heading-feature",
+        "rich_text": "<p>Dear you, by simply picking up this book and flipping through it, you’ve already proven yourself to be in the top 10% of dads in the world—hell, maybe the universe. It shows you care, you’re thinking about how to actually connect with your tiny human, and that, my friend, is rare.</p><p>Let’s get one thing straight: we are not experts. Not even close. We’re just a bunch of dads who, at one point, were convinced we sucked at this whole fatherhood thing. Sure, we did the stroller walks, fumbled through some diaper disasters, and maybe nailed the occasional baby burp. But now, the tiny human we created is looking up at us… expecting… something. And not just snacks or YouTube—but actual, real-life interaction.. </p><p>And let’s be real: I have no clue what this miniature person really wants. I’m a grown-ass man! My interests include stuff I probably shouldn’t talk about in a parenting book, and my understanding of toddler psychology? Zero.</p><p>Oh, and let’s not forget her. The kid’s mom. She’s nodding along, offering support, but behind that smile - you just know she’s secretly judging every move you make. And don’t even start on the fact that the kid clearly likes her better. I don’t know why. Is it because she’s all nurturing and intuitive and naturally good at this? Yeah, whatever. But you know what? I’m here to change that narrative. Because let me tell you something: I’m in this to win—and this is the game of Dad Supremacy.</p><p>Here’s how it works: Kid’s happy = wife’s happy = I’m happy. Ultimate win-win-win. You’re welcome.</p><p>So, grab this book, sit your ass down on the toilet (because we both know that’s where the real reading gets done), and dive in like you’re scrolling through an endless stream of TikTok videos. This is your playbook for kicking ass at being a dad, keeping your kid entertained, and—bonus!—getting some extra partner points along the way.</p><p>You got this. And even if you don’t, trust me—you’re still probably doing better than most of the guys you know… like Bob from accounting.</p>",
+        "display_on_card": false,
+        "content_width_desktop": "lg:w-2/3",
+        "button_link": "",
+        "button_label": "Shop Now",
+        "color_scheme": "scheme4",
+        "use_gradient_background": false
+      }
+    },
+    "scrolling_text_74ehUz": {
+      "type": "scrolling-text",
+      "name": "t:sections.scrolling_text.name",
+      "settings": {
+        "text": "Stop Dad-failing, start Dad-winning!    Get ‘I AM BEST Dad In The World’ and rule the parenting game like a freaking legend. Scroll on…or click that button already!",
+        "repeat_text": true,
+        "shape_between_text": "10_point_star",
+        "animate_shape_between_text": true,
+        "link": "",
+        "font": "font-heading heading-secondary",
+        "apply_effects": false,
+        "mobile_text_scale": 2,
+        "desktop_text_scale": 4,
+        "speed": 120,
+        "direction": "",
+        "color_scheme": "scheme5",
+        "use_gradient_background": false
+      }
+    },
+    "text_columns_with_images_XW9W3L": {
+      "type": "text-columns-with-images",
+      "blocks": {
+        "sticker_xP7yD3": {
+          "type": "sticker",
+          "settings": {
+            "width": 150,
+            "half_width_on_mobile": false,
+            "text": "Sticker",
+            "shape": "star_1",
+            "sticker_font_size": "1.563rem",
+            "image": "shopify://shop_images/Astronaut.png",
+            "horizontal_position": 82,
+            "vertical_position": 100,
+            "rotate": 0,
+            "show_sticker_on_mobile": true,
+            "show_sticker_on_desktop": true,
+            "rotation_animation": "none",
+            "enable_parallax": false,
+            "parallax_speed": 3,
+            "color_scheme": "scheme1",
+            "color": "bg-scheme-accent-1 text-scheme-accent-1-contrast"
+          }
+        },
+        "column_kXLWD3": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "image": "shopify://shop_images/best_dad_the_dad_02.jpg",
+            "title": "",
+            "text": "<h3><strong>📖  STEP 1: Accept Your Fate</strong></h3><p>Take this book like a man and try to decode what the gift-giver was <em>really</em> trying to say. Or maybe you bought it yourself. Either way… put down your beer and buckle up.</p>",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        },
+        "column_yXHMka": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "image": "shopify://shop_images/I_AM_BEST_Tear_Off_M_V2.gif",
+            "title": "",
+            "text": "<h3><strong>🎯  STEP 2: Choose Your Challenge</strong></h3><p>Flip through the 28 missions. Use the handy icons to find one that won’t destroy your house (or your sanity). Then rip it out and get to it.</p>",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        },
+        "column_P3d44e": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "image": "shopify://shop_images/I_AM_BEST_Sticker.jpg",
+            "title": "",
+            "text": "<h3><strong>🏅  STEP 3: Sticker Up, Legend</strong></h3><p>Smash that victory sticker onto your Epic Dad poster. Bragging rights: unlocked. Respect: earned. Bob from accounting: crushed.</p>",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        }
+      },
+      "block_order": [
+        "sticker_xP7yD3",
+        "column_kXLWD3",
+        "column_yXHMka",
+        "column_P3d44e"
+      ],
+      "name": "t:sections.text_columns_with_images.name",
+      "settings": {
+        "display_on_card": true,
+        "slideshow_on_mobile": false,
+        "title": "Become the BEST dad in three easy steps",
+        "crop": "",
+        "image_shape": "default",
+        "show_index_on_blocks": false,
+        "index_shape": "star_1",
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "max_width": "medium",
+        "display_on_card": true,
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "testimonials_YFNLmm": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_XAcfbn": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/happy-playful-young-man.jpg",
+            "rating": "5_stars",
+            "quote": "“I thought ‘winging it’ was the official dad strategy—until this book showed up and schooled me. It’s basically a cheat sheet for new dads who’ve got zero time and even fewer brain cells left. Bonus: my baby thinks I’m a genius now. I owe it all to ‘I AM BEST Dad in the World.’”",
+            "source": "Rakeesh V."
+          }
+        },
+        "testimonial_NRdBQV": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/father-laughing-with-his-kids.jpg",
+            "rating": "5_stars",
+            "quote": "Between the tear-out activities, the centerfold sticker, and the no-nonsense approach, this book is the perfect ally for dads learning the ropes. My brother swears by it—he texted me daily updates on how he ‘nailed’ each challenge. Made me wish I had it when I became a dad!",
+            "source": "Mitch B."
+          }
+        },
+        "testimonial_G6cDBP": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/winter-family-portrait.jpg",
+            "rating": "4_stars",
+            "quote": "‘I AM BEST Dad in the World’ manages to be equal parts hilarious and genuinely helpful. It’s not fluff: it’s packed with real tips to help guys make memories with their kids—no prior dad-experience necessary. I’ve gifted it twice already and plan on making it my go-to for every new dad I know.",
+            "source": "Seta H."
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_XAcfbn",
+        "testimonial_NRdBQV",
+        "testimonial_G6cDBP"
+      ],
+      "name": "t:sections.testimonials.name",
+      "settings": {
+        "display_on_card": true,
+        "title": "",
+        "max_width": 100,
+        "disable_media_style": false,
+        "crop": "",
+        "image_shape": "default",
+        "desktop_slide_width": 20,
+        "autoscroll_mode": "1",
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "image_with_highlights_mRyjag": {
+      "type": "image-with-highlights",
+      "blocks": {
+        "highlight_zzYmVz": {
+          "type": "highlight",
+          "settings": {
+            "title": "Zero Guesswork Needed",
+            "text": "Each activity comes with idiot-proof, step-by-step guides—setup, execution, and aftermath—so you can’t possibly mess this up. (Challenge accepted?)",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        },
+        "highlight_MGmnLK": {
+          "type": "highlight",
+          "settings": {
+            "title": "Rip It, Own It",
+            "text": "Every activity stays hidden until you literally rip the page out. Once torn, there’s no going back—now you're committed, champ.",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        },
+        "highlight_kMna7w": {
+          "type": "highlight",
+          "settings": {
+            "title": "Fits Any Dad Schedule",
+            "text": "Whether you have five minutes or a full day, zero dollars or a wad of cash, indoors or out—we've got you covered. Flexibility is our middle name (well, figuratively speaking).",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        },
+        "highlight_9V6wYM": {
+          "type": "highlight",
+          "settings": {
+            "title": "Dad Jokes Not Required",
+            "text": "Even if your dad skills currently consist of awkward smiles and vague nodding, our foolproof guides help you fake your way to genuine dad greatness.",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        },
+        "highlight_zh8A6D": {
+          "type": "highlight",
+          "settings": {
+            "title": "Bring Back the Centerfold!",
+            "text": "Remember centerfolds? They’re back, but dad-ified. Complete an activity, slap on a commemorative sticker, and bask in the glory of your progress. Dad bragging rights included.",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        },
+        "highlight_UCcBqz": {
+          "type": "highlight",
+          "settings": {
+            "title": "Ultimate Dad Gift",
+            "text": " Perfect for new dads still in shock, existing dads leveling up, or that friend who's just winging fatherhood. Give the gift of sanity, memories, and guaranteed laughs.",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        }
+      },
+      "block_order": [
+        "highlight_zzYmVz",
+        "highlight_MGmnLK",
+        "highlight_kMna7w",
+        "highlight_9V6wYM",
+        "highlight_zh8A6D",
+        "highlight_UCcBqz"
+      ],
+      "custom_css": [
+        "h2 {line-height: 1;}"
+      ],
+      "name": "t:sections.image_with_highlights.name",
+      "settings": {
+        "title": "",
+        "block_alignment_on_desktop": "justify-center",
+        "display_on_card": true,
+        "slideshow_on_mobile": true,
+        "slideshow_focus": "center",
+        "image": "shopify://shop_images/Best_Dad_01.jpg",
+        "max_width": 820,
+        "crop": "",
+        "image_shape": "default",
+        "blob_type": 1,
+        "rotate_image": 0,
+        "disable_media_style": false,
+        "color_scheme": "scheme-f215dbac-cce9-4971-8348-b0bcdbfd16a9",
+        "use_gradient_background": false
+      }
+    },
+    "featured_product_kjTMaJ": {
+      "type": "featured-product",
+      "blocks": {
+        "title_VF9Y98": {
+          "type": "title",
+          "settings": {
+            "display_on_card": true,
+            "text_align": "text-center"
+          }
+        },
+        "rich_text_cd8jHn": {
+          "type": "rich_text",
+          "settings": {
+            "display_on_card": false,
+            "rich_text": "<p>Need that extra sparkle to make this look like an actual gift and not something you panic-bought last minute? Get the deluxe version.</p><p><strong>You’re welcome.</strong></p>",
+            "text_align": "text-left"
+          }
+        },
+        "price_VJQLrn": {
+          "type": "price",
+          "settings": {
+            "display_on_card": false,
+            "show_on_sale_sticker": false,
+            "text_align": "text-left"
+          }
+        },
+        "variant_picker_TGkcJd": {
+          "type": "variant_picker",
+          "settings": {
+            "display_on_card": false,
+            "option_style": "drop_down",
+            "full_width_buttons": false,
+            "hide_option_labels": true,
+            "enable_color_swatches": false
+          }
+        },
+        "buy_buttons_x86YLx": {
+          "type": "buy_buttons",
+          "settings": {
+            "display_on_card": false,
+            "enable_payment_button": true,
+            "show_price": false,
+            "show_compare_at_price": false,
+            "show_pickup_availability": true,
+            "show_gift_card_recipient": false
+          }
+        }
+      },
+      "block_order": [
+        "title_VF9Y98",
+        "rich_text_cd8jHn",
+        "price_VJQLrn",
+        "variant_picker_TGkcJd",
+        "buy_buttons_x86YLx"
+      ],
+      "disabled": true,
+      "name": "t:sections.featured_product.name",
+      "settings": {
+        "title": "A FANCY HARDCOVER? I'M IN!",
+        "product": "the-best-dad-in-the-world-deluxe-edition",
+        "crop": "",
+        "image_shape": "default",
+        "media_mobile_width": "w-full",
+        "desktop_media_width": "lg:col-span-6_lg:col-span-6",
+        "enable_video_looping": true,
+        "thumbnails_position": "under",
+        "thumbnail_crop": "aspect-w-1 aspect-h-1",
+        "thumbnail_shape": "default",
+        "hide_media_shadow": false,
+        "thumbnail_size": "standard",
+        "show_thumbnails_on_mobile": false,
+        "mobile_thumbnails_layout": "grid",
+        "color_scheme": "scheme4",
+        "use_gradient_background": false
+      }
+    },
+    "scrolling_pattern_npQd6e": {
+      "type": "scrolling-pattern",
+      "name": "t:sections.scrolling_pattern.name",
+      "settings": {
+        "type": "dots",
+        "color": "text",
+        "size": 12,
+        "speed": 80,
+        "direction": "",
+        "color_scheme": "scheme6",
+        "use_gradient_background": false
+      }
+    },
+    "faq_8HNye3": {
+      "type": "faq",
+      "blocks": {
+        "question_PTdFTV": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "Is this book actually useful, or just another dad-gag gift?",
+            "answer": "<p>Glad you asked! Sure, it’s funny as hell, but beneath the sarcasm is a stack of truly useful, step-by-step activities. It’s practical dad-ing, served with a side of laughs.</p>"
+          }
+        },
+        "question_LKtWm6": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "Do I need special equipment or a trip to Home Depot?",
+            "answer": "<p>Nope! Each activity clearly lists what’s needed—and it's usually stuff already lurking around your house. Worst-case scenario? MacGyver your way through it.</p>"
+          }
+        },
+        "question_WA9hga": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "How long do these activities take? My schedule's chaos.",
+            "answer": "<p>We’ve got you. Each activity clearly indicates whether it's a quick-and-easy five minutes or a full-day adventure. Choose according to your current chaos-level.</p>"
+          }
+        },
+        "question_eKc6jg": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "What's the deal with ripping out pages? Am I destroying the book?",
+            "answer": "<p>Exactly. But think of it as productive destruction. You rip it, you own it, and now you're fully committed. It's like burning ships, but less dramatic.</p>"
+          }
+        },
+        "question_d4qt3z": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "Why the centerfold? Sounds weird.",
+            "answer": "<p>Remember sticker books from childhood? Same vibe. Complete an activity, slap a sticker on the dad-worthy centerfold, and voilà—you've got proof you're not just winging it (even though you totally are).</p>"
+          }
+        },
+        "question_TGCJYP": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "Is this book good for brand-new dads or seasoned veterans?",
+            "answer": "<p>Both! Fresh dads will find survival hacks, seasoned pros will level-up their dad game, and everyone gets bonus points from their significant others. Win-win-win.</p>"
+          }
+        },
+        "question_wewBNF": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "Where’s this masterpiece made, and how long till it lands at my doorstep?",
+            "answer": "<p>Lovingly crafted (by exhausted dads, mostly) in the hidden gem of Slovenia, Europe. We ship worldwide—delivery time depends on your location and whether the mailman decides to stop for coffee along the way.</p>"
+          }
+        },
+        "question_jMdqDy": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "Frequently asked question",
+            "answer": "<p>Use this text to share the answer to the question with your customers.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_PTdFTV",
+        "question_LKtWm6",
+        "question_WA9hga",
+        "question_eKc6jg",
+        "question_d4qt3z",
+        "question_TGCJYP",
+        "question_wewBNF",
+        "question_jMdqDy"
+      ],
+      "custom_css": [
+        ".break-words {line-height: 1;}"
+      ],
+      "name": "t:sections.faq.name",
+      "settings": {
+        "display_on_card": true,
+        "heading_text_style": "heading",
+        "two_columns_desktop": true,
+        "title": "FAQ",
+        "richtext": "Find the most frequently asked questions below.",
+        "color_scheme": "scheme6",
+        "use_gradient_background": false
+      }
+    }
+  },
+  "order": [
+    "featured_product_34D8cy",
+    "rich_text_4tjcLL",
+    "scrolling_text_74ehUz",
+    "text_columns_with_images_XW9W3L",
+    "main",
+    "testimonials_YFNLmm",
+    "image_with_highlights_mRyjag",
+    "featured_product_kjTMaJ",
+    "scrolling_pattern_npQd6e",
+    "faq_8HNye3"
+  ]
+}

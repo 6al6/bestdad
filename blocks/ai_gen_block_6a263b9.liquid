@@ -1,0 +1,529 @@
+{% doc %}
+  @prompt
+    generate a block of text which is completely customizable separately for mobile and desktop. It will have a background card and the text on it. The text editor also needs to have all functionality, so bold, italics, and such. And it needs to be completely editable where it is on the x and y-axis as well as how wide and tall it is. But the way I want it to be is that imagine two squares. All of these need to have multiple shapes, so pale, rounded, and square. So now imagine that you have one square in which there is a text and then just at the top of this square you make a bit of a narrower, smaller square in which you put five stars in it. So that also needs to be an entry field., This whole segment, os the first card and the smaller card, are both overlayed over all the original layers
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-text-card-container-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    pointer-events: none;
+  }
+
+  .ai-text-card-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    display: inline-block;
+    pointer-events: auto;
+  }
+
+  .ai-text-card-main-{{ ai_gen_id }} {
+    position: relative;
+    background-color: {{ block.settings.card_bg_color }};
+    border: {{ block.settings.card_border_width }}px solid {{ block.settings.card_border_color }};
+    padding: {{ block.settings.card_padding }}px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: {{ block.settings.z_index }};
+  }
+
+  {% if block.settings.card_shape == 'rounded' %}
+    .ai-text-card-main-{{ ai_gen_id }} {
+      border-radius: {{ block.settings.card_border_radius }}px;
+    }
+  {% elsif block.settings.card_shape == 'square' %}
+    .ai-text-card-main-{{ ai_gen_id }} {
+      border-radius: 0;
+    }
+  {% endif %}
+
+  .ai-text-card-content-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.desktop_font_size }}px;
+    line-height: {{ block.settings.desktop_line_height }};
+    text-align: {{ block.settings.desktop_text_align }};
+  }
+
+  .ai-text-card-content-{{ ai_gen_id }} strong {
+    font-weight: 700;
+  }
+
+  .ai-text-card-content-{{ ai_gen_id }} em {
+    font-style: italic;
+  }
+
+  .ai-text-card-content-{{ ai_gen_id }} u {
+    text-decoration: underline;
+  }
+
+  .ai-text-card-badge-{{ ai_gen_id }} {
+    position: absolute;
+    top: {{ block.settings.badge_offset_y }}px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: {{ block.settings.badge_bg_color }};
+    border: {{ block.settings.badge_border_width }}px solid {{ block.settings.badge_border_color }};
+    padding: {{ block.settings.badge_padding_y }}px {{ block.settings.badge_padding_x }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    z-index: {{ block.settings.z_index | plus: 1 }};
+  }
+
+  {% if block.settings.badge_shape == 'rounded' %}
+    .ai-text-card-badge-{{ ai_gen_id }} {
+      border-radius: {{ block.settings.badge_border_radius }}px;
+    }
+  {% elsif block.settings.badge_shape == 'square' %}
+    .ai-text-card-badge-{{ ai_gen_id }} {
+      border-radius: 0;
+    }
+  {% endif %}
+
+  .ai-text-card-star-{{ ai_gen_id }} {
+    width: {{ block.settings.star_size }}px;
+    height: {{ block.settings.star_size }}px;
+    fill: {{ block.settings.star_color }};
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-text-card-main-{{ ai_gen_id }} {
+      position: absolute;
+      top: {{ block.settings.desktop_position_y }}%;
+      left: {{ block.settings.desktop_position_x }}%;
+      width: {{ block.settings.desktop_width }}px;
+      min-height: {{ block.settings.desktop_height }}px;
+    }
+
+    .ai-text-card-content-{{ ai_gen_id }} {
+      font-size: {{ block.settings.desktop_font_size }}px;
+      line-height: {{ block.settings.desktop_line_height }};
+      text-align: {{ block.settings.desktop_text_align }};
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-text-card-main-{{ ai_gen_id }} {
+      position: absolute;
+      top: {{ block.settings.mobile_position_y }}%;
+      left: {{ block.settings.mobile_position_x }}%;
+      width: {{ block.settings.mobile_width }}px;
+      min-height: {{ block.settings.mobile_height }}px;
+    }
+
+    .ai-text-card-content-{{ ai_gen_id }} {
+      font-size: {{ block.settings.mobile_font_size }}px;
+      line-height: {{ block.settings.mobile_line_height }};
+      text-align: {{ block.settings.mobile_text_align }};
+    }
+
+    .ai-text-card-star-{{ ai_gen_id }} {
+      width: {{ block.settings.star_size | times: 0.8 }}px;
+      height: {{ block.settings.star_size | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-text-card-container-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-text-card-wrapper-{{ ai_gen_id }}">
+    {% if block.settings.show_badge %}
+      <div class="ai-text-card-badge-{{ ai_gen_id }}">
+        {% for i in (1..5) %}
+          <svg class="ai-text-card-star-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="ai-text-card-main-{{ ai_gen_id }}">
+      <div class="ai-text-card-content-{{ ai_gen_id }}">
+        {{ block.settings.text_content }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Customizable text card",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text content"
+    },
+    {
+      "type": "richtext",
+      "id": "text_content",
+      "label": "Text",
+      "default": "<p>Add your custom text here. You can use <strong>bold</strong>, <em>italic</em>, and other formatting.</p>"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Desktop settings"
+    },
+    {
+      "type": "range",
+      "id": "desktop_position_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Horizontal position",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_position_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Vertical position",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_width",
+      "min": 100,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "label": "Width",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "min": 50,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "label": "Minimum height",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "desktop_font_size",
+      "min": 12,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_line_height",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "label": "Line height",
+      "default": 1.5
+    },
+    {
+      "type": "select",
+      "id": "desktop_text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "range",
+      "id": "mobile_position_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Horizontal position",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "mobile_position_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Vertical position",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "mobile_width",
+      "min": 100,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Width",
+      "default": 280
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "min": 50,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Minimum height",
+      "default": 150
+    },
+    {
+      "type": "range",
+      "id": "mobile_font_size",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_line_height",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "label": "Line height",
+      "default": 1.4
+    },
+    {
+      "type": "select",
+      "id": "mobile_text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Main card style"
+    },
+    {
+      "type": "select",
+      "id": "card_shape",
+      "label": "Shape",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "rounded",
+          "label": "Rounded"
+        },
+        {
+          "value": "pill",
+          "label": "Pill"
+        }
+      ],
+      "default": "rounded"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Border color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "card_border_width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Border width",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Star badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show star badge",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "badge_shape",
+      "label": "Shape",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "rounded",
+          "label": "Rounded"
+        },
+        {
+          "value": "pill",
+          "label": "Pill"
+        }
+      ],
+      "default": "pill"
+    },
+    {
+      "type": "range",
+      "id": "badge_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "badge_offset_y",
+      "min": -50,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Vertical offset",
+      "default": -20
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Background color",
+      "default": "#FFD700"
+    },
+    {
+      "type": "color",
+      "id": "badge_border_color",
+      "label": "Border color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "badge_border_width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Border width",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "badge_padding_x",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Horizontal padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "badge_padding_y",
+      "min": 2,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "star_size",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Star size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#FFD700"
+    },
+    {
+      "type": "header",
+      "content": "Layer order"
+    },
+    {
+      "type": "range",
+      "id": "z_index",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "label": "Z-index",
+      "default": 10
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customizable text card"
+    }
+  ]
+}
+{% endschema %}

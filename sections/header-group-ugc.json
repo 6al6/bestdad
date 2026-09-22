@@ -1,0 +1,72 @@
+{
+  "type": "header",
+  "name": "Header - UGC",
+  "sections": {
+    "custom_liquid_7c9tft": {
+      "type": "custom-liquid",
+      "custom_css": [
+        ".css-only-section {display: none !important;}"
+      ],
+      "name": "t:sections.custom_liquid.name",
+      "settings": {
+        "title": "",
+        "custom_liquid": "<style>\n.shopify-section:has(#AnnouncementBar) {\n  position: sticky!important;\n  top: 0!important;\n  z-index: 99999!important;\n}\n</style>\n\n<div class=\"css-only-section\"></div>",
+        "full_width": false,
+        "color_scheme": ""
+      }
+    },
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "disabled": true,
+      "custom_css": [],
+      "settings": {
+        "home_page_only": false,
+        "display": "scrolling_text",
+        "text": "CHRISTMAS SALE JUST DROPPED 🎄     DUE TO HIGH DEMAND, ORDERS MAY TAKE LONGER THAN USUAL",
+        "link": "#dad-book-product-anchor",
+        "color_scheme": "scheme5",
+        "use_gradient_background": false,
+        "repeat_text": true,
+        "shape_between_text": "10_point_star",
+        "animate_shape_between_text": true,
+        "speed": 150,
+        "direction": ""
+      }
+    },
+    "17635473673890f40f": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_6129875_ugcHdr1": {
+          "type": "ai_gen_block_6129875",
+          "name": "Header - AI",
+          "settings": {
+            "enable_header": true,
+            "logo": "shopify://shop_images/IAMBEST_Logo_Bela__padding.png",
+            "logo_max_width": 50,
+            "header_text": "I AM BEST",
+            "text_font": "dela_gothic_one_n4",
+            "text_size": 20,
+            "text_color": "#ffffff",
+            "background_color": "#d0443b",
+            "padding_vertical": 5,
+            "padding_horizontal": 30,
+            "show_border": false,
+            "border_thickness": 1,
+            "border_color": "#162317"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_6129875_ugcHdr1"
+      ],
+      "name": "AI Header",
+      "settings": {}
+    }
+  },
+  "order": [
+    "custom_liquid_7c9tft",
+    "announcement-bar",
+    "17635473673890f40f"
+  ]
+}

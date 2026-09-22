@@ -1,0 +1,218 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+<section class="landing-hero landing-hero--{{ section.id }}">
+  <div class="landing-hero__inner">
+    <div class="landing-hero__intro">
+      {%- if section.settings.show_stars or section.settings.quote != blank -%}
+        <div class="landing-hero__proof">
+          {%- if section.settings.show_stars -%}
+            <div class="landing-hero__stars">{% render 'landing-stars' %}</div>
+          {%- endif -%}
+          {%- if section.settings.quote != blank -%}
+            <p class="landing-hero__quote">
+              {{- section.settings.quote -}}
+              {%- if section.settings.quote_author != blank %}<br>{{ section.settings.quote_author }}{% endif -%}
+            </p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <h1 class="landing-hero__heading">
+        {{- section.settings.heading }}
+        {%- if section.settings.heading_accent != blank %} <span>{{ section.settings.heading_accent }}</span>{% endif -%}
+      </h1>
+
+      {%- if section.settings.text != blank -%}
+        <p class="landing-hero__text">{{ section.settings.text }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.button_label != blank or section.settings.note != blank -%}
+      <div class="landing-hero__cta">
+        {% render 'landing-button', label: section.settings.button_label, link: section.settings.button_link %}
+        {%- if section.settings.note != blank -%}
+          <p class="landing-hero__note">{{ section.settings.note }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-hero--{{ section.id }} {
+    --lh-bg: {{ section.settings.background_color }};
+    --lh-text: {{ section.settings.text_color }};
+    --lh-accent: {{ section.settings.accent_color }};
+    --lh-star: {{ section.settings.star_color }};
+    --lb-bg: {{ section.settings.button_bg_color }};
+    --lb-text: {{ section.settings.button_text_color }};
+    --lb-border: {{ section.settings.button_border_color }};
+    --lb-shadow: {{ section.settings.text_color }};
+    --lb-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    background: var(--lh-bg);
+    color: var(--lh-text);
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    font-weight: 400;
+  }
+  .landing-hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 48px 18px 36px;
+    text-align: center;
+  }
+  .landing-hero__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+  }
+  .landing-hero__proof {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: -8px; /* 12px gap between proof and heading */
+  }
+  .landing-hero__stars { color: var(--lh-star); }
+  .landing-hero__quote {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.2;
+  }
+  .landing-hero__heading {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 1.05;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--lh-text);
+  }
+  .landing-hero__heading span { color: var(--lh-accent); }
+  .landing-hero__text {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.45;
+  }
+  .landing-hero__text strong { font-weight: 700; }
+  .landing-hero__cta {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+  }
+  .landing-hero__note {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  @media (min-width: 990px) {
+    .landing-hero__inner {
+      max-width: 700px;
+      padding: 70px 18px 70px;
+      gap: 32px;
+    }
+    .landing-hero__heading {
+      font-size: 56px;
+    }
+    .landing-hero__text {
+      font-size: 19px;
+    }
+    .landing-hero__cta {
+      align-items: center;
+    }
+    .landing-hero__note {
+      max-width: 80%;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Hero",
+  "tag": "section",
+  "class": "landing-section",
+  "settings": [
+    { "type": "header", "content": "Review" },
+    { "type": "checkbox", "id": "show_stars", "label": "Show 5 stars", "default": true },
+    {
+      "type": "inline_richtext",
+      "id": "quote",
+      "label": "Quote",
+      "info": "Use italics for the quoted part.",
+      "default": "»<em>Zabavno, razvedrilno in učinkovito.</em>«"
+    },
+    { "type": "text", "id": "quote_author", "label": "Quote author (shown on a new line)", "default": "— Brett Cloutier, Trustpilot." },
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Postani najboljši foter na svetu." },
+    { "type": "text", "id": "heading_accent", "label": "Heading (highlighted part)", "default": "Ja ti!" },
+    { "type": "header", "content": "Text" },
+    {
+      "type": "inline_richtext",
+      "id": "text",
+      "label": "Description",
+      "info": "Use bold for emphasis.",
+      "default": "To ni samo knjiga. <strong>To je fotrovski sistem za spomine, ki ostanejo.</strong> 28 misij. 28 nalepk. 1 fotrovski megaplakat skupnih dosežkov."
+    },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Epsko darilo za vse fotre" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    {
+      "type": "textarea",
+      "id": "note",
+      "label": "Note under button",
+      "default": "POZOR: Fotr lahko dobi pretirano količino objemov, poljubčkov ali občudovanja od malih in velikih članov familije!"
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#fef1d5" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#2b2d45" },
+    { "type": "color", "id": "accent_color", "label": "Heading highlight", "default": "#ee614c" },
+    { "type": "color", "id": "star_color", "label": "Stars", "default": "#f72828" },
+    { "type": "color", "id": "button_bg_color", "label": "Button background", "default": "#f72828" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
+    { "type": "color", "id": "button_border_color", "label": "Button inner border", "default": "#fef1d5" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "presets": [{ "name": "Landing: Hero" }]
+}
+{% endschema %}

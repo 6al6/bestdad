@@ -1,0 +1,158 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+<section class="landing-story landing-story--{{ section.id }}">
+  <div class="landing-story__inner">
+    <div class="landing-story__text">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="landing-story__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.body != blank -%}
+        <div class="landing-story__body landing-marker">{{ section.settings.body }}</div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.button_label != blank or section.settings.note != blank -%}
+      <div class="landing-story__cta">
+        {% render 'landing-button', label: section.settings.button_label, link: section.settings.button_link %}
+        {%- if section.settings.note != blank -%}
+          <p class="landing-story__note">{{ section.settings.note }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-story--{{ section.id }} {
+    --lb-bg: {{ section.settings.button_bg_color }};
+    --lb-text: {{ section.settings.button_text_color }};
+    --lb-border: {{ section.settings.button_border_color }};
+    --lb-shadow: {{ section.settings.text_color }};
+    --lb-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --lm-color: color-mix(in srgb, {{ section.settings.highlight_color }} {{ section.settings.highlight_opacity }}%, transparent);
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+  }
+  .landing-story__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 52px 18px;
+  }
+  .landing-story__text {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .landing-story__heading {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.05;
+    text-align: center;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .landing-story__body {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .landing-story__body p { margin: 0 0 1.5em; }
+  .landing-story__body p:last-child { margin-bottom: 0; }
+  .landing-story__body strong { font-weight: 700; }
+  .landing-story__cta {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .landing-story__note {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.2;
+    text-align: center;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Story text",
+  "tag": "section",
+  "class": "landing-section",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Imaš rad svojega otroka, pa nimaš pojma, kaj z njim početi?"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Text",
+      "info": "Use Underline to highlight a phrase with the marker color. Use Bold and Italic for emphasis.",
+      "default": "<p><u>Bodiva iskrena: pojma nimaš, kaj točno bi ta miniatura rada od tebe.</u> Halo, ti si odrasel, možat moški! Zanimajo te stvari, ki jih najbrž ne bi smel omenjati v knjigi o starševstvu. Tvoje razumevanje psihologije otrok? Ni ga. Nič. Nula.</p><p>Ja, vozičkal si. Ja, prebijal si se skozi katastrofe s plenicami in njihovo vsebino. Potem pa je tisto malo bitjece, ki si ga ustvaril – seveda v sodelovanju z nekom, da si ne boš lastil vseh zaslug – <strong>začelo buljiti vate in pričakovati nekaj več.</strong></p><p>Zdaj te vpraša: »<em>Kaj bova počela?</em>« Ti pa nimaš ideje. Potem začneš googlati, skličeš družinski sestanek, izvedeš brainstorming in odpreš šestnajst zavihkov z naslovom \"Kaj početi z otrokom v soboto\". Na koncu pa še vedno nimaš pojma, kaj bi počela.</p><p><u>Otrok se dolgočasi. Ekran zmaga</u> brez boja. <strong>Saj ti bi rad kaj boljšega. Samo pojma nimaš, kaj.</strong></p>"
+    },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Postani najboljši fotr" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "note", "label": "Note under button", "default": "Za fotre, ki jim ni vseeno ❤️" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#fef1d5" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#2b2d45" },
+    { "type": "color", "id": "highlight_color", "label": "Marker highlight", "default": "#ee614c" },
+    {
+      "type": "range",
+      "id": "highlight_opacity",
+      "label": "Marker opacity (%)",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "default": 50
+    },
+    { "type": "color", "id": "button_bg_color", "label": "Button background", "default": "#f72828" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
+    { "type": "color", "id": "button_border_color", "label": "Button inner border", "default": "#fef1d5" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "presets": [{ "name": "Landing: Story text" }]
+}
+{% endschema %}

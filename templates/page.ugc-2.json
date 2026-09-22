@@ -1,0 +1,147 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "max_width": "medium",
+        "display_on_card": true,
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "ugc_hero_section": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_4dcc071_ugcHero1": {
+          "type": "ai_gen_block_4dcc071",
+          "settings": {
+            "mobile_image": "shopify://shop_images/M_Best_Dad_Stuffed_Sleepover-1.jpg",
+            "desktop_image": "shopify://shop_images/D_Best_Dad_Stuffed_Sleepover-1.jpg",
+            "mobile_image_height": 580,
+            "desktop_image_height": 900,
+            "text_content": "<h2>Had a good one?</h2><h2>Show another fotr what he's missing.</h2>",
+            "badge_text": "",
+            "mobile_badge_width": 250,
+            "mobile_badge_padding": 10,
+            "mobile_badge_corner_radius": 8,
+            "mobile_badge_text_size": 14,
+            "mobile_badge_margin_bottom": 10,
+            "mobile_badge_background": "#2a2d45",
+            "mobile_badge_text_color": "#ffffff",
+            "desktop_badge_width": 290,
+            "desktop_badge_padding": 15,
+            "desktop_badge_corner_radius": 8,
+            "desktop_badge_text_size": 16,
+            "desktop_badge_margin_bottom": 16,
+            "desktop_badge_background": "#2a2d45",
+            "desktop_badge_text_color": "#ffffff",
+            "mobile_text_position": "top-center",
+            "mobile_vertical_position": 65,
+            "mobile_text_align": "left",
+            "mobile_text_box_width": 100,
+            "desktop_text_position": "top-left",
+            "desktop_vertical_position": 65,
+            "desktop_text_align": "left",
+            "desktop_text_box_width": 100,
+            "enable_text_background": true,
+            "text_background_color": "#2e2f46",
+            "text_box_border_radius": 8,
+            "mobile_text_box_padding": 20,
+            "desktop_text_box_padding": 40,
+            "mobile_text_padding": 20,
+            "desktop_text_padding": 40,
+            "heading_font": "dela_gothic_one_n4",
+            "mobile_h1_size": 32,
+            "mobile_h2_size": 28,
+            "mobile_h3_size": 24,
+            "mobile_heading_spacing": 12,
+            "desktop_h1_size": 56,
+            "desktop_h2_size": 48,
+            "desktop_h3_size": 36,
+            "desktop_heading_spacing": 16,
+            "heading_color": "#ffffff",
+            "heading_text_transform": "none",
+            "text_font": "rubik_n4",
+            "mobile_body_size": 14,
+            "mobile_paragraph_spacing": 12,
+            "desktop_body_size": 18,
+            "desktop_paragraph_spacing": 16,
+            "text_color": "#162317",
+            "body_text_transform": "none",
+            "link_color": "#162317",
+            "sticker_desktop_image": "",
+            "desktop_scale": 20,
+            "desktop_x": 88,
+            "desktop_y": 78,
+            "desktop_enable_shadow": true,
+            "desktop_shadow_x": 0,
+            "desktop_shadow_y": 10,
+            "desktop_shadow_blur": 20,
+            "desktop_shadow_opacity": 0.3,
+            "desktop_enable_parallax": false,
+            "desktop_parallax_intensity": 50,
+            "sticker_mobile_image": "",
+            "mobile_scale": 20,
+            "mobile_x": 85,
+            "mobile_y": 78,
+            "mobile_enable_shadow": true,
+            "mobile_shadow_x": 0,
+            "mobile_shadow_y": 8,
+            "mobile_shadow_blur": 15,
+            "mobile_shadow_opacity": 0.3,
+            "mobile_enable_parallax": false,
+            "mobile_parallax_intensity": 50
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_4dcc071_ugcHero1"
+      ],
+      "custom_css": [
+        "h2 {text-shadow: 0 3px 3px rgba(0, 0, 0, 0.3), 0 6px 10px rgba(0, 0, 0, 0.25);}"
+      ],
+      "name": "AI Hero - Save Another Dad",
+      "settings": {}
+    },
+    "1786205860aa55b3ef": {
+      "type": "apps",
+      "blocks": {
+        "powerful_form_builder_app_block_cUV7rL": {
+          "type": "shopify://apps/powerful-form-builder/blocks/app-block/e4bcb1eb-35b2-42e6-bc37-bfe0e1542c9d",
+          "settings": {
+            "shortcode": "<div class=\"globo-formbuilder\" data-id=\"MTU4NjM1\"></div>"
+          }
+        }
+      },
+      "block_order": [
+        "powerful_form_builder_app_block_cUV7rL"
+      ],
+      "settings": {
+        "apply_vertical_spacing": true,
+        "apply_horizontal_spacing": true,
+        "display_on_card": false,
+        "content_width_desktop": "lg:w-full",
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "custom_liquid_ugcform_css": {
+      "type": "custom-liquid",
+      "name": "Form font override",
+      "settings": {
+        "title": "",
+        "custom_liquid": "<style>\n.globo-formbuilder,\n.globo-formbuilder *,\n.globo-formbuilder input,\n.globo-formbuilder textarea,\n.globo-formbuilder select,\n.globo-formbuilder button,\n.globo-formbuilder label {\n  font-family: var(--main-font-stack) !important;\n}\n</style>",
+        "full_width": false,
+        "color_scheme": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "ugc_hero_section",
+    "1786205860aa55b3ef",
+    "custom_liquid_ugcform_css"
+  ]
+}

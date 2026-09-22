@@ -1,0 +1,31 @@
+/* ─── Custom Webfont Declarations & Heading Styles ─── */
+
+/* Myriad Pro Regular */
+@font-face {
+  font-family: 'MyriadProRegular';
+  src: url("{{ 'MYRIADPRO-REGULAR.woff2' | file_url }}") format('woff2');
+}
+
+/* Myriad Pro Bold */
+@font-face {
+  font-family: 'MyriadProBold';
+  src: url("{{ 'MYRIADPRO-BOLD.woff2' | file_url }}") format('woff2');
+}
+
+/* Resolution Black */
+@font-face {
+  font-family: 'ResolutionBlack';
+  src: url("{{ 'Resolution-Black.woff2' | file_url }}") format('woff2');
+}
+
+/* Resolution Regular */
+@font-face {
+  font-family: 'ResolutionRegular';
+  src: url("{{ 'Resolution-Regular.woff2' | file_url }}") format('woff2');
+}
+
+/* Quittance */
+@font-face {
+  font-family: 'Quittance';
+  src: url("{{ 'Quittance.woff2' | file_url }}") format('woff2');
+}

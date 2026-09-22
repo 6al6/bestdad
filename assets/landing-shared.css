@@ -1,0 +1,193 @@
+/* Shared styles for the landing page sections.
+   Sections set the --lb-* variables; the fallbacks are the Figma defaults. */
+
+.landing-button {
+  display: block;
+  height: 68px;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0;
+  border: 0 solid var(--lb-shadow, #2b2d45);
+  border-right-width: var(--lb-shadow-width, 4px);
+  border-bottom-width: var(--lb-shadow-width, 4px);
+  border-radius: 80px;
+  background: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.landing-button span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 63px;
+  padding: 6px 10px 8px;
+  border: var(--lb-border-width, 1.5px) solid var(--lb-border, #fef1d5);
+  border-radius: 52px;
+  background: var(--lb-bg, #f72828);
+  color: var(--lb-text, #fff);
+  font-family: var(--lb-font, inherit);
+  font-size: 17px;
+  line-height: 1.2;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.landing-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.landing-button:not([disabled]):hover span,
+.landing-button:not([disabled]):focus-visible span {
+  filter: brightness(0.92);
+}
+
+/* Rich text highlight: Underline in the editor renders as a marker.
+   Shopify saves Underline as <span style="text-decoration:underline">, the defaults use <u>.
+   Sections set --lm-color. */
+.landing-marker u,
+.landing-marker [style*='underline'] {
+  padding-block: 0.16em;
+  background: var(--lm-color, rgb(238 97 76 / 0.5));
+  text-decoration: none !important; /* beats the inline style */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Icon + text list. Sections may set --ll-align and --ll-gap. */
+.landing-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ll-gap, 5px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.landing-list__item {
+  display: flex;
+  align-items: var(--ll-align, center);
+  gap: 6px;
+}
+
+.landing-list__item strong {
+  font-weight: 700;
+}
+
+.landing-list__icon {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  font-size: 19px;
+  line-height: 22px;
+  text-align: center;
+  object-fit: cover;
+}
+
+/* Five-star row (snippets/landing-stars). Set `color` on the parent. */
+.landing-stars {
+  display: flex;
+  gap: 1px;
+}
+
+.landing-stars svg {
+  fill: currentColor;
+}
+
+/* Smooth scrolling for anchor links (#product etc.).
+   This file only loads on pages that use a landing section, so other pages are unaffected. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Where an anchored section stops, measured from the top of the screen.
+   Raise it if a sticky header covers the top of the section. */
+.landing-product[id] {
+  scroll-margin-top: var(--landing-anchor-offset, 16px);
+}
+
+/* Wavy dividers (snippets/landing-divider). Same movement as the theme's shape dividers.
+   Positioned against the section wrapper (.shopify-section is position: relative). */
+.landing-divider {
+  position: absolute;
+  left: 0;
+  z-index: 20;
+  width: 100%;
+  overflow-x: clip;
+  pointer-events: none;
+  transform: scale(1.01, 1);
+}
+
+.landing-divider--top {
+  top: 0;
+}
+
+.landing-divider--bottom {
+  bottom: 0;
+}
+
+/* The 2px overlap hides the seam against the neighbouring section */
+.landing-divider__track {
+  position: relative;
+  display: flex;
+  min-width: 100%;
+  transform: translate3d(0, 0, 0);
+}
+
+.landing-divider--top .landing-divider__track {
+  margin-top: -2px;
+}
+
+.landing-divider--bottom .landing-divider__track {
+  margin-bottom: -2px;
+}
+
+.landing-divider__track.is-animated {
+  animation: landing-divider-slide 15s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite reverse;
+  will-change: transform;
+}
+
+.landing-divider__copy {
+  position: absolute;
+  inset: 0;
+}
+
+.landing-divider__copy:nth-child(2) {
+  transform: translateX(99.95%);
+}
+
+.landing-divider__copy svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* The top wave is the bottom wave turned upside down */
+.landing-divider--top .landing-divider__copy svg {
+  transform: scaleY(-1);
+}
+
+@keyframes landing-divider-slide {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-divider__track.is-animated {
+    animation: none;
+  }
+}

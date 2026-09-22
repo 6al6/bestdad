@@ -1,0 +1,176 @@
+{%- liquid
+  assign body_font = settings.type_main_font
+-%}
+
+<section class="landing-header landing-header--{{ section.id }}">
+  {%- if section.settings.background_image != blank -%}
+    {{-
+      section.settings.background_image
+      | image_url: width: 1600
+      | image_tag: class: 'landing-header__bg', loading: 'eager', fetchpriority: 'high', widths: '390, 780, 1200, 1600', sizes: '100vw', alt: ''
+    -}}
+  {%- endif -%}
+
+  <div class="landing-header__inner">
+    {%- if section.blocks.size > 0 -%}
+      <ul class="landing-header__chips" role="list">
+        {%- for block in section.blocks -%}
+          <li class="landing-header__chip" {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.photo != blank -%}
+      {{-
+        section.settings.photo
+        | image_url: width: 320
+        | image_tag: class: 'landing-header__photo', width: 80, height: 54, loading: 'eager', widths: '160, 240, 320', sizes: '80px', alt: section.settings.photo.alt
+      -}}
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.link != blank -%}
+    <a class="landing-header__link" href="{{ section.settings.link }}" aria-label="{{ section.blocks.first.settings.text | escape }}"></a>
+  {%- endif -%}
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-header--{{ section.id }} {
+    --lh-chip-bg: {{ section.settings.chip_color }};
+    --lh-chip-text: {{ section.settings.chip_text_color }};
+    position: relative;
+    overflow: hidden;
+    background: {{ section.settings.background_color }};
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+  }
+  .landing-header__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .landing-header__inner {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding: 20px 12px 20px;
+  }
+  .landing-header__chips {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .landing-header__chip {
+    padding: 7px 12px 8px;
+    border-radius: 4px;
+    background: var(--lh-chip-bg);
+    color: var(--lh-chip-text);
+    font-size: 14px;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .landing-header__photo {
+    flex: none;
+    display: block;
+    box-sizing: border-box;
+    width: 80px;
+    height: 54px;
+    border: 1.2px solid {{ section.settings.photo_border_color }};
+    border-radius: 4px;
+    object-fit: cover;
+  }
+  /* Optional: the whole bar is one link */
+  .landing-header__link { position: absolute; inset: 0; z-index: 1; }
+
+  @media (min-width: 990px) {
+    .landing-header__inner { align-items: center; padding: 12px 24px 12px; }
+    .landing-header__chips { flex-direction: row; align-items: center; }
+    .landing-header__chip { font-size: 16px; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Header bar",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image",
+      "info": "Fills the whole bar. Wide image, about 1600 x 300."
+    },
+    {
+      "type": "image_picker",
+      "id": "photo",
+      "label": "Photo on the right",
+      "info": "Landscape crop, about 80 x 54."
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link",
+      "info": "Optional. Makes the whole bar clickable."
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#fef1d5" },
+    { "type": "color", "id": "chip_color", "label": "Label background", "default": "#ee614c" },
+    { "type": "color", "id": "chip_text_color", "label": "Label text", "default": "#ffffff" },
+    { "type": "color", "id": "photo_border_color", "label": "Photo border", "default": "#2b2d45" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "label",
+      "name": "Label",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Label" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Header bar",
+      "blocks": [
+        { "type": "label", "settings": { "text": "Odprta prednaročila!" } },
+        { "type": "label", "settings": { "text": "Popust za prvih 100 kupcev" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

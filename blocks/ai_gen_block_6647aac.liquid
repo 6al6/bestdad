@@ -1,0 +1,332 @@
+{% doc %}
+  @prompt
+    Create a segment that has a hero image, and in the top third of the image there's an overlaying text, a heading text. This text needs to be movable up and down, but it's always at the center. Only the formatting can change, either left, center, or right formatting. The text take on theme CSS settings (font etc.). It can be very high up. No background. Options for line break sizes.
+    
+    Then the image can also have another an overlayed uploaded image at the bottom which only has sizing options. Add seperate options for mobile and desktop, Seperate images for mobile and desktop as well, ALl of the heading sizes, h1, h2, h3,h4, h5 should inherit theme font.
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-hero-overlay-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .ai-hero-overlay-{{ ai_gen_id }}__image-wrapper {
+    position: relative;
+    width: 100%;
+    display: block;
+  }
+
+  .ai-hero-overlay-{{ ai_gen_id }}__image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .ai-hero-overlay-{{ ai_gen_id }}__placeholder {
+    background-color: #f4f4f4;
+    width: 100%;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-hero-overlay-{{ ai_gen_id }}__placeholder svg {
+    width: 100%;
+    height: 100%;
+    max-width: 600px;
+    max-height: 400px;
+  }
+
+  .ai-hero-overlay-{{ ai_gen_id }}__heading-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: {{ block.settings.heading_position_desktop }}%;
+    transform: translateY(-50%);
+    z-index: 2;
+    padding: 0 20px;
+  }
+
+  .ai-hero-overlay-{{ ai_gen_id }}__heading {
+    margin: 0;
+    color: {{ block.settings.heading_color }};
+    text-align: {{ block.settings.heading_alignment }};
+    line-height: {{ block.settings.heading_line_height }};
+  }
+
+  .ai-hero-overlay-{{ ai_gen_id }}__bottom-image-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    width: {{ block.settings.bottom_image_width_desktop }}%;
+    max-width: 100%;
+  }
+
+  .ai-hero-overlay-{{ ai_gen_id }}__bottom-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-hero-overlay-{{ ai_gen_id }}__heading-wrapper {
+      top: {{ block.settings.heading_position_mobile }}%;
+    }
+
+    .ai-hero-overlay-{{ ai_gen_id }}__bottom-image-wrapper {
+      width: {{ block.settings.bottom_image_width_mobile }}%;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-hero-overlay-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-hero-overlay-{{ ai_gen_id }}__image-wrapper">
+    {% if block.settings.hero_image_desktop %}
+      <img
+        src="{{ block.settings.hero_image_desktop | image_url: width: 2000 }}"
+        alt="{{ block.settings.hero_image_desktop.alt | escape }}"
+        loading="lazy"
+        width="{{ block.settings.hero_image_desktop.width }}"
+        height="{{ block.settings.hero_image_desktop.height }}"
+        class="ai-hero-overlay-{{ ai_gen_id }}__image ai-hero-overlay-{{ ai_gen_id }}__image--desktop"
+        srcset="{{ block.settings.hero_image_desktop | image_url: width: 375 }} 375w,
+                {{ block.settings.hero_image_desktop | image_url: width: 750 }} 750w,
+                {{ block.settings.hero_image_desktop | image_url: width: 1100 }} 1100w,
+                {{ block.settings.hero_image_desktop | image_url: width: 1500 }} 1500w,
+                {{ block.settings.hero_image_desktop | image_url: width: 2000 }} 2000w"
+        sizes="100vw"
+      >
+    {% elsif block.settings.hero_image_mobile %}
+      <img
+        src="{{ block.settings.hero_image_mobile | image_url: width: 2000 }}"
+        alt="{{ block.settings.hero_image_mobile.alt | escape }}"
+        loading="lazy"
+        width="{{ block.settings.hero_image_mobile.width }}"
+        height="{{ block.settings.hero_image_mobile.height }}"
+        class="ai-hero-overlay-{{ ai_gen_id }}__image"
+      >
+    {% else %}
+      <div class="ai-hero-overlay-{{ ai_gen_id }}__placeholder">
+        {{ 'hero-apparel-1' | placeholder_svg_tag }}
+      </div>
+    {% endif %}
+
+    {% if block.settings.heading_text != blank %}
+      <div class="ai-hero-overlay-{{ ai_gen_id }}__heading-wrapper">
+        {% if block.settings.heading_tag == 'h1' %}
+          <h1 class="ai-hero-overlay-{{ ai_gen_id }}__heading h1">{{ block.settings.heading_text }}</h1>
+        {% elsif block.settings.heading_tag == 'h2' %}
+          <h2 class="ai-hero-overlay-{{ ai_gen_id }}__heading h2">{{ block.settings.heading_text }}</h2>
+        {% elsif block.settings.heading_tag == 'h3' %}
+          <h3 class="ai-hero-overlay-{{ ai_gen_id }}__heading h3">{{ block.settings.heading_text }}</h3>
+        {% elsif block.settings.heading_tag == 'h4' %}
+          <h4 class="ai-hero-overlay-{{ ai_gen_id }}__heading h4">{{ block.settings.heading_text }}</h4>
+        {% elsif block.settings.heading_tag == 'h5' %}
+          <h5 class="ai-hero-overlay-{{ ai_gen_id }}__heading h5">{{ block.settings.heading_text }}</h5>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if block.settings.bottom_image_desktop or block.settings.bottom_image_mobile %}
+      <div class="ai-hero-overlay-{{ ai_gen_id }}__bottom-image-wrapper">
+        {% if block.settings.bottom_image_desktop %}
+          <img
+            src="{{ block.settings.bottom_image_desktop | image_url: width: 1000 }}"
+            alt="{{ block.settings.bottom_image_desktop.alt | escape }}"
+            loading="lazy"
+            width="{{ block.settings.bottom_image_desktop.width }}"
+            height="{{ block.settings.bottom_image_desktop.height }}"
+            class="ai-hero-overlay-{{ ai_gen_id }}__bottom-image ai-hero-overlay-{{ ai_gen_id }}__bottom-image--desktop"
+          >
+        {% elsif block.settings.bottom_image_mobile %}
+          <img
+            src="{{ block.settings.bottom_image_mobile | image_url: width: 1000 }}"
+            alt="{{ block.settings.bottom_image_mobile.alt | escape }}"
+            loading="lazy"
+            width="{{ block.settings.bottom_image_mobile.width }}"
+            height="{{ block.settings.bottom_image_mobile.height }}"
+            class="ai-hero-overlay-{{ ai_gen_id }}__bottom-image"
+          >
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero with overlay",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero images"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image_desktop",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image_mobile",
+      "label": "Mobile image"
+    },
+    {
+      "type": "header",
+      "content": "Heading text"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Text",
+      "default": "Your heading here"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "min": 0.8,
+      "max": 2,
+      "step": 0.1,
+      "label": "Line height",
+      "default": 1.2
+    },
+    {
+      "type": "header",
+      "content": "Heading position - Desktop"
+    },
+    {
+      "type": "range",
+      "id": "heading_position_desktop",
+      "min": 5,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "Vertical position",
+      "default": 33
+    },
+    {
+      "type": "header",
+      "content": "Heading position - Mobile"
+    },
+    {
+      "type": "range",
+      "id": "heading_position_mobile",
+      "min": 5,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "Vertical position",
+      "default": 33
+    },
+    {
+      "type": "header",
+      "content": "Bottom overlay image"
+    },
+    {
+      "type": "image_picker",
+      "id": "bottom_image_desktop",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "bottom_image_mobile",
+      "label": "Mobile image"
+    },
+    {
+      "type": "header",
+      "content": "Bottom image size - Desktop"
+    },
+    {
+      "type": "range",
+      "id": "bottom_image_width_desktop",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Width",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Bottom image size - Mobile"
+    },
+    {
+      "type": "range",
+      "id": "bottom_image_width_mobile",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Width",
+      "default": 70
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero with overlay"
+    }
+  ]
+}
+{% endschema %}

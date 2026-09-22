@@ -1,0 +1,245 @@
+{%- liquid
+  assign wave_width = section.settings.wave_width | default: 250
+  assign wave_height = section.settings.wave_height
+  assign direction = section.settings.direction
+  assign text = section.settings.text | append: '&nbsp;'
+
+  assign speed = section.settings.speed
+  assign pause_on_hover = section.settings.pause_on_hover
+  assign link = section.settings.link
+  assign enable_animation = section.settings.enable_animation
+
+  assign custom_class = section.settings.custom_class | strip
+  assign custom_data_id = section.settings.custom_data_id | strip
+
+  if custom_class == '_' or custom_class == 'none'
+    assign custom_class = ''
+  endif
+
+  if custom_data_id == '_' or custom_data_id == 'none'
+    assign custom_data_id = ''
+  endif
+-%}
+
+{%- style -%}
+  #{{ section.id }} textPath {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  #{{ section.id }} .text-measure {
+    display: inline-flex;
+    width: max-content;
+  }
+{%- endstyle -%}
+
+<data-island
+  role="banner"
+  id="{{ section.id }}"
+  class="bg-scheme-background text-scheme-text
+    {% if section.settings.use_gradient_background %}bg-scheme-gradient{% endif %}
+    {% if custom_class != blank %}{{ custom_class }}{% endif %}"
+  {% if custom_data_id != blank %}
+    data-custom-id="{{ custom_data_id }}"
+  {% endif %}
+  data-color-scheme="{{ section.settings.color_scheme }}"
+  x-data="CurvedText({{ text | json | escape }}, {{ wave_width | json }}, {{ wave_height | json }}, '{{ direction }}', {{ speed | json }}, {{ enable_animation | json }})"
+  src="{{ 'island-curved-text.bundle.js' | asset_url }}"
+  on="before:visible"
+>
+  <div
+    class="js-enabled relative w-full overflow-hidden"
+    {% if pause_on_hover %}
+      @mouseover="pause" @mouseleave="play"
+    {% endif %}
+  >
+    {% if link != blank %}
+      <a
+        href="{{ link }}"
+        class="absolute left-0 top-0 z-0 block h-full w-full"
+      >
+        <span class="visually-hidden">{{ section.settings.text }}</span>
+      </a>
+    {%- endif -%}
+
+    <svg width="100%" height="{{ wave_height }}" xmlns="http://www.w3.org/2000/svg">
+      <path x-ref="path" id="textPath" x-bind:d="path" stroke-width="1" fill="transparent" />
+      <text class="{{ section.settings.font }} fill-current">
+        <textPath
+          class="{% render 'type-scale-classes',
+            mobile_text_scale: section.settings.mobile_text_scale,
+            desktop_text_scale: section.settings.desktop_text_scale %}"
+          startOffset="0"
+          xlink:href="#textPath"
+          x-ref="textPath"
+        ></textPath>
+      </text>
+    </svg>
+
+    <div
+      class="text-measure bg-black text-white {{ section.settings.font }}
+      {% render 'type-scale-classes',
+        mobile_text_scale: section.settings.mobile_text_scale,
+        desktop_text_scale: section.settings.desktop_text_scale %}
+      invisible absolute"
+      x-ref="textMeasure"
+    >
+      {{ text }}
+    </div>
+  </div>
+</data-island>
+
+{% schema %}
+{
+  "name": "t:sections.curved_text.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "t:common.settings.text.label",
+      "default": "Use this text to share information about your brand with your customers."
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:common.settings.link.label"
+    },
+
+    {
+      "type": "header",
+      "content": "Advanced"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class",
+      "default": "_"
+    },
+    {
+      "type": "text",
+      "id": "custom_data_id",
+      "label": "Custom data ID (data-custom-id)",
+      "default": "_"
+    },
+
+    {
+      "type": "header",
+      "content": "Design"
+    },
+    {
+      "type": "range",
+      "id": "wave_height",
+      "label": "Wave height",
+      "min": 200,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 250
+    },
+    {
+      "type": "range",
+      "id": "wave_width",
+      "label": "Wave width",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "default": 250
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "t:common.settings.speed.label",
+      "min": 0.5,
+      "max": 2,
+      "step": 0.1,
+      "unit": "x",
+      "default": 1
+    },
+
+    {
+      "type": "header",
+      "content": "t:common.settings.text.label"
+    },
+    {
+      "type": "range",
+      "id": "mobile_text_scale",
+      "label": "t:common.settings.mobile_text_scale.label",
+      "min": -2,
+      "max": 7,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "desktop_text_scale",
+      "label": "t:common.settings.desktop_text_scale.label",
+      "min": -2,
+      "max": 10,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "font",
+      "label": "t:common.settings.font.label",
+      "options": [
+        { "value": "font-heading", "label": "t:common.options.heading.label" },
+        { "value": "body", "label": "t:common.options.body.label" }
+      ],
+      "default": "font-heading"
+    },
+
+    {
+      "type": "header",
+      "content": "t:common.settings.header_animation"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_animation",
+      "label": "t:common.blocks.shape_divider.settings.enable_animation.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "t:common.settings.direction.label",
+      "options": [
+        { "value": "rtl", "label": "t:common.options.right_to_left.label" },
+        { "value": "ltr", "label": "t:common.options.left_to_right.label" }
+      ],
+      "default": "rtl"
+    },
+
+    {
+      "type": "header",
+      "content": "t:common.settings.header_color"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:common.settings.color_scheme.label",
+      "default": "scheme1"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_gradient_background",
+      "label": "t:common.settings.use_gradient_background.label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.curved_text.name"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer", "aside"]
+  }
+}
+{% endschema %}

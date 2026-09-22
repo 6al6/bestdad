@@ -1,0 +1,285 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+<section class="landing-steps landing-steps--{{ section.id }}">
+  <div class="landing-steps__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="landing-steps__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="landing-steps__list" role="list">
+        {%- for block in section.blocks -%}
+          <li class="landing-steps__item" {{ block.shopify_attributes }}>
+            <div class="landing-steps__card">
+              {%- if block.settings.image != blank -%}
+                {{-
+                  block.settings.image
+                  | image_url: width: 900
+                  | image_tag: class: 'landing-steps__image', loading: 'lazy', widths: '302, 604, 900', sizes: '(min-width: 1200px) 280px, 302px', alt: block.settings.image.alt | default: block.settings.title
+                -}}
+              {%- endif -%}
+              <div class="landing-steps__body">
+                {%- if block.settings.title != blank -%}
+                  <h3 class="landing-steps__title">{{ block.settings.title }}</h3>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <p class="landing-steps__text">{{ block.settings.text }}</p>
+                {%- endif -%}
+              </div>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank or section.settings.note != blank -%}
+      <div class="landing-steps__cta">
+        {% render 'landing-button', label: section.settings.button_label, link: section.settings.button_link %}
+        {%- if section.settings.note != blank -%}
+          <p class="landing-steps__note">{{ section.settings.note }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-steps--{{ section.id }} {
+    --ls-text: {{ section.settings.text_color }};
+    --lb-bg: {{ section.settings.button_bg_color }};
+    --lb-text: {{ section.settings.button_text_color }};
+    --lb-border: {{ section.settings.button_border_color }};
+    --lb-shadow: {{ section.settings.text_color }};
+    --lb-shadow-width: 3px;
+    --lb-border-width: 2px;
+    --lb-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    background: {{ section.settings.background_color }};
+    color: var(--ls-text);
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    text-align: center;
+  }
+  .landing-steps__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 52px 12px;
+  }
+  .landing-steps__heading {
+    max-width: 800px;
+    margin: 0 auto;
+    padding-inline: 6px;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.05;
+    text-transform: none;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+  .landing-steps__list {
+    display: grid;
+    gap: 40px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  /* Room for the offset black card */
+  .landing-steps__item {
+    isolation: isolate;
+    margin: 0 16px 16px 0;
+  }
+  .landing-steps__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 22px 22px 26px;
+    border: 2px solid var(--ls-text);
+    background: {{ section.settings.card_color }};
+  }
+  .landing-steps__card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    border: 2px solid var(--ls-text);
+    background: #000;
+    transform: translate(14px, 16px);
+  }
+  .landing-steps__image {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 293px;
+    border: 1.5px solid var(--ls-text);
+    border-radius: 6px;
+    background: #d9d9d9;
+    object-fit: cover;
+  }
+  .landing-steps__body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+  }
+  .landing-steps__title {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 27px;
+    line-height: 1.05;
+    text-transform: none;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+  .landing-steps__text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .landing-steps__cta {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-left: 6px;
+    margin-right: 6px;
+  }
+  .landing-steps__note {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  /* Desktop: everything is centered. The cards are a centered wrapping row, so a last
+     row with fewer cards stays centered. 16px per card is room for the offset black card. */
+  @media (min-width: 750px) {
+    .landing-steps__inner { align-items: center; max-width: 1000px; }
+    .landing-steps__heading { width: 100%; }
+    .landing-steps__list { display: flex; flex-wrap: wrap; justify-content: center; width: 100%; gap: 24px; }
+    .landing-steps__item { flex: 0 0 calc((100% - 40px) / 2 - 16px); }
+    .landing-steps__cta { width: 100%; max-width: 420px; margin-inline: auto; }
+  }
+  @media (min-width: 1200px) {
+    .landing-steps__inner { max-width: 1500px; padding-inline: 24px; }
+    .landing-steps__item { flex-basis: calc((100% - 120px) / 4 - 16px); }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Steps",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Štirje koraki do zmage v fotrovanju. Brez kompliciranja."
+    },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Prednaroči komplet" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "note", "label": "Note under button", "default": "Za fotre, ki jim ni vseeno ❤️" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#2b2d45" },
+    { "type": "color", "id": "text_color", "label": "Text, borders and button shadow", "default": "#fef1d5" },
+    { "type": "color", "id": "card_color", "label": "Step card", "default": "#ee614c" },
+    { "type": "color", "id": "button_bg_color", "label": "Button background", "default": "#f72828" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
+    { "type": "color", "id": "button_border_color", "label": "Button inner border", "default": "#2b2d45" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Landscape, about 302 x 293." },
+        { "type": "text", "id": "title", "label": "Title", "info": "Emoji are allowed.", "default": "Step title" },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "Step description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Steps",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "title": "📖 #1 - Izberi misijo",
+            "text": "V knjigi te čaka 28 misij. Ikone ti povedo, katera danes ne bo uničila stanovanja, otroka ali tvojega mentalnega zdravja. Ko jo najdeš, iztrgaj stran. Ja, res!"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "🎯 #2 - Sledi scenariju in ne pozabi na zabavo",
+            "text": "Otroštvo mine. Tista čudna, zabavna, rahlo kaotična stvar, ki sta jo naredila s fotrom? To ostane."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "🏅 #3 - Nalepi dokaz slave",
+            "text": "Opravljeno misijo proslavita z nalepko na Fotrovskem megaplakatu."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "🖼️ #4 - Vajini spomini na očeh",
+            "text": "Plakat obesita ob otrokovo posteljo. Vsak dan ga spomni: »<em>To sva naredila midva z očijem.</em>«"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

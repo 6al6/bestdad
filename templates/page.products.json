@@ -1,0 +1,126 @@
+{
+  "sections": {
+    "rich_text_BtEewi": {
+      "type": "rich-text",
+      "disabled": true,
+      "name": "t:sections.rich_text.name",
+      "settings": {
+        "title": "<strong>All Products — The Ultimate Gifts for Real Dads</strong>",
+        "heading_size": "heading-standard",
+        "rich_text": "<p>Welcome to the <em>I Am Best Dad In The World</em> collection — where fatherhood meets comedy, chaos, and gold foil. Browse our books and accessories built for real dads who don’t do perfect parenting — they do hilarious memories, questionable decisions, and epic bonding.</p><p>From our signature tear-out mission book to collectible posters and sticker packs, every product here turns dad life into a game of glory.</p><p>👉 <strong>Pick your edition.</strong> Laugh harder. Earn your title.</p>",
+        "display_on_card": false,
+        "content_width_desktop": "lg:w-2/3",
+        "button_link": "",
+        "button_label": "Shop Now",
+        "color_scheme": "scheme6",
+        "use_gradient_background": false
+      }
+    },
+    "mixed_shape_product_grid_KRwjLJ": {
+      "type": "featured-collection",
+      "name": "All products (market-aware)",
+      "settings": {
+        "title": "The Full Arsenal of Dad Greatness",
+        "subheading": "(and Mild Chaos)",
+        "collection": "all-products-grid",
+        "no_products": 18,
+        "show_view_all": false,
+        "enable_quick_buy": true,
+        "display_on_card": false,
+        "layout": "grid",
+        "products_per_row_mobile": "1",
+        "products_per_row_desktop": 2,
+        "image_shape": "default",
+        "color_scheme": "scheme4",
+        "use_gradient_background": false
+      }
+    },
+    "feature_text_columns_ag8xDF": {
+      "type": "feature-text-columns",
+      "blocks": {
+        "column_NPJefB": {
+          "type": "column",
+          "settings": {
+            "title": "Free shipping",
+            "subheading": "When buying 2+ books!"
+          }
+        },
+        "column_XWcbkK": {
+          "type": "column",
+          "settings": {
+            "title": "30 - Day",
+            "subheading": "Money back guarantee"
+          }
+        },
+        "column_fDzyfr": {
+          "type": "column",
+          "settings": {
+            "title": "Bonus",
+            "subheading": "Sticker & Poster with the book"
+          }
+        },
+        "shape_divider_3nanLM": {
+          "type": "shape_divider",
+          "settings": {
+            "target_section": "above",
+            "target_section_color_scheme": "scheme4",
+            "style": "waves-1-patterned_1200x20",
+            "flip_horizontal": false,
+            "enable_animation": true,
+            "animation_direction": "reverse"
+          }
+        },
+        "shape_divider_neJHbR": {
+          "type": "shape_divider",
+          "settings": {
+            "target_section": "below",
+            "target_section_color_scheme": "scheme5",
+            "style": "tilt-1-shape_1440x101",
+            "flip_horizontal": false,
+            "enable_animation": false,
+            "animation_direction": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_NPJefB",
+        "column_XWcbkK",
+        "column_fDzyfr",
+        "shape_divider_3nanLM",
+        "shape_divider_neJHbR"
+      ],
+      "custom_css": [
+        "/* All text in this block */.text-center {color: #ee614c !important;}",
+        " /* If some inner tags keep their own color, force inheritance */.text-center * {color: inherit !important;}",
+        ".text-center {color: #ee614c !important; border: 3px solid #000 !important; border-radius: 30px; /* slight rounding */ padding: 16px; /* optional, remove if you don’t want spacing */}",
+        ".text-center * {color: inherit !important;}"
+      ],
+      "name": "t:sections.feature_text_columns.name",
+      "settings": {
+        "display_on_card": false,
+        "title": "",
+        "heading_size": "heading-secondary",
+        "subheading_font": "body",
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "name": "TITLE strani, nebi imel",
+      "settings": {
+        "max_width": "medium",
+        "display_on_card": true,
+        "color_scheme": "scheme-f215dbac-cce9-4971-8348-b0bcdbfd16a9",
+        "use_gradient_background": false
+      }
+    }
+  },
+  "order": [
+    "rich_text_BtEewi",
+    "mixed_shape_product_grid_KRwjLJ",
+    "feature_text_columns_ag8xDF",
+    "main"
+  ]
+}

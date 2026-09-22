@@ -1,0 +1,19 @@
+{% doc %}
+  One FAQ card for sections/landing-faq.liquid (native <details>, no JS).
+
+  @param {object} block - A "question" block
+  @param {number} order - 1-based position; keeps the mobile order when the questions are split into two columns
+{% enddoc %}
+<li class="landing-faq__item" style="--n: {{ order }}" {{ block.shopify_attributes }}>
+  <details class="landing-faq__card">
+    <summary class="landing-faq__summary">
+      <h3 class="landing-faq__question">{{ block.settings.title }}</h3>
+      <span class="landing-faq__chevron" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none" focusable="false">
+          <path vector-effect="non-scaling-stroke" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 14 18.38 20.722a.827.827 0 0 0 1.238 0L43 14"/>
+        </svg>
+      </span>
+    </summary>
+    <div class="landing-faq__answer">{{ block.settings.answer }}</div>
+  </details>
+</li>

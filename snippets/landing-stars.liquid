@@ -1,0 +1,11 @@
+{% doc %}
+  Row of five stars, filled with the parent's currentColor.
+  The parent can override the fill with an `fill` CSS property.
+{% enddoc %}
+<span class="landing-stars" role="img" aria-label="5 / 5">
+  {%- for i in (1..5) -%}
+    <svg viewBox="0 0 19 19" width="19" height="19" aria-hidden="true" focusable="false">
+      <path d="M9.5 0l2.6 6.3 6.9.5-5.3 4.4 1.7 6.6-5.9-3.6-5.9 3.6 1.7-6.6L0 6.8l6.9-.5z"/>
+    </svg>
+  {%- endfor -%}
+</span>

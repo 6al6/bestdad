@@ -1,0 +1,234 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+-%}
+
+<section class="landing-benefits landing-benefits--{{ section.id }}">
+  <div class="landing-benefits__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="landing-benefits__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="landing-benefits__list" role="list">
+        {%- for block in section.blocks -%}
+          <li class="landing-benefits__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.callout != blank -%}
+              <div class="landing-benefits__callout">
+                <p class="landing-benefits__callout-text">{{ block.settings.callout }}</p>
+              </div>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="landing-benefits__text">{{ block.settings.text }}</div>
+            {%- endif -%}
+            {%- if block.settings.image != blank -%}
+              {{-
+                block.settings.image
+                | image_url: width: 1000
+                | image_tag: class: 'landing-benefits__image', loading: 'lazy', widths: '354, 708, 1000', sizes: '(min-width: 990px) 800px, 354px', alt: block.settings.image.alt | default: block.settings.callout
+              -}}
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.closing != blank -%}
+      <p class="landing-benefits__closing">{{ section.settings.closing }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-benefits--{{ section.id }} {
+    --lbn-text: {{ section.settings.text_color }};
+    background: {{ section.settings.background_color }};
+    color: var(--lbn-text);
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+  }
+  .landing-benefits__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 52px 18px 60px;
+  }
+  .landing-benefits__heading {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 33px;
+    line-height: 1.05;
+    text-align: center;
+    text-transform: none;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+  .landing-benefits__list {
+    display: grid;
+    gap: 60px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .landing-benefits__item {
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  /* Callout card with an offset black card behind it */
+  .landing-benefits__callout {
+    position: relative;
+    box-sizing: border-box;
+    width: calc(100% - 4px);
+    margin-bottom: 24px;
+    padding: 32px 20px 36px;
+    border: 2px solid {{ section.settings.callout_border_color }};
+    background: {{ section.settings.callout_color }};
+    color: {{ section.settings.callout_text_color }};
+  }
+  .landing-benefits__callout::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    border: 2px solid {{ section.settings.callout_border_color }};
+    background: #000;
+    transform: translate(14px, 16px);
+  }
+  .landing-benefits__callout-text {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-size: 27px;
+    line-height: 1.12;
+    overflow-wrap: break-word;
+  }
+  .landing-benefits__text {
+    margin-top: -4px;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .landing-benefits__text p { margin: 0 0 1.5em; }
+  .landing-benefits__text p:last-child { margin-bottom: 0; }
+  .landing-benefits__text strong { font-weight: 700; }
+  .landing-benefits__image {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 520px;
+    border: 2px solid var(--lbn-text);
+    border-radius: 2px;
+    object-fit: cover;
+  }
+  .landing-benefits__closing {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  @media (min-width: 990px) {
+    .landing-benefits__inner { max-width: 1200px; padding: 64px 24px; }
+    .landing-benefits__list { grid-template-columns: 1fr; gap: 60px; width: 100%; max-width: 800px; margin-inline: auto; }
+    .landing-benefits__closing { max-width: 600px; margin-inline: auto; text-align: center; }
+    .landing-benefits__image {height: 100%;}
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Benefits",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "To ni še ena knjiga. Je naložba v vajine skupne spomine."
+    },
+    {
+      "type": "textarea",
+      "id": "closing",
+      "label": "Closing text",
+      "default": "Ni ti treba poznati vseh pravil otroške psihologije. Dovolj je, da se pojaviš, izpelješ misijo in vidiš, da se otrok zabava s tabo. Tudi fotri potrebujemo kakšen dokaz, da nam gre."
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#fef1d5" },
+    { "type": "color", "id": "text_color", "label": "Text and image border", "default": "#2b2d45" },
+    { "type": "color", "id": "callout_color", "label": "Callout card", "default": "#ee614c" },
+    { "type": "color", "id": "callout_text_color", "label": "Callout text", "default": "#fef1d5" },
+    { "type": "color", "id": "callout_border_color", "label": "Callout border", "default": "#fef1d5" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        { "type": "textarea", "id": "callout", "label": "Callout", "default": "Callout text" },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "info": "Use bold and italic for emphasis."
+        },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Portrait, about 354 x 520." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Benefits",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "callout": "Več časa, ko si zares zraven in manj časa, ko nimaš pojma kaj bi.",
+            "text": "<p>Ko otrok vpraša: »<em>Kaj bova danes počela?</em>«, ti ni treba panično iskati ideje. Izbereš misijo, preveriš navodila in gresta v akcijo.</p><p>Nič več bolščanja v zaslon! Zabavata se oba. <strong>Skupaj nekaj gradita, iščeta, kuhata, packata ali rešujeta.</strong> Včasih uspešno.</p>"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "callout": "Plakat, ki otroka vsak dan spomni: »To sva naredila midva z očijem.«",
+            "text": "<p>Plakat ni samo prostor za nalepke. Ko visi na steni ob otrokovi postelji, postane zemljevid vajinih skupnih podvigov. <strong>Vsaka nalepka ga spomni, da je bil oči zraven, da sta nekaj doživela skupaj</strong> in da vaju čaka še naslednja misija.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

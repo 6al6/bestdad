@@ -1,0 +1,399 @@
+{% doc %}
+  @prompt
+    Create a sticker block.
+    All settings should be seperate for Mobile and desktop.
+    
+    The block should have the option to upload a png image which is like a sticker on that segment. You need the option to scale it by chocie as well as change the X and Y location. The sticker has an option to have a drop shadow function to make it seem like it floats, as well as a parallax option., the sticker overlays all previous blocks and floats above them. The  image option should also be seperate for mobile and desktop
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-sticker-container-{{ ai_gen_id }} {
+    position: absolute;
+    pointer-events: none;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  .ai-sticker-image-{{ ai_gen_id }} {
+    position: absolute;
+    pointer-events: auto;
+    transition: transform 0.1s ease-out;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-sticker-image-{{ ai_gen_id }} {
+      width: {{ block.settings.desktop_scale }}%;
+      top: {{ block.settings.desktop_y }}%;
+      left: {{ block.settings.desktop_x }}%;
+      transform: translate(-50%, -50%);
+      {% if block.settings.desktop_enable_shadow %}
+        filter: drop-shadow({{ block.settings.desktop_shadow_x }}px {{ block.settings.desktop_shadow_y }}px {{ block.settings.desktop_shadow_blur }}px rgba(0, 0, 0, {{ block.settings.desktop_shadow_opacity }}));
+      {% endif %}
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-sticker-image-{{ ai_gen_id }} {
+      width: {{ block.settings.mobile_scale }}%;
+      top: {{ block.settings.mobile_y }}%;
+      left: {{ block.settings.mobile_x }}%;
+      transform: translate(-50%, -50%);
+      {% if block.settings.mobile_enable_shadow %}
+        filter: drop-shadow({{ block.settings.mobile_shadow_x }}px {{ block.settings.mobile_shadow_y }}px {{ block.settings.mobile_shadow_blur }}px rgba(0, 0, 0, {{ block.settings.mobile_shadow_opacity }}));
+      {% endif %}
+    }
+  }
+
+  .ai-sticker-image-{{ ai_gen_id }} img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+{% endstyle %}
+
+<sticker-block-{{ ai_gen_id }}
+  class="ai-sticker-container-{{ ai_gen_id }}"
+  data-desktop-parallax="{{ block.settings.desktop_enable_parallax }}"
+  data-mobile-parallax="{{ block.settings.mobile_enable_parallax }}"
+  data-desktop-intensity="{{ block.settings.desktop_parallax_intensity }}"
+  data-mobile-intensity="{{ block.settings.mobile_parallax_intensity }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-sticker-image-{{ ai_gen_id }}">
+    {% if block.settings.desktop_image != blank %}
+      <img
+        src="{{ block.settings.desktop_image | image_url: width: 800 }}"
+        alt="{{ block.settings.desktop_image.alt | escape }}"
+        loading="lazy"
+        width="{{ block.settings.desktop_image.width }}"
+        height="{{ block.settings.desktop_image.height }}"
+        class="ai-sticker-desktop-{{ ai_gen_id }}"
+        style="display: none;"
+      >
+    {% endif %}
+    {% if block.settings.mobile_image != blank %}
+      <img
+        src="{{ block.settings.mobile_image | image_url: width: 600 }}"
+        alt="{{ block.settings.mobile_image.alt | escape }}"
+        loading="lazy"
+        width="{{ block.settings.mobile_image.width }}"
+        height="{{ block.settings.mobile_image.height }}"
+        class="ai-sticker-mobile-{{ ai_gen_id }}"
+        style="display: none;"
+      >
+    {% endif %}
+  </div>
+</sticker-block-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class StickerBlock{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.desktopParallax = this.dataset.desktopParallax === 'true';
+        this.mobileParallax = this.dataset.mobileParallax === 'true';
+        this.desktopIntensity = parseFloat(this.dataset.desktopIntensity) / 100;
+        this.mobileIntensity = parseFloat(this.dataset.mobileIntensity) / 100;
+        this.stickerImage = this.querySelector('.ai-sticker-image-{{ ai_gen_id }}');
+        this.isMobile = window.innerWidth < 750;
+        this.handleScroll = this.handleScroll.bind(this);
+        this.handleResize = this.handleResize.bind(this);
+      }
+
+      connectedCallback() {
+        this.updateImageVisibility();
+        
+        if ((this.isMobile && this.mobileParallax) || (!this.isMobile && this.desktopParallax)) {
+          window.addEventListener('scroll', this.handleScroll, { passive: true });
+        }
+        
+        window.addEventListener('resize', this.handleResize);
+      }
+
+      disconnectedCallback() {
+        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('resize', this.handleResize);
+      }
+
+      updateImageVisibility() {
+        const desktopImg = this.querySelector('.ai-sticker-desktop-{{ ai_gen_id }}');
+        const mobileImg = this.querySelector('.ai-sticker-mobile-{{ ai_gen_id }}');
+        
+        if (this.isMobile) {
+          if (mobileImg) {
+            mobileImg.style.display = 'block';
+          }
+          if (desktopImg) {
+            desktopImg.style.display = 'none';
+          }
+        } else {
+          if (desktopImg) {
+            desktopImg.style.display = 'block';
+          }
+          if (mobileImg) {
+            mobileImg.style.display = 'none';
+          }
+        }
+      }
+
+      handleResize() {
+        const wasMobile = this.isMobile;
+        this.isMobile = window.innerWidth < 750;
+        
+        if (wasMobile !== this.isMobile) {
+          this.updateImageVisibility();
+          
+          window.removeEventListener('scroll', this.handleScroll);
+          
+          if ((this.isMobile && this.mobileParallax) || (!this.isMobile && this.desktopParallax)) {
+            window.addEventListener('scroll', this.handleScroll, { passive: true });
+          } else {
+            this.stickerImage.style.transform = '';
+          }
+        }
+      }
+
+      handleScroll() {
+        if (!this.stickerImage) return;
+
+        const shouldParallax = (this.isMobile && this.mobileParallax) || (!this.isMobile && this.desktopParallax);
+        
+        if (!shouldParallax) return;
+
+        const intensity = this.isMobile ? this.mobileIntensity : this.desktopIntensity;
+        const rect = this.getBoundingClientRect();
+        const scrolled = window.pageYOffset || document.documentElement.scrollTop;
+        const elementTop = rect.top + scrolled;
+        const elementHeight = rect.height;
+        const windowHeight = window.innerHeight;
+        
+        const scrollProgress = (scrolled + windowHeight - elementTop) / (windowHeight + elementHeight);
+        
+        if (scrollProgress >= 0 && scrollProgress <= 1) {
+          const movement = (scrollProgress - 0.5) * 100 * intensity;
+          this.stickerImage.style.transform = `translate(-50%, calc(-50% + ${movement}px))`;
+        }
+      }
+    }
+
+    customElements.define('sticker-block-{{ ai_gen_id }}', StickerBlock{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Sticker",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Desktop settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Image"
+    },
+    {
+      "type": "range",
+      "id": "desktop_scale",
+      "min": 5,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Scale",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "desktop_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Horizontal position",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "desktop_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Vertical position",
+      "default": 50
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop_enable_shadow",
+      "label": "Enable drop shadow",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "desktop_shadow_x",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Shadow horizontal offset",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "desktop_shadow_y",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Shadow vertical offset",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_shadow_blur",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Shadow blur",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "desktop_shadow_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Shadow opacity",
+      "default": 0.3
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop_enable_parallax",
+      "label": "Enable parallax",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "desktop_parallax_intensity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Parallax intensity",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Image"
+    },
+    {
+      "type": "range",
+      "id": "mobile_scale",
+      "min": 5,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Scale",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "mobile_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Horizontal position",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Vertical position",
+      "default": 50
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_enable_shadow",
+      "label": "Enable drop shadow",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "mobile_shadow_x",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Shadow horizontal offset",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mobile_shadow_y",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Shadow vertical offset",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "mobile_shadow_blur",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Shadow blur",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_shadow_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Shadow opacity",
+      "default": 0.3
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_enable_parallax",
+      "label": "Enable parallax",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "mobile_parallax_intensity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Parallax intensity",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sticker"
+    }
+  ]
+}
+{% endschema %}

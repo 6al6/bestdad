@@ -1,0 +1,155 @@
+{%- assign card_sizes = section.settings.card_width | append: 'px' -%}
+
+<section class="landing-strip landing-strip--{{ section.id }}">
+  <landing-strip class="landing-strip__viewport" data-speed="{{ section.settings.scroll_speed }}">
+    <ul class="landing-strip__track" role="list">
+      {%- for block in section.blocks -%}
+        <li class="landing-strip__item" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            {{-
+              block.settings.image
+              | image_url: width: 800
+              | image_tag:
+                loading: 'lazy',
+                widths: '330, 440, 660, 800',
+                sizes: card_sizes,
+                alt: block.settings.image.alt
+            -}}
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'landing-strip__placeholder' }}
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </landing-strip>
+</section>
+
+{% render 'landing-divider' %}
+
+<script src="{{ 'landing-strip.js' | asset_url }}" defer></script>
+
+{% style %}
+  .landing-strip--{{ section.id }} {
+    --ls-card: {{ section.settings.card_width }}px;
+    --ls-border: {{ section.settings.border_color }};
+    background: {{ section.settings.background_color }};
+  }
+  /* Without JS the row is a normal scrollable strip */
+  .landing-strip__viewport { display: block; overflow-x: auto; scrollbar-width: none; padding-block: 60px; }
+  .landing-strip__viewport::-webkit-scrollbar { display: none; }
+  .landing-strip__viewport.is-running { overflow: hidden; }
+  .landing-strip__track {
+    display: flex;
+    gap: 10px;
+    width: max-content;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .landing-strip__viewport.is-running .landing-strip__track {
+    animation: landing-strip-scroll var(--strip-duration) linear infinite;
+    will-change: transform;
+  }
+  .landing-strip__item {
+    flex: 0 0 var(--ls-card);
+    aspect-ratio: 220 / 356;
+    overflow: hidden;
+    box-sizing: border-box;
+    border: 1.5px solid var(--ls-border);
+    border-radius: 2px;
+  }
+  .landing-strip__item img,
+  .landing-strip__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .landing-strip__placeholder { background: rgb(255 255 255 / 0.1); fill: var(--ls-border); }
+
+  @keyframes landing-strip-scroll {
+    to { transform: translateX(calc(var(--strip-set) * -1)); }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Photo strip",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 21,
+  "settings": [
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "label": "Scroll speed (px per second)",
+      "info": "Higher is faster. The row moves continuously on mobile and desktop.",
+      "min": 10,
+      "max": 200,
+      "step": 5,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "label": "Photo width (px)",
+      "info": "Height follows automatically (220 x 356 ratio).",
+      "min": 140,
+      "max": 400,
+      "step": 10,
+      "default": 220
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#2b2d45" },
+    { "type": "color", "id": "border_color", "label": "Photo border", "default": "#fef1d5" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo", "info": "Portrait, ratio about 220 x 356." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Photo strip",
+      "blocks": [
+        { "type": "image" }, { "type": "image" }, { "type": "image" }, { "type": "image" },
+        { "type": "image" }, { "type": "image" }, { "type": "image" }, { "type": "image" },
+        { "type": "image" }, { "type": "image" }, { "type": "image" }, { "type": "image" },
+        { "type": "image" }, { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}
