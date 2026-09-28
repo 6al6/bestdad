@@ -77,7 +77,12 @@
   {% capture shipping_progress_content %}
     <div class="{{ text_color_classes }}{% if center_text %} [text-wrap:balance] text-center{% endif %} text-sm">
       {% if subtotal < threshold %}
-        {% assign amount = threshold | minus: subtotal | money %}
+        {%- liquid
+          assign remaining = threshold | minus: subtotal
+          capture amount
+            render 'money', amount: remaining
+          endcapture
+        -%}
         {{ 'free_shipping_progress.not_achieved_html' | t: amount: amount }}
       {% else %}
         {{ 'free_shipping_progress.achieved' | t }}

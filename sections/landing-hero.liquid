@@ -130,12 +130,22 @@
     }
     .landing-hero__text {
       font-size: 19px;
+      max-width: 600px;
     }
     .landing-hero__cta {
       align-items: center;
     }
     .landing-hero__note {
       max-width: 80%;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .landing-hero__text {
+      max-width: 319px;
+    }
+    .landing-hero__heading {
+      max-width: 360px;
     }
   }
 {% endstyle %}

@@ -2,7 +2,9 @@
 {% layout 'gift_card' %}
 
 {%- liquid
-  assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros: gift_card.currency
+  capture formatted_initial_value
+    render 'money', amount: gift_card.initial_value, trim_zeros: true, currency: gift_card.currency
+  endcapture
   assign formatted_initial_value_stripped = formatted_initial_value | strip_html
 -%}
 

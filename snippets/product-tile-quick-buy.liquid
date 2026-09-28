@@ -220,7 +220,7 @@
           {{- 'products.product.unit_price_label' | t -}}
         </span>
         <span x-html="formatMoney(currentVariant.unit_price)">
-          {{- current_variant.unit_price | money -}}
+          {%- render 'money', amount: current_variant.unit_price -%}
         </span>
         <span aria-hidden="true"> / </span>
         <span class="sr-only">

@@ -117,7 +117,7 @@
                 x-show="currentVariantAvailable"
                 x-html="formatMoney(totalCurrentPrice)"
               >
-                {{- current_variant.price | money -}}
+                {%- render 'money', amount: current_variant.price -%}
               </span>
               {%- if block.settings.show_compare_at_price
                 and product.compare_at_price_max > product.price
@@ -136,7 +136,7 @@
                     {% if current_variant.compare_at_price
                         > current_variant.price
                     %}
-                      {{ current_variant.compare_at_price | money }}
+                      {% render 'money', amount: current_variant.compare_at_price %}
                     {% endif %}
                   </s>
                 </span>

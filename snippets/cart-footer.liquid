@@ -36,7 +36,7 @@
                   ><span>{{- discount_application.title -}}</span>
                 </dt>
                 <dd class="{% if template == 'cart' %} md:col-span-2 {% endif %}">
-                  -{{ discount_application.total_allocated_amount | money }}
+                  -{% render 'money', amount: discount_application.total_allocated_amount %}
                 </dd>
               </div>
             {%- endfor -%}
@@ -44,7 +44,7 @@
               {{ 'cart.general.subtotal' | t }}
             </dt>
             <dd class="{% if template == 'cart' %} md:col-span-2 {% endif %}">
-              {{ cart.total_price | money_with_currency }}
+              {% render 'money', amount: cart.total_price, with_currency: true %}
             </dd>
           </dl>
           <p class="mt-2.5 text-right text-xs">

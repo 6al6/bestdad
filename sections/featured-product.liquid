@@ -73,9 +73,9 @@
                     class="text-scheme-text {{ price_text_size }}"
                   >
                     {% if settings.currency_code_enabled == true -%}
-                      {{- 1999 | money_with_currency -}}
+                      {%- render 'money', amount: 1999, with_currency: true -%}
                     {%- else -%}
-                      {{- 1999 | money -}}
+                      {%- render 'money', amount: 1999 -%}
                     {%- endif %}
                   </span>
                 </div>

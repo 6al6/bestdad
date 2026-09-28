@@ -34,7 +34,7 @@
             {%- elsif block.settings.emoji != blank -%}
               <span class="landing-list__icon" aria-hidden="true">{{ block.settings.emoji }}</span>
             {%- endif -%}
-            <span>{{ block.settings.text }}</span>
+            <span class="landing-list__text">{{ block.settings.text }}</span>
           </li>
         {%- endfor -%}
       </ul>
@@ -113,6 +113,10 @@
   .landing-offer__rte p { margin: 0 0 1.5em; }
   .landing-offer__rte p:last-child { margin-bottom: 0; }
   .landing-offer__rte strong { font-weight: 700; }
+  .landing-offer--{{ section.id }} .landing-list__text strong,
+  .landing-offer--{{ section.id }} .landing-list__text b { font-weight: 700; }
+  .landing-offer--{{ section.id }} .landing-list__text em,
+  .landing-offer--{{ section.id }} .landing-list__text i { font-style: italic; }
 {% endstyle %}
 
 {% schema %}
@@ -209,7 +213,13 @@
           "label": "Icon image",
           "info": "Optional. Replaces the emoji. Square, at least 66 x 66 px."
         },
-        { "type": "text", "id": "text", "label": "Text", "default": "List item" }
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Text",
+          "info": "Select part of the text and use Bold or Italic to format it.",
+          "default": "List item"
+        }
       ]
     }
   ],

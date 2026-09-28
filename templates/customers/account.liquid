@@ -66,7 +66,7 @@
                     {{ order.fulfillment_status_label }}
                   </td>
                   <td data-label="{{ 'customer.orders.total' | t }}">
-                    {{ order.total_price | money }}
+                    {% render 'money', amount: order.total_price, currency: order.currency %}
                   </td>
                 </tr>
               {% endfor %}

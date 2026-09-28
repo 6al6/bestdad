@@ -91,7 +91,7 @@
                   {%- for discount_allocation in line_item.line_level_discount_allocations -%}
                     <li class="order-discount__item">
                       {{ discount_allocation.discount_application.title }} (-
-                      {{- discount_allocation.amount | money -}}
+                      {%- render 'money', amount: discount_allocation.amount, currency: order.currency -%}
                       )
                     </li>
                   {%- endfor -%}
@@ -133,20 +133,20 @@
             <div>
               {%- if line_item.original_price != line_item.final_price -%}
                 <del class="cart__price block ">
-                  {{- line_item.original_price | money -}}
+                  {%- render 'money', amount: line_item.original_price, currency: order.currency -%}
                 </del>
                 <span class="order-discount cart__price line-height--1 mb2 block text-scheme-accent-1">
-                  {{- line_item.final_price | money -}}
+                  {%- render 'money', amount: line_item.final_price, currency: order.currency -%}
                 </span>
               {%- else -%}
-                <span>{{ line_item.original_price | money }}</span>
+                <span>{% render 'money', amount: line_item.original_price, currency: order.currency %}</span>
               {%- endif -%}
               {%- if line_item.unit_price_measurement -%}
                 <div class="mt-1 text-sm {% if line_item.original_price != line_item.final_price %} text-scheme-accent-1{% endif %}">
                   <span class="visually-hidden">
                     {{ 'products.product.unit_price_label' | t }}
                   </span>
-                  {{ line_item.unit_price | money }}
+                  {% render 'money', amount: line_item.unit_price, currency: order.currency %}
                   <span aria-hidden="true">/&nbsp;</span
                   ><span class="visually-hidden">
                     {{- 'general.accessibility.unit_price_separator' | t -}}
@@ -169,13 +169,13 @@
               {%- if line_item.original_line_price != line_item.final_line_price
               -%}
                 <del class="cart__price block ">
-                  {{- line_item.original_line_price | money -}}
+                  {%- render 'money', amount: line_item.original_line_price, currency: order.currency -%}
                 </del>
                 <span class="order-discount cart__price line-height--1 mb2 block text-scheme-accent-1">
-                  {{- line_item.final_line_price | money -}}
+                  {%- render 'money', amount: line_item.final_line_price, currency: order.currency -%}
                 </span>
               {%- else -%}
-                <span>{{ line_item.original_line_price | money }}</span>
+                <span>{% render 'money', amount: line_item.original_line_price, currency: order.currency %}</span>
               {%- endif -%}
             </div>
           </td>
@@ -188,7 +188,7 @@
           {{ 'customer.order.subtotal' | t }}
         </td>
         <td data-label="{{ 'customer.order.subtotal' | t }}">
-          {{ order.line_items_subtotal_price | money }}
+          {% render 'money', amount: order.line_items_subtotal_price, currency: order.currency %}
         </td>
       </tr>
 
@@ -209,7 +209,7 @@
                 ><span class="text-sm text-scheme-accent-1 lg:hidden">
                   {{- discount_application.title -}}
                 </span>
-                -{{ discount_application.total_allocated_amount | money -}}
+                -{% render 'money', amount: discount_application.total_allocated_amount, currency: order.currency -%}
               </span>
             </td>
           </tr>
@@ -222,7 +222,7 @@
             {{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})
           </td>
           <td data-label="{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})">
-            {{ shipping_method.price | money }}
+            {% render 'money', amount: shipping_method.price, currency: order.currency %}
           </td>
         </tr>
       {% endfor %}
@@ -234,7 +234,7 @@
             {{ tax_line.rate | times: 100 }}%)
           </td>
           <td data-label="{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)">
-            {{ tax_line.price | money }}
+            {% render 'money', amount: tax_line.price, currency: order.currency %}
           </td>
         </tr>
       {% endfor %}
@@ -244,7 +244,7 @@
           {{ 'customer.order.total' | t }}
         </td>
         <td data-label="{{ 'customer.order.total' | t }}">
-          {{ order.total_price | money }}&nbsp;{{ order.currency }}
+          {% render 'money', amount: order.total_price, currency: order.currency %}&nbsp;{{ order.currency }}
         </td>
       </tr>
 
@@ -259,7 +259,7 @@
             class="pt1 text-right"
             data-label="{{ 'customer.order.refund_amount' | t }}"
           >
-            {{ order.total_refunded_amount | money }}
+            {% render 'money', amount: order.total_refunded_amount, currency: order.currency %}
             {{ order.currency }}
           </td>
         </tr>

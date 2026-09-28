@@ -82,7 +82,7 @@
       assign on_sale = true
       assign savings_amount = variant.compare_at_price | minus: variant.price
       capture savings
-        render 'landing-price', amount: savings_amount, trim_zeros: true
+        render 'money', amount: savings_amount, trim_zeros: true
       endcapture
     endif
     assign title = section.settings.title | default: product.title
@@ -195,9 +195,9 @@
         <div class="landing-product__price-box">
           <div class="landing-product__prices">
             <span class="landing-product__price-group">
-              <span class="landing-product__price" data-price>{% render 'landing-price', amount: variant.price %}</span>
+              <span class="landing-product__price" data-price>{% render 'money', amount: variant.price %}</span>
               <s class="landing-product__compare" data-compare{% unless on_sale %} hidden{% endunless %}>
-                {%- render 'landing-price', amount: variant.compare_at_price -%}
+                {%- render 'money', amount: variant.compare_at_price -%}
               </s>
             </span>
             <span
@@ -224,9 +224,9 @@
                   {%- assign v_savings_amount = v.compare_at_price | minus: v.price -%}
                   <option
                     value="{{ v.id }}"
-                    data-price="{% render 'landing-price', amount: v.price %}"
-                    data-compare="{% if v.compare_at_price > v.price %}{% render 'landing-price', amount: v.compare_at_price %}{% endif %}"
-                    data-savings="{% if v.compare_at_price > v.price %}{% render 'landing-price', amount: v_savings_amount, trim_zeros: true %}{% endif %}"
+                    data-price="{% render 'money', amount: v.price %}"
+                    data-compare="{% if v.compare_at_price > v.price %}{% render 'money', amount: v.compare_at_price %}{% endif %}"
+                    data-savings="{% if v.compare_at_price > v.price %}{% render 'money', amount: v_savings_amount, trim_zeros: true %}{% endif %}"
                     data-available="{{ v.available }}"
                     {% if v == variant %}selected{% endif %}
                     {% unless v.available %}disabled{% endunless %}
@@ -508,7 +508,7 @@
   .landing-product__text { margin: 0; font-size: 17px; line-height: var(--lp-text-lh); }
   .landing-product__features { margin-top: var(--lp-list-mt); }
   /* Divider block: a 1px line between list items, centered in the gap */
-  .landing-product__divider { height: 1px; list-style: none; }
+  .landing-product__divider { height: 1px; list-style: none; margin: 20px 0px;}
 
   /* Prices */
   .landing-product__price-box { display: flex; flex-direction: column; gap: 8px; }

@@ -274,10 +274,9 @@
                                   assign on_sale = false
                                 endif
 
-                                assign money_price = price | money
-                                if settings.currency_code_enabled
-                                  assign money_price = price | money_with_currency
-                                endif
+                                capture money_price
+                                  render 'money', amount: price, with_currency: settings.currency_code_enabled
+                                endcapture
 
                                 if target == product and product.price_varies
                                   assign money_price = money_price | append: '+'

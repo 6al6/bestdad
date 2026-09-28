@@ -30,7 +30,10 @@
 
   if subtotal < threshold
     assign percentage = subtotal | times: 1.00 | divided_by: threshold | times: 100
-    assign amount = threshold | minus: subtotal | money
+    assign remaining = threshold | minus: subtotal
+    capture amount
+      render 'money', amount: remaining
+    endcapture
 
     if cart.item_count > 0
       assign content_html = 'free_shipping_progress.not_achieved_html' | t: amount: amount

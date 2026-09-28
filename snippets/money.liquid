@@ -1,0 +1,35 @@
+{% doc %}
+  Formats a price the same way `| money` does, except for EUR (the Slovenian
+  market), where the client wants the € symbol placed after the amount instead
+  of before it (e.g. "19,99 €" instead of "€19,99").
+
+  This can't be solved in the Shopify admin: Settings > General > Change
+  currency formatting only applies to the store's own currency (USD). The
+  format of other currencies sold through Markets (like EUR) is fixed by
+  Shopify and has no setting. So the EUR-only placement is handled here
+  instead, and every other currency keeps using Shopify's formatting untouched.
+  The JS side (prices updated after a variant change or cart update) gets the
+  same treatment through `theme.moneyFormat` in snippets/js-bridge.liquid.
+
+  Use this snippet instead of the `money` filters anywhere a price is shown.
+
+  @param {number} amount - A price in the currency's smallest unit (cents), e.g. variant.price
+  @param {boolean} [with_currency] - Also show the currency code, like money_with_currency
+  @param {boolean} [trim_zeros] - Drop a trailing .00, like money_without_trailing_zeros. Ignored for EUR, which always shows 2 decimals (standard for it).
+  @param {string} [currency] - ISO code of the amount's currency, when it isn't the current one (e.g. order.currency). Defaults to the visitor's current currency.
+
+  @example
+  {% render 'money', amount: variant.price %}
+{% enddoc %}
+{%- liquid
+  assign currency_code = currency.iso_code | default: currency | default: cart.currency.iso_code
+-%}
+{%- if currency_code == 'EUR' -%}
+  {{- amount | money_without_currency -}}&nbsp;€
+{%- elsif with_currency -%}
+  {{- amount | money_with_currency -}}
+{%- elsif trim_zeros -%}
+  {{- amount | money_without_trailing_zeros -}}
+{%- else -%}
+  {{- amount | money -}}
+{%- endif -%}

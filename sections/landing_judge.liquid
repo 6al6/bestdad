@@ -1,0 +1,635 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+
+  assign review_count = 0
+  assign app_count = 0
+  for block in section.blocks
+    if block.type == '@app'
+      assign app_count = app_count | plus: 1
+    else
+      assign review_count = review_count | plus: 1
+    endif
+  endfor
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+<section class="landing-reviews landing-reviews--{{ section.id }}" data-color-scheme="{{ section.settings.color_scheme }}">
+  <div class="landing-reviews__inner">
+    {%- capture review_panel -%}
+    {%- if app_count > 0 -%}
+      <div class="landing-reviews__panel" id="oddaj-oceno" data-color-scheme="{{ section.settings.panel_color_scheme }}">
+        {%- if section.settings.panel_heading != blank or section.settings.panel_text != blank -%}
+          <div class="landing-reviews__panel-intro">
+            {%- if section.settings.panel_heading != blank -%}
+              <h3 class="landing-reviews__panel-heading">{{ section.settings.panel_heading }}</h3>
+            {%- endif -%}
+            {%- if section.settings.panel_text != blank -%}
+              <p class="landing-reviews__panel-text">{{ section.settings.panel_text }}</p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        {%- liquid
+          assign app_index = 0
+          assign is_si_market = false
+          if localization.market.handle == 'si'
+            assign is_si_market = true
+          endif
+        -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == '@app' -%}
+            {%- liquid
+              assign app_index = app_index | plus: 1
+              assign show_app = true
+              if section.settings.market_split
+                if app_index == 1 and is_si_market
+                  assign show_app = false
+                elsif app_index == 2 and is_si_market == false
+                  assign show_app = false
+                endif
+              endif
+            -%}
+            {%- if show_app -%}
+              <div class="landing-reviews__app">{% render block %}</div>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    {%- endcapture -%}
+
+    {%- if section.settings.panel_position == 'top' -%}{{ review_panel }}{%- endif -%}
+
+    {%- if section.settings.heading_avatar != blank or section.settings.heading != blank -%}
+      <div class="landing-reviews__intro">
+        {%- if section.settings.heading_avatar != blank -%}
+          {{-
+            section.settings.heading_avatar
+            | image_url: width: 320
+            | image_tag: class: 'landing-reviews__avatar', width: 80, height: 54, loading: 'lazy', widths: '160, 240, 320', sizes: '80px', alt: section.settings.heading_avatar.alt
+          -}}
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="landing-reviews__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if review_count > 0 -%}
+      <ul class="landing-reviews__list" role="list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'review' -%}
+            <li class="landing-reviews__card" {{ block.shopify_attributes }}>
+              <div class="landing-reviews__card-body">
+                {%- if block.settings.avatar != blank -%}
+                  {{-
+                    block.settings.avatar
+                    | image_url: width: 320
+                    | image_tag: class: 'landing-reviews__avatar', width: 80, height: 54, loading: 'lazy', widths: '160, 240, 320', sizes: '80px', alt: block.settings.avatar.alt | default: block.settings.name
+                  -}}
+                {%- endif -%}
+                {%- if block.settings.show_stars -%}
+                  <div class="landing-reviews__stars">{% render 'landing-stars' %}</div>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <div class="landing-reviews__text">{{ block.settings.text }}</div>
+                {%- endif -%}
+              </div>
+              {%- if block.settings.name != blank -%}
+                <p class="landing-reviews__name">{{ block.settings.name }}</p>
+              {%- endif -%}
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.panel_position != 'top' -%}{{ review_panel }}{%- endif -%}
+
+    {%- if section.settings.show_button and section.settings.button_label != blank -%}
+      <div class="landing-reviews__cta">
+        {% render 'landing-button', label: section.settings.button_label, link: section.settings.button_link, new_tab: true %}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-reviews--{{ section.id }} {
+    --lr-bg: rgb(var(--color-scheme-background));
+    --lr-text: rgb(var(--color-scheme-text));
+    --lr-border: rgb(var(--color-scheme-text));
+    --lr-stars: rgb(var(--color-scheme-accent-1));
+    --lr-btn-bg: rgb(var(--color-scheme-accent-1));
+    --lr-btn-text: rgb(var(--color-scheme-accent-1-contrast));
+    --lr-heading-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --lr-body-font: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --lb-bg: var(--lr-btn-bg);
+    --lb-text: var(--lr-btn-text);
+    --lb-border: var(--lr-bg);
+    --lb-shadow: var(--lr-text);
+    --lb-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    background: var(--lr-bg);
+    color: var(--lr-text);
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    text-align: center;
+  }
+  .landing-reviews__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 32px 18px 60px;
+  }
+  .landing-reviews__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .landing-reviews__avatar {
+    display: block;
+    box-sizing: border-box;
+    width: 80px;
+    height: 54px;
+    border: 1.2px solid var(--lr-border);
+    border-radius: 8px;
+    object-fit: cover;
+    object-position: top;
+  }
+  .landing-reviews__heading {
+    max-width: 800px;
+    margin: 0 auto;
+    color: var(--lr-text);
+    font-family: var(--lr-heading-font);
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.05;
+    text-transform: none;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+  .landing-reviews__list {
+    display: grid;
+    gap: 61px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .landing-reviews__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .landing-reviews__card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .landing-reviews__cta { width: 100%; max-width: 420px; margin-inline: auto; }
+  .landing-reviews__stars { color: var(--lr-stars); }
+  .landing-reviews__text {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .landing-reviews__text b,
+  .landing-reviews__text strong { font-weight: 700; }
+  .landing-reviews__text p { margin: 0 0 12px; }
+  .landing-reviews__text p:last-child { margin-bottom: 0; }
+  .landing-reviews__name {
+    margin: 0;
+    font-family: var(--lr-heading-font);
+    font-size: 18px;
+    line-height: 1.05;
+  }
+
+  /* ---------- Review panel: framed card that holds the Judge.me widget ---------- */
+  .landing-reviews--{{ section.id }} .landing-reviews__panel {
+    --lp-bg: rgb(var(--color-scheme-background));
+    --lp-text: rgb(var(--color-scheme-text));
+    box-sizing: border-box;
+    width: 100%;
+    margin-inline: auto;
+    padding: 28px 18px 32px;
+    background: var(--lp-bg);
+    color: var(--lp-text);
+    border: 2px solid var(--lr-text);
+    border-radius: 16px;
+    box-shadow: 6px 6px 0 var(--lr-text);
+    scroll-margin-top: 90px;
+    text-align: left;
+  }
+  .landing-reviews--{{ section.id }} .landing-reviews__panel-intro { text-align: center; margin-bottom: 12px; }
+  .landing-reviews--{{ section.id }} .landing-reviews__panel-heading {
+    margin: 0 0 8px;
+    font-family: var(--lr-heading-font);
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 1.1;
+    color: var(--lp-text);
+  }
+  .landing-reviews--{{ section.id }} .landing-reviews__panel-text { margin: 0; font-size: 16px; line-height: 1.45; color: var(--lp-text); }
+
+  /* ---------- Judge.me: bring the widget into the brand ---------- */
+  .landing-reviews--{{ section.id }} .jdgm-widget,
+  .landing-reviews--{{ section.id }} .jdgm-rev-widg {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    font-family: var(--lr-body-font) !important;
+    color: var(--lp-text) !important;
+    background: transparent !important;
+  }
+  .landing-reviews--{{ section.id }} .landing-reviews__panel .jdgm-rev-widg * { color: inherit; }
+  {%- if section.settings.hide_app_title %}
+  .landing-reviews--{{ section.id }} .jdgm-rev-widg__title { display: none !important; }
+  .landing-reviews--{{ section.id }} .jm-review-widget-minimal-header__title { display: none !important; }
+  {%- else %}
+  .landing-reviews--{{ section.id }} .jdgm-rev-widg__title {
+    font-family: var(--lr-heading-font) !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+  }
+  {%- endif %}
+  .landing-reviews--{{ section.id }} .jdgm-rev-widg__header,
+  .landing-reviews--{{ section.id }} .jdgm-rev-widg__summary { text-align: center !important; }
+  .landing-reviews--{{ section.id }} .jdgm-star,
+  .landing-reviews--{{ section.id }} .jdgm-rev__rating .jdgm-star { color: var(--lp-text) !important; }
+  .landing-reviews--{{ section.id }} .jdgm-rev__author,
+  .landing-reviews--{{ section.id }} .jdgm-rev__title { font-family: var(--lr-heading-font) !important; font-weight: 400 !important; }
+  .landing-reviews--{{ section.id }} .jdgm-rev__body { font-size: 16px !important; line-height: 1.5 !important; }
+
+  /* Buttons: "Write a review" + form submit, styled like the landing buttons */
+  .landing-reviews--{{ section.id }} .jdgm-write-rev-link,
+  .landing-reviews--{{ section.id }} .jdgm-submit-rev,
+  .landing-reviews--{{ section.id }} .jdgm-ask-question-btn {
+    display: inline-block !important;
+    padding: 14px 28px !important;
+    background: #ffffff !important;
+    color: var(--lr-text) !important;
+    border: 2px solid var(--lr-text) !important;
+    border-radius: 999px !important;
+    box-shadow: 4px 4px 0 var(--lr-text) !important;
+    font-family: var(--lr-heading-font) !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+    opacity: 1 !important;
+    transition: transform .12s ease, box-shadow .12s ease !important;
+  }
+  .landing-reviews--{{ section.id }} .jdgm-write-rev-link:hover,
+  .landing-reviews--{{ section.id }} .jdgm-submit-rev:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--lr-text) !important;
+  }
+
+  /* Form fields */
+  .landing-reviews--{{ section.id }} .jdgm-form input[type="text"],
+  .landing-reviews--{{ section.id }} .jdgm-form input[type="email"],
+  .landing-reviews--{{ section.id }} .jdgm-form textarea {
+    border: 2px solid var(--lr-text) !important;
+    border-radius: 10px !important;
+    background: #fff !important;
+    color: var(--lr-text) !important;
+    font-family: var(--lr-body-font) !important;
+    font-size: 16px !important;
+  }
+  .landing-reviews--{{ section.id }} .jdgm-form label { font-weight: 700 !important; }
+
+  {%- if section.settings.write_only %}
+  /* Write-only: hide Judge.me's review list, keep the rating summary + "write a review" button */
+  .landing-reviews--{{ section.id }} .jm-review-widget__body,
+  .landing-reviews--{{ section.id }} .jdgm-rev-widg__body,
+  .landing-reviews--{{ section.id }} .jdgm-rev-widg__reviews,
+  .landing-reviews--{{ section.id }} .jdgm-paginate { display: none !important; }
+  {%- endif %}
+
+  {%- if section.settings.widget_card %}
+  /* ---------- White card around the Judge.me widget ---------- */
+  .landing-reviews--{{ section.id }} .landing-reviews__app {
+    --lp-text: var(--lr-text);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 860px;
+    margin: 20px auto 0;
+    padding: 24px 18px 28px;
+    background: #ffffff;
+    color: var(--lr-text);
+    border: 3px solid var(--lr-text);
+    border-radius: 16px;
+    box-shadow: 8px 8px 0 var(--lr-text);
+  }
+  .landing-reviews--{{ section.id }} .landing-reviews__app .jdgm-star,
+  .landing-reviews--{{ section.id }} .landing-reviews__app .jdgm-rev__rating .jdgm-star { color: var(--lr-stars) !important; }
+  .landing-reviews--{{ section.id }} .landing-reviews__app .jdgm-write-rev-link,
+  .landing-reviews--{{ section.id }} .landing-reviews__app .jdgm-submit-rev,
+  .landing-reviews--{{ section.id }} .landing-reviews__app .jdgm-ask-question-btn {
+    background: var(--lr-btn-bg) !important;
+    color: var(--lr-btn-text) !important;
+  }
+  .landing-reviews--{{ section.id }} .landing-reviews__app .jdgm-form input[type="text"],
+  .landing-reviews--{{ section.id }} .landing-reviews__app .jdgm-form input[type="email"],
+  .landing-reviews--{{ section.id }} .landing-reviews__app .jdgm-form textarea { background: #fbf7ee !important; }
+  /* Judge.me revamp widget (jm- classes) */
+  .landing-reviews--{{ section.id }} .landing-reviews__app .jdgm-empty-state { display: none !important; }
+  .landing-reviews--{{ section.id }} .landing-reviews__app .jm-button--primary {
+    height: auto !important;
+    padding: 16px 32px !important;
+    background: var(--lr-btn-bg) !important;
+    color: var(--lr-btn-text) !important;
+    border: 2px solid var(--lr-text) !important;
+    border-radius: 999px !important;
+    box-shadow: 4px 4px 0 var(--lr-text) !important;
+    font-family: var(--lr-heading-font) !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+  }
+  {%- endif %}
+
+  @media (min-width: 990px) {
+    .landing-reviews__inner { max-width: 1200px; padding: 64px 24px; gap: 80px;}
+    .landing-reviews__list { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 48px; }
+    .landing-reviews--{{ section.id }} .landing-reviews__panel { max-width: 860px; padding: 44px 56px 48px; }
+    {%- if section.settings.panel_width == 'wide' %}
+    .landing-reviews--{{ section.id }} .landing-reviews__panel { max-width: none; }
+    {%- elsif section.settings.panel_width == 'full' %}
+    .landing-reviews--{{ section.id }} .landing-reviews__panel {
+      width: 100vw;
+      max-width: none;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      padding: 64px max(40px, calc((100vw - 1200px) / 2)) 72px;
+      border-width: 2px 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    {%- endif %}
+    .landing-reviews--{{ section.id }} .landing-reviews__app { padding: 40px 48px 44px; }
+    .landing-reviews--{{ section.id }} .landing-reviews__panel-heading { font-size: 40px; }
+    .landing-reviews--{{ section.id }} .landing-reviews__panel-text { font-size: 18px; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Judge",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "image_picker",
+      "id": "heading_avatar",
+      "label": "Photo above heading",
+      "info": "Landscape crop, about 80 x 54."
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Ne verjemi samo Ladu. Tole pravijo tisti, ki so komplet že preizkusili."
+    },
+    {
+      "type": "header",
+      "content": "Review app panel",
+      "info": "Shows only when an app block (e.g. Judge.me Review Widget) is added to this section."
+    },
+    {
+      "type": "text",
+      "id": "panel_heading",
+      "label": "Panel heading",
+      "default": "Fotr, zdaj si ti na vrsti."
+    },
+    {
+      "type": "textarea",
+      "id": "panel_text",
+      "label": "Panel text",
+      "default": "Povej, kako je šlo. Tudi če ni šlo po načrtu."
+    },
+    {
+      "type": "select",
+      "id": "panel_position",
+      "label": "Panel position",
+      "options": [
+        {
+          "value": "top",
+          "label": "Above the reviews"
+        },
+        {
+          "value": "bottom",
+          "label": "Below the reviews"
+        }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "select",
+      "id": "panel_width",
+      "label": "Panel width on desktop",
+      "options": [
+        {
+          "value": "contained",
+          "label": "Card (860px)"
+        },
+        {
+          "value": "wide",
+          "label": "Wide card (content width)"
+        },
+        {
+          "value": "full",
+          "label": "Full width (edge to edge)"
+        }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "checkbox",
+      "id": "market_split",
+      "label": "Split review widgets by market",
+      "info": "On: the 1st app block shows outside Slovenia (English product), the 2nd app block shows in the Slovenia market (Slovenian product).",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "write_only",
+      "label": "Write-only (hide the review list)",
+      "info": "Keeps only the \"write a review\" button and its form. Published reviews are not listed here.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "widget_card",
+      "label": "White card around the review widget",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_app_title",
+      "label": "Hide the app's own title",
+      "info": "Hides Judge.me's widget title (e.g. \"What Dads Say\") so only the panel heading shows.",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Review button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show review button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Fotr, povej, kako je šlo"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "Where the button leads, for example the page where people leave a review."
+    },
+    {
+      "type": "header",
+      "content": "Color schemes"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Section color scheme",
+      "info": "Background, text, stars (accent 1) and buttons (accent 1).",
+      "default": "scheme1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "panel_color_scheme",
+      "label": "Panel color scheme",
+      "default": "scheme1"
+    },
+    {
+      "type": "header",
+      "content": "Wavy divider"
+    },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        {
+          "value": "waves-1-patterned_1200x20",
+          "label": "Waves 1 (small)"
+        },
+        {
+          "value": "waves-2-patterned_1200x43",
+          "label": "Waves 2 (medium)"
+        },
+        {
+          "value": "waves-3-patterned_1200x84",
+          "label": "Waves 3 (large)"
+        },
+        {
+          "value": "zig-zag-2-patterned_1200x37",
+          "label": "Zig-zag"
+        },
+        {
+          "value": "circles-2-patterned_1200x35",
+          "label": "Circles"
+        },
+        {
+          "value": "spikes-1-patterned_1200x132",
+          "label": "Spikes"
+        }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_animate",
+      "label": "Animate divider",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Photo",
+          "info": "Landscape crop, about 80 x 54."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_stars",
+          "label": "Show 5 stars",
+          "default": true
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Review",
+          "info": "Use bold to emphasise a sentence.",
+          "default": "<p>Review text</p>"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Name Surname"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Judge",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "text": "<p>Med kolegi, hobiji in gradnjo startupov, ki bodo vsak trenutek eksplodirali — finančno, ne pravno — sem ugotovil, da mi doma zmanjkuje manevrskega prostora. Pričakovanja so rasla. Moja pripravljenost pa ne. <b>Ta knjiga mi je dala epski sistem po korakih.</b> Ne bom rekel, da sem rešil otrokovo prihodnost. Bom pa rekel, da sem sklad za terapijo elegantno preusmeril drugam.</p>",
+            "name": "Sebastjan Oblak"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "text": "<p><b>Kupila sem jo za šalo. Zdaj pa moj mož misli, da je očka leta.</b> To knjigo sem vzela, ker sem mislila, da bo smešno darilce. In naslednje, česar se zavem, je, da moj mož in najin otrok gradita trdnjave, izvajata \"misije\" in se tako glasno smejita, da ju slišijo sosedje. Ona je obsedena. On dejansko načrtuje aktivnosti. Jaz pa dobim uro miru. Najboljši nakup, kar sem ga naredila letos.</p>",
+            "name": "Špela Škerl"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

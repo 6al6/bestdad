@@ -21,7 +21,7 @@
     "
     data-product-price
   >
-    {{ current_variant.price | money }}
+    {% render 'money', amount: current_variant.price %}
   </span>
 
   {% if product.compare_at_price_max > product.price %}
@@ -36,7 +36,7 @@
         x-html="currentVariantHasCompareAtPrice ? formatMoney(currentVariant.compare_at_price) : ''"
       >
         {% if current_variant.compare_at_price > current_variant.price %}
-          {{ current_variant.compare_at_price | money }}
+          {% render 'money', amount: current_variant.compare_at_price %}
         {% endif %}
       </s>
     </span>
@@ -55,7 +55,7 @@
         {{- 'products.product.unit_price_label' | t -}}
       </span>
       <span x-html="formatMoney(currentVariant.unit_price)">
-        {{- current_variant.unit_price | money -}}
+        {%- render 'money', amount: current_variant.unit_price -%}
       </span>
       <span aria-hidden="true"> / </span>
       <span class="sr-only">

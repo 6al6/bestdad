@@ -145,13 +145,13 @@
                             <span class="visually-hidden">
                               {{- 'cart.label.discounted_price' | t -}}
                             </span>
-                            {{ item.price | money }}
+                            {% render 'money', amount: item.price %}
                             <span class="visually-hidden">
                               {{- 'cart.label.original_price' | t -}}
                             </span>
-                            <s>{{ item.original_price | money }}</s>
+                            <s>{% render 'money', amount: item.original_price %}</s>
                           {% else %}
-                            {{ item.price | money }}
+                            {% render 'money', amount: item.price %}
                           {% endif %}
                         </p>
                       {% endif %}
@@ -209,7 +209,7 @@
                               <span class="-mx-1 inline-block rounded-button bg-scheme-accent-1 p-1 text-scheme-accent-1-contrast">
                                 {{- discount_allocation.discount_application.title }}
                                 {% if discount_allocation.amount > 0 -%}
-                                  (-{{ discount_allocation.amount | money }})
+                                  (-{% render 'money', amount: discount_allocation.amount %})
                                 {%- endif -%}
                               </span>
                             </li>
@@ -218,7 +218,7 @@
                       {%- endif -%}
                       {%- if item.unit_price_measurement -%}
                         <div class="text-xs {% if item.original_price != item.final_price %} inline-block bg-scheme-accent-1 text-scheme-accent-1-contrast p-1 rounded-button -mx-1 {% else %} text-scheme-text {% endif %}">
-                          {{ item.unit_price | money }} /&nbsp;
+                          {% render 'money', amount: item.unit_price %} /&nbsp;
                           {%- if item.unit_price_measurement.reference_value
                               != 1
                           -%}
@@ -245,13 +245,13 @@
               <div class="col-start-4 row-start-1 {% if template == 'cart' %}  lg:col-span-3 lg:row-span-2 {% else %} lg:col-start-5 {% endif %} break-words text-right text-sm leading-tight lg:text-base">
                 {%- if item.original_line_price != item.final_line_price -%}
                   <del class="block">
-                    {{- item.original_line_price | money -}}
+                    {%- render 'money', amount: item.original_line_price -%}
                   </del>
                   <span class="mt-1 inline-block rounded-button bg-scheme-accent-1 p-1 text-scheme-accent-1-contrast">
-                    {{- item.final_line_price | money -}}
+                    {%- render 'money', amount: item.final_line_price -%}
                   </span>
                 {%- else -%}
-                  {{ item.original_line_price | money }}
+                  {% render 'money', amount: item.original_line_price %}
                 {%- endif -%}
               </div>
               <div
@@ -306,5 +306,5 @@
   aria-hidden="true"
 >
   {{ 'cart.general.new_subtotal' | t }}:
-  {{ cart.total_price | money_with_currency }}
+  {% render 'money', amount: cart.total_price, with_currency: true %}
 </p>

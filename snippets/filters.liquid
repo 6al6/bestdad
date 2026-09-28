@@ -294,7 +294,8 @@
                     %}
                     <div class="mt-2.5 flex max-w-[20rem] items-center justify-start">
                       <div class="filter-group-display__price-range-from flex grow items-center justify-center">
-                        <span class="pr-1">{{ cart.currency.symbol }}</span>
+                        {%- comment -%} EUR (Slovenian market): symbol goes after the amount, see snippets/money.liquid {%- endcomment -%}
+                        <span {% if cart.currency.iso_code == 'EUR' %}style="order: 1; padding-left: 0.25rem;"{% else %}class="pr-1"{% endif %}>{{ cart.currency.symbol }}</span>
                         <div class="relative w-full">
                           <input
                             name="{{ filter.min_value.param_name }}"
@@ -322,7 +323,8 @@
                       </div>
                       <div class="px-2">&ndash;</div>
                       <div class="filter-group-display__price-range-to  flex grow items-center justify-center">
-                        <span class="pr-1">{{ cart.currency.symbol }}</span>
+                        {%- comment -%} EUR (Slovenian market): symbol goes after the amount, see snippets/money.liquid {%- endcomment -%}
+                        <span {% if cart.currency.iso_code == 'EUR' %}style="order: 1; padding-left: 0.25rem;"{% else %}class="pr-1"{% endif %}>{{ cart.currency.symbol }}</span>
                         <div class="relative w-full">
                           <input
                             name="{{ filter.max_value.param_name }}"
