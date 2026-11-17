@@ -1,0 +1,302 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+<section class="landing-rs landing-rs--{{ section.id }}">
+  <div class="landing-rs__inner">
+    {%- if section.settings.heading_avatar != blank or section.settings.heading != blank -%}
+      <div class="landing-rs__intro">
+        {%- if section.settings.heading_avatar != blank -%}
+          {{-
+            section.settings.heading_avatar
+            | image_url: width: 320
+            | image_tag: class: 'landing-rs__avatar', width: 80, height: 54, loading: 'lazy', widths: '160, 240, 320', sizes: '80px', alt: section.settings.heading_avatar.alt
+          -}}
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="landing-rs__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      {%- comment -%} Swipeable row: cards snap into place, the next card peeks in from the right {%- endcomment -%}
+      <ul class="landing-rs__list" role="list" tabindex="0" aria-label="{{ section.settings.list_label | escape }}">
+        {%- for block in section.blocks -%}
+          <li class="landing-rs__card" {{ block.shopify_attributes }}>
+            <div class="landing-rs__card-body">
+              {%- if block.settings.avatar != blank -%}
+                {{-
+                  block.settings.avatar
+                  | image_url: width: 320
+                  | image_tag: class: 'landing-rs__avatar', width: 80, height: 54, loading: 'lazy', widths: '160, 240, 320', sizes: '80px', alt: block.settings.avatar.alt | default: block.settings.name
+                -}}
+              {%- endif -%}
+              {%- if block.settings.show_stars -%}
+                <div class="landing-rs__stars">{% render 'landing-stars' %}</div>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <div class="landing-rs__text">{{ block.settings.text }}</div>
+              {%- endif -%}
+            </div>
+            {%- if block.settings.name != blank -%}
+              <p class="landing-rs__name">{{ block.settings.name }}</p>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.show_button and section.settings.button_label != blank -%}
+      <div class="landing-rs__cta">
+        {% render 'landing-button', label: section.settings.button_label, link: section.settings.button_link, new_tab: true %}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-rs--{{ section.id }} {
+    --lrs-text: {{ section.settings.text_color }};
+    --lrs-border: {{ section.settings.avatar_border_color }};
+    --lrs-card-width: {{ section.settings.card_width }}px;
+    --lb-bg: {{ section.settings.button_bg_color }};
+    --lb-text: {{ section.settings.button_text_color }};
+    --lb-border: {{ section.settings.background_color }};
+    --lb-shadow: {{ section.settings.text_color }};
+    --lb-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    text-align: center;
+  }
+  .landing-rs__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding: 60px 0;
+  }
+  .landing-rs__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 0 18px;
+  }
+  .landing-rs__avatar {
+    display: block;
+    box-sizing: border-box;
+    width: 80px;
+    height: 54px;
+    border: 1.2px solid var(--lrs-border);
+    border-radius: 8px;
+    object-fit: cover;
+    object-position: top;
+  }
+  .landing-rs__heading {
+    max-width: 800px;
+    margin: 0 auto;
+    color: {{ section.settings.heading_color }};
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.05;
+    text-transform: none;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+
+  /* Row runs edge to edge; the 18px side padding keeps the first and last card off the edge */
+  .landing-rs__list {
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    margin: 0;
+    padding: 0 18px;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 18px;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .landing-rs__list::-webkit-scrollbar { display: none; }
+  .landing-rs__list:focus-visible { outline: 2px solid var(--lrs-text); outline-offset: 4px; }
+  .landing-rs__card {
+    flex: none;
+    width: min(var(--lrs-card-width), calc(100vw - 72px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    scroll-snap-align: start;
+  }
+  .landing-rs__card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .landing-rs__stars { color: {{ section.settings.stars_color }}; }
+  .landing-rs__text {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .landing-rs__text b,
+  .landing-rs__text strong { font-weight: 700; }
+  /* An empty line between paragraphs, as in the design */
+  .landing-rs__text p { margin: 0 0 1.5em; }
+  .landing-rs__text p:last-child { margin-bottom: 0; }
+  .landing-rs__name {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-size: 18px;
+    line-height: 1.05;
+  }
+  .landing-rs__cta { box-sizing: border-box; width: 100%; max-width: 420px; margin-inline: auto; padding: 0 18px; }
+
+  @media (min-width: 990px) {
+    .landing-rs__inner { padding: 64px 0; gap: 48px; }
+    .landing-rs__intro { padding: 0 24px; }
+    .landing-rs__list { gap: 48px; padding: 0 24px; scroll-padding-inline: 24px; }
+    /* Center the row when all cards fit */
+    .landing-rs__card:first-child { margin-left: auto; }
+    .landing-rs__card:last-child { margin-right: auto; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Reviews slider",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Reviews sit in one row that visitors swipe sideways. The next review peeks in from the right."
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "label": "Review width",
+      "unit": "px",
+      "min": 260,
+      "max": 420,
+      "step": 10,
+      "default": 300
+    },
+    {
+      "type": "text",
+      "id": "list_label",
+      "label": "Name of the row for screen readers",
+      "default": "Mnenja kupcev"
+    },
+    { "type": "header", "content": "Heading" },
+    {
+      "type": "image_picker",
+      "id": "heading_avatar",
+      "label": "Photo above heading",
+      "info": "Optional. Landscape crop, about 80 x 54."
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Optional. Leave blank for no heading."
+    },
+    { "type": "header", "content": "Review button" },
+    { "type": "checkbox", "id": "show_button", "label": "Show review button", "default": false },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Fotr, povej, kako je šlo" },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "Where the button leads, for example the page where people leave a review."
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#000000" },
+    { "type": "color", "id": "text_color", "label": "Review text and names", "default": "#2b2d45" },
+    { "type": "color", "id": "stars_color", "label": "Stars", "default": "#ee614c" },
+    { "type": "color", "id": "avatar_border_color", "label": "Photo border", "default": "#000000" },
+    { "type": "color", "id": "button_bg_color", "label": "Button background", "default": "#f72828" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "image_picker", "id": "avatar", "label": "Photo", "info": "Landscape crop, about 80 x 54." },
+        { "type": "checkbox", "id": "show_stars", "label": "Show 5 stars", "default": true },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Review",
+          "info": "Each paragraph gets an empty line after it. Use bold to emphasise a sentence.",
+          "default": "<p>Review text</p>"
+        },
+        { "type": "text", "id": "name", "label": "Name", "default": "Name Surname" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Reviews slider",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "text": "<p>Realno imam v lajfu 100 stvari in ko tamali vpraša: »Oči, kaj bova danes delala?«, moja kreativnost ni ravno na vrhuncu. 😅</p><p>Tle pa sam odpreš knjigo, izberem kaj bomo delal in maš vse napisano step by step. In pol na koncu izpadeš k Jordan med fotri 😂</p><p>Najboljši del pa je, da sta tamala čist not padla. Zdej ne rabim več razmišljat kaj bomo počel, ampak tamaledva težita, katera naloga je naslednja.</p><p>Ne vem, če sem zarad knjige boljši fotr. Definitivno pa zgledam, kot da mam vedno enga asa v rokavu :)</p>",
+            "name": "Jure Prinčič, Domžale"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "text": "<p>Kot babica sem knjigo z veseljem kupila zetu, ker podarja tisto, kar se mi zdi najbolj dragoceno – <b>skupni čas.</b></p><p>Polna je zabavnih idej, ki očeta in otroka spodbudijo, da skupaj kaj doživita, se nasmejita in predvsem uživata drug z drugim, saj prav iz takih trenutkov nastanejo spomini, ki si jih otroci za vedno zapomnijo.</p>",
+            "name": "Simona S., Ljubljana"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

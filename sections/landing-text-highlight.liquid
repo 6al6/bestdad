@@ -1,0 +1,203 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+  assign button_link = section.settings.button_link | default: '#product'
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+<section class="landing-th landing-th--{{ section.id }}">
+  <div class="landing-th__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="landing-th__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.band_text != blank -%}
+      {%- comment -%} Every line of this text gets a full-width colored bar behind it {%- endcomment -%}
+      <p class="landing-th__band">{{ section.settings.band_text | newline_to_br }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.body != blank -%}
+      <div class="landing-th__body landing-marker">{{ section.settings.body }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank or section.settings.note != blank -%}
+      <div class="landing-th__cta">
+        {% render 'landing-button', label: section.settings.button_label, link: button_link %}
+        {%- if section.settings.note != blank -%}
+          <p class="landing-th__note">{{ section.settings.note }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-th--{{ section.id }} {
+    --lb-bg: {{ section.settings.button_bg_color }};
+    --lb-text: {{ section.settings.button_text_color }};
+    --lb-border: {{ section.settings.button_border_color }};
+    --lb-shadow: {{ section.settings.text_color }};
+    --lb-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --lm-color: color-mix(in srgb, {{ section.settings.highlight_color }} {{ section.settings.highlight_opacity }}%, transparent);
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    text-align: {{ section.settings.text_align }};
+  }
+  .landing-th__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 60px 18px 20px;
+  }
+  .landing-th__heading {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.05;
+    color: inherit;
+    text-align: center;
+    text-transform: none;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+  /* 25px bar per 25.5px line (17px x 1.5), so a thin gap shows between the lines */
+  .landing-th__band {
+    margin: 0;
+    font-size: 17px;
+    line-height: 25.5px;
+    text-align: center;
+    color: {{ section.settings.band_text_color }};
+    background: repeating-linear-gradient(
+      to bottom,
+      {{ section.settings.band_color }} 0 25px,
+      transparent 25px 25.5px
+    );
+  }
+  .landing-th__body {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .landing-th__body p { margin: 0 0 1.5em; }
+  .landing-th__body p:last-child { margin-bottom: 0; }
+  .landing-th__body strong { font-weight: 700; }
+  .landing-th__cta {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .landing-th__note {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.2;
+    text-align: center;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Text + highlight",
+  "tag": "section",
+  "class": "landing-section",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Za vsakega fotra se najde prava misija."
+    },
+    {
+      "type": "textarea",
+      "id": "band_text",
+      "label": "Highlighted text",
+      "info": "Every line gets a full-width colored bar behind it. Leave blank for none.",
+      "default": "Za novopečene fotre, fotre veterane, očime, posvojitelje in vikend fotre."
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Text",
+      "info": "Each paragraph gets an empty line after it. Use Underline to highlight a phrase with the marker color.",
+      "default": "<p>Bodimo iskreni: ni treba, da fotr vse obvlada. Ni mu treba izumljati šal ali zabavati občinstva. Dovolj je, da se pridruži igri.</p><p>Lahko začne z branjem pravljice ali spuščanjem ladjice. Izbere naj misijo, ob kateri je obema z otrokom prijetno. Ni se mu treba afnati pred celo sosesko.</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "center"
+    },
+    { "type": "header", "content": "Button" },
+    {
+      "type": "paragraph",
+      "content": "Leave the label and note empty to hide the button."
+    },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "Leave blank to scroll to the product section (anchor #product)."
+    },
+    { "type": "text", "id": "note", "label": "Note under button" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#fef1d5" },
+    { "type": "color", "id": "text_color", "label": "Heading and text", "default": "#2b2d45" },
+    { "type": "color", "id": "band_color", "label": "Highlighted text bars", "default": "#ee614c" },
+    { "type": "color", "id": "band_text_color", "label": "Highlighted text", "default": "#fef1d5" },
+    { "type": "color", "id": "highlight_color", "label": "Marker highlight in text", "default": "#ee614c" },
+    {
+      "type": "range",
+      "id": "highlight_opacity",
+      "label": "Marker opacity (%)",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "default": 50
+    },
+    { "type": "color", "id": "button_bg_color", "label": "Button background", "default": "#f72828" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
+    { "type": "color", "id": "button_border_color", "label": "Button inner border", "default": "#fef1d5" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "presets": [{ "name": "Landing: Text + highlight" }]
+}
+{% endschema %}

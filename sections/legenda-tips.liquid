@@ -1,0 +1,290 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="legenda-tips legenda-tips--{{ section.id }}"
+  {% if section.settings.anchor_id != blank %}id="{{ section.settings.anchor_id | handle }}"{% endif %}
+>
+  <div class="legenda-tips__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="legenda-tips__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.intro != blank -%}
+      <div class="legenda-tips__intro landing-marker">{{ section.settings.intro }}</div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="legenda-tips__list" role="list">
+        {%- for block in section.blocks -%}
+          <li class="legenda-tips__item" {{ block.shopify_attributes }}>
+            <div class="legenda-tips__card">
+              {%- if block.settings.title != blank -%}
+                <h3 class="legenda-tips__title">{{ block.settings.title }}</h3>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <div class="legenda-tips__text">{{ block.settings.text }}</div>
+              {%- endif -%}
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.closing != blank -%}
+      <div class="legenda-tips__closing landing-marker">{{ section.settings.closing }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank -%}
+      <div class="legenda-tips__cta">
+        {% render 'landing-button', label: section.settings.button_label, link: section.settings.button_link %}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .legenda-tips--{{ section.id }} {
+    --lt-text: {{ section.settings.text_color }};
+    --lm-color: color-mix(in srgb, {{ section.settings.shadow_color }} 50%, transparent);
+    --lb-bg: {{ section.settings.button_bg_color }};
+    --lb-text: {{ section.settings.button_text_color }};
+    --lb-border: {{ section.settings.button_border_color }};
+    --lb-shadow: {{ section.settings.text_color }};
+    --lb-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    background: {{ section.settings.background_color }};
+    color: var(--lt-text);
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    scroll-margin-top: var(--landing-anchor-offset, 16px);
+  }
+  .legenda-tips__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 48px 18px 52px;
+  }
+  .legenda-tips__heading {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.05;
+    text-align: center;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .legenda-tips__intro,
+  .legenda-tips__closing {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .legenda-tips__intro p,
+  .legenda-tips__closing p { margin: 0 0 1em; }
+  .legenda-tips__intro p:last-child,
+  .legenda-tips__closing p:last-child { margin-bottom: 0; }
+  .legenda-tips__intro strong,
+  .legenda-tips__closing strong { font-weight: 700; }
+  .legenda-tips__list {
+    display: grid;
+    gap: 32px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  /* Cards: same as the "Landing: FAQ" cards */
+  .legenda-tips__item {
+    position: relative;
+    isolation: isolate;
+    margin: 0 13px 15px 0;
+  }
+  .legenda-tips__item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    box-sizing: border-box;
+    border: 2px solid var(--lt-text);
+    background: {{ section.settings.shadow_color }};
+    transform: translate(13px, 15px);
+  }
+  .legenda-tips__card {
+    box-sizing: border-box;
+    height: 100%;
+    padding: 20px 20px 22px;
+    border: 2px solid var(--lt-text);
+    background: {{ section.settings.card_color }};
+  }
+  .legenda-tips__title {
+    margin: 0 0 14px;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 1.05;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .legenda-tips__text {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .legenda-tips__text p { margin: 0 0 0.75em; }
+  .legenda-tips__text p:last-child { margin-bottom: 0; }
+  .legenda-tips__text strong { font-weight: 700; }
+  .legenda-tips__text ul {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .legenda-tips__text ul + p,
+  .legenda-tips__text p + ul { margin-top: 12px; }
+  .legenda-tips__text li {
+    position: relative;
+    padding-left: 30px;
+  }
+  /* Check mark instead of a bullet */
+  .legenda-tips__text li::before {
+    content: '✓';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: {{ section.settings.shadow_color }};
+    color: {{ section.settings.card_color }};
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 22px;
+    text-align: center;
+  }
+  .legenda-tips__cta {
+    width: 100%;
+    max-width: 420px;
+    margin-inline: auto;
+  }
+  @media (min-width: 750px) {
+    .legenda-tips__inner { max-width: 1000px; padding: 64px 24px; }
+    .legenda-tips__heading { font-size: 44px; }
+    .legenda-tips__intro,
+    .legenda-tips__closing { max-width: 700px; margin-inline: auto; text-align: center; }
+    .legenda-tips__list { grid-template-columns: 1fr 1fr; gap: 24px; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Legenda: Tips",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "info": "Links ending in #navodila scroll here.",
+      "default": "navodila"
+    },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Kako ujeti dober trenutek?" },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Intro",
+      "default": "<p>Fotko in video lahko posnameš med katero od misij, na izletu, doma ali čisto mimogrede, ko se smejita, lovita, ležita, režita ali samo ždita. Ali lepita nalepke! <strong>Ničesar ni treba posebej režirati!</strong></p>"
+    },
+    {
+      "type": "richtext",
+      "id": "closing",
+      "label": "Text under the cards",
+      "default": "<p><strong>Otrokovega obraza ni treba pokazati.</strong> Roke, hrbet, objem, silhueta ali pogled čez ramo so čisto dovolj.</p><p><u>Bolj kot popoln posnetek nas zanima vajin resnični trenutek.</u></p>"
+    },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Oddaj fotko ali video" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "#oddaja scrolls to the form." },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text and borders", "default": "#2b2d45" },
+    { "type": "color", "id": "card_color", "label": "Card", "default": "#fef1d5" },
+    { "type": "color", "id": "shadow_color", "label": "Card offset block, checks and marker", "default": "#ee614c" },
+    { "type": "color", "id": "button_bg_color", "label": "Button background", "default": "#f72828" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
+    { "type": "color", "id": "button_border_color", "label": "Button inner border", "default": "#ffffff" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "info": "Emoji are allowed.", "default": "📸 Fotko naredi in pošlji" },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "info": "Use a bulleted list for the tips.",
+          "default": "<ul><li>pri dobri svetlobi.</li></ul>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Legenda: Tips",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "title": "📸 Fotko naredi in pošlji",
+            "text": "<ul><li>pri dobri svetlobi.</li><li>v čim višji kakovosti.</li><li>kot originalno fotografijo, ne posnetka zaslona, stisnjene različice ali fotografije, ki si jo večkrat poslal prek aplikacij.</li><li>Če lahko, naj bo na njej za nekaj sekund vidna tudi knjiga, nalepka ali Fotrovski megaplakat. Ni pa nujno! Ali je?</li></ul>"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "🎬 Video posnemi in pošlji",
+            "text": "<ul><li>pokončno.</li><li>dolg približno 8–20 sekund.</li><li>z dobro svetlobo in naravnim zvokom.</li><li>nekaj, kar se v videu zares zgodi: smeh, reakcijo, objem, petko, ples ali vrhunsko fotrovsko neumnost.</li><li>Če lahko, na koncu za nekaj sekund pokaži še knjigo, nalepko ali Fotrovski megaplakat. Ni pa nujno! Ali je?</li></ul>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

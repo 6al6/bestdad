@@ -1,0 +1,36 @@
+{%- comment -%}
+  SEO: product and book data for Google on the Slovenian landing page, so the
+  name "Jaz sem najboljši fotr na svetu" is read as a book. Rendered from
+  layout/theme.liquid.
+  Availability shows as pre-order while the book is sold ahead of stock (stock at
+  or below zero with "continue selling when out of stock"). Once stock arrives it
+  switches back to what Shopify reports.
+  ISBN and publisher come from the book press kit.
+{%- endcomment -%}
+{%- if template.suffix == 'landing' and request.locale.iso_code == 'sl' -%}
+  {%- assign seo_book = all_products['knjiga-najboljsi-fotr-na-svetu-komplet-s-plakatom-in-nalepkami'] -%}
+  {%- if seo_book != blank -%}
+    {%- liquid
+      assign seo_book_data = seo_book | structured_data
+      assign seo_book_variant = seo_book.selected_or_first_available_variant
+      if seo_book_variant.inventory_management == 'shopify' and seo_book_variant.inventory_policy == 'continue' and seo_book_variant.inventory_quantity <= 0
+        assign seo_book_data = seo_book_data | replace: 'InStock', 'PreOrder'
+      endif
+    -%}
+    <script type="application/ld+json">
+      {{ seo_book_data }}
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Book",
+        "name": "Jaz sem najboljši fotr na svetu",
+        "author": { "@type": "Person", "name": "Lado Bizovičar" },
+        "publisher": { "@type": "Organization", "name": "Periskop d. o. o." },
+        "isbn": "9789619754900",
+        "inLanguage": "sl",
+        "url": {{ request.origin | append: page.url | json }}
+      }
+    </script>
+  {%- endif -%}
+{%- endif -%}

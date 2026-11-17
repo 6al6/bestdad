@@ -1,0 +1,906 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "custom.home_sl",
+  "name": "Domača stran (SLO)",
+  "sections": {
+    "fx_hero": {
+      "type": "landing-fx-hero",
+      "blocks": {
+        "s1": {
+          "type": "sticker",
+          "settings": {
+            "kind": "soft-burst",
+            "image": "",
+            "text": "28\nmisij",
+            "link": "",
+            "text_size": 15,
+            "left": 92,
+            "top": 56,
+            "size": 150,
+            "rotate": 8,
+            "layer": 30,
+            "mobile_left": 92,
+            "mobile_top": 56,
+            "mobile_scale": 55,
+            "hide_mobile": false,
+            "motion": "drift",
+            "strength": 60,
+            "reverse": false,
+            "slap": true,
+            "bg": "#f6b52e",
+            "fg": "#2b2d45",
+            "outline": "#2b2d45",
+            "shadow": true
+          }
+        }
+      },
+      "block_order": [
+        "s1"
+      ],
+      "settings": {
+        "show_stars": false,
+        "quote": "",
+        "quote_author": "",
+        "kicker": "Knjiga najboljši Fotr.",
+        "heading": "Za fotre,\nki jim ni\nvseeno.",
+        "accent_line": 3,
+        "max_size": 250,
+        "max_size_mobile": 120,
+        "image": "shopify://shop_images/H_Cover_SLO_V1.jpg",
+        "image_shape": "frame",
+        "image_ratio": "16 / 10",
+        "image_position": "50% 40%",
+        "image_width": 900,
+        "image_tilt": -2,
+        "overlap": 8,
+        "overlap_mobile_custom": true,
+        "overlap_mobile": 8,
+        "text": "<strong>Misije, nalepke, slava. Sistem za fotrovanje v praksi.</strong>",
+        "button_label": "Kupi komplet",
+        "button_link": "#dad-book-product-anchor",
+        "note": "Epsko darilo za vse fotre ❤️",
+        "note_link": "",
+        "trust_line": "",
+        "show_price": true,
+        "product": "knjiga-najboljsi-fotr-na-svetu-komplet-s-plakatom-in-nalepkami",
+        "product_handle": "knjiga-najboljsi-fotr-na-svetu-komplet-s-plakatom-in-nalepkami",
+        "show_compare": true,
+        "save_label": "Prihrani [amount]",
+        "save_bg_color": "#f6b52e",
+        "save_text_color": "#2b2d45",
+        "mobile_compact": true,
+        "fold_first": true,
+        "fold_title_max": 56,
+        "fold_image_ratio": "4 / 3",
+        "fold_hide_header": true,
+        "background_color": "#fef1d5",
+        "text_color": "#2b2d45",
+        "accent_color": "#ee614c",
+        "ink_color": "#2b2d45",
+        "star_color": "#f72828",
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "button_border_color": "#fef1d5",
+        "divider_bottom_color": "#2b2d45",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "home_video": {
+      "type": "landing-fx-video",
+      "blocks": {
+        "sticker_watch": {
+          "type": "sticker",
+          "settings": {
+            "kind": "burst",
+            "text": "Poglej\nto",
+            "text_size": 15,
+            "left": 92,
+            "top": 8,
+            "size": 130,
+            "rotate": -8,
+            "layer": 30,
+            "mobile_left": 88,
+            "mobile_top": 6,
+            "mobile_scale": 70,
+            "hide_mobile": false,
+            "motion": "spin",
+            "strength": 100,
+            "reverse": false,
+            "slap": true,
+            "bg": "#f72828",
+            "fg": "#fef1d5",
+            "outline": "#2b2d45",
+            "shadow": true
+          }
+        }
+      },
+      "block_order": [
+        "sticker_watch"
+      ],
+      "name": "Landing FX: Video",
+      "settings": {
+        "video": "shopify://files/videos/BD_Ash_UGC_Evgheni_Edit_01.mp4",
+        "autoplay": true,
+        "loop": true,
+        "video_ratio": "auto",
+        "max_height": "720",
+        "sound_label": "🔊 Tapni za zvok",
+        "mute_label": "🔇 Utišaj",
+        "play_label": "Predvajaj video",
+        "video_side": "left",
+        "video_width_mobile": 420,
+        "video_width_desktop": 460,
+        "video_tilt": -2,
+        "shadow_offset": 14,
+        "kicker": "30 sekund",
+        "heading": "To je celoten sistem.",
+        "heading_size_mobile": 34,
+        "heading_size_desktop": 50,
+        "body": "<p>Iztrgaj misijo. Sledi scenariju. Otrok podeli nalepko, plakat se polni, ti pa izgledaš, kot da si to načrtoval cel teden.</p><p><span style=\"text-decoration:underline\">Nisi. Ni treba, da kdo ve.</span></p>",
+        "copy_first_mobile": false,
+        "button_label": "Kupi komplet",
+        "button_link": "#dad-book-product-anchor",
+        "note": "Plakat in 28 nalepk priloženih.",
+        "padding_mobile": 48,
+        "padding_desktop": 88,
+        "background_color": "#2b2d45",
+        "text_color": "#fef1d5",
+        "ink_color": "#fef1d5",
+        "shadow_color": "#ee614c",
+        "marker_color": "#ee614c",
+        "kicker_bg": "#f6b52e",
+        "kicker_text": "#2b2d45",
+        "sound_bg": "#fef1d5",
+        "sound_text": "#2b2d45",
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "button_border_color": "#2b2d45",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "text_columns_with_images_dxBeAd": {
+      "type": "text-columns-with-images",
+      "blocks": {
+        "shape_divider_CDeNqR": {
+          "type": "shape_divider",
+          "settings": {
+            "target_section": "below",
+            "target_section_color_scheme": "scheme1",
+            "style": "waves-1-patterned_1200x20",
+            "flip_horizontal": false,
+            "enable_animation": true,
+            "animation_direction": "reverse"
+          }
+        },
+        "sticker_F38kVQ": {
+          "type": "sticker",
+          "settings": {
+            "width": 120,
+            "half_width_on_mobile": true,
+            "text": "Nalepka",
+            "shape": "star_1",
+            "sticker_font_size": "1.563rem",
+            "image": "shopify://shop_images/Astronaut.png",
+            "horizontal_position": 92,
+            "vertical_position": 100,
+            "rotate": 10,
+            "show_sticker_on_mobile": true,
+            "show_sticker_on_desktop": true,
+            "rotation_animation": "none",
+            "enable_parallax": true,
+            "parallax_speed": 3,
+            "color_scheme": "scheme1",
+            "color": "bg-scheme-accent-1 text-scheme-accent-1-contrast"
+          }
+        },
+        "column_PLJH7U": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "image": "shopify://shop_images/I_AM_BEST_Tear_Off_M.gif",
+            "title": "",
+            "text": "<h3>📖 #1 - Izberita misijo.</h3><p>V knjigi te čaka 28 misij. Ikone ti povedo, katera danes ne bo uničila stanovanja, otroka ali tvojega mentalnega zdravja. Ko jo najdeš, iztrgaj stran. Ja, res!</p>",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        },
+        "column_wpXpck": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "image": "shopify://shop_images/Fotr_Risanje_Miza.jpg",
+            "title": "",
+            "text": "<h3>🎯 #2 - Sledi scenariju in ne pozabi na zabavo</h3><p>Otroštvo mine. Tista čudna, zabavna, rahlo kaotična stvar, ki sta jo naredila s fotrom? To ostane.</p>",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        },
+        "column_8ixNxA": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "image": "shopify://shop_images/BD_Sticker_on_poster_1-1.jpg",
+            "title": "",
+            "text": "<h3><strong>🏅</strong> #3 - Nalepi dokaz slave.</h3><p>Opravljeno misijo proslavita z nalepko na Fotrovskem megaplakatu.</p>",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        },
+        "column_GrDkMe": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "image": "shopify://shop_images/BD_Poster_On_The_Wall_W_Sticker.jpg",
+            "title": "",
+            "text": "<h3>🖼️ #4 - Vajini spomini na očeh.</h3><p>Plakat obesita ob otrokovo posteljo. Vsak dan ga spomni: »To sva naredila midva z očijem.«</p>",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": "scheme1"
+          }
+        }
+      },
+      "block_order": [
+        "shape_divider_CDeNqR",
+        "sticker_F38kVQ",
+        "column_PLJH7U",
+        "column_wpXpck",
+        "column_8ixNxA",
+        "column_GrDkMe"
+      ],
+      "name": "Steps",
+      "settings": {
+        "display_on_card": true,
+        "slideshow_on_mobile": false,
+        "title": "Štirje koraki do zmage v fotrovanju. Brez kompliciranja.",
+        "crop": "",
+        "image_shape": "default",
+        "show_index_on_blocks": false,
+        "index_shape": "star_1",
+        "color_scheme": "scheme4",
+        "use_gradient_background": false
+      }
+    },
+    "fx_kit": {
+      "type": "landing-fx-kit",
+      "blocks": {
+        "c0": {
+          "type": "card",
+          "settings": {
+            "emoji": "⛺",
+            "title": "Knjiga z 28 misijami",
+            "text": "za fotra in otroka"
+          }
+        },
+        "c1": {
+          "type": "card",
+          "settings": {
+            "emoji": "🗒️",
+            "title": "Jasna navodila",
+            "text": "po korakih"
+          }
+        },
+        "c2": {
+          "type": "card",
+          "settings": {
+            "emoji": "🏆",
+            "title": "28 nalepk",
+            "text": "za opravljene misije"
+          }
+        },
+        "c3": {
+          "type": "card",
+          "settings": {
+            "emoji": "🔥",
+            "title": "Fotrovski megaplakat",
+            "text": "skupnih dosežkov"
+          }
+        },
+        "c4": {
+          "type": "card",
+          "settings": {
+            "emoji": "✉️",
+            "title": "Božičkovo pismo",
+            "text": "s kuverto s Severnega pola"
+          }
+        },
+        "c5": {
+          "type": "card",
+          "settings": {
+            "emoji": "📱",
+            "title": "QR-kode",
+            "text": "za poročila o misijah, ki jih fotr deli s familijo"
+          }
+        }
+      },
+      "block_order": [
+        "c0",
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5"
+      ],
+      "settings": {
+        "heading": "Priročnik za epsko fotrstvo. Končno!",
+        "intro": "To ni samo knjiga. To je fotrovski komplet za spomine, ki ostanejo.",
+        "image": "shopify://shop_images/25027fa84f0fa432c488efda825b5ee8ffd4f4cd.webp",
+        "image_shape": "scallop",
+        "image_position": "50% 50%",
+        "ray_shape": "soft-burst",
+        "ray_motion": true,
+        "button_label": "Kupi komplet",
+        "button_link": "#dad-book-product-anchor",
+        "note": "",
+        "background_color": "#fef1d5",
+        "text_color": "#2b2d45",
+        "ray_color": "#ee614c",
+        "card_color": "#ffffff",
+        "card_text_color": "#2b2d45",
+        "ink_color": "#2b2d45",
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "button_border_color": "#fef1d5",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "curved_text_3MKd4D": {
+      "type": "curved-text",
+      "custom_css": [],
+      "name": "t:sections.curved_text.name",
+      "settings": {
+        "text": "Fotr starter pack 👉 knjiga 📘 plakat slave 🏆 nalepke ⭐ 28 misij 💥 epski spomini za celo življenje ❤️",
+        "link": "shopify://products/knjiga-najboljsi-fotr-na-svetu-komplet-s-plakatom-in-nalepkami",
+        "custom_class": "ukrivljeno-besedilo-domov-razred",
+        "custom_data_id": "",
+        "wave_height": 200,
+        "wave_width": 250,
+        "speed": 1,
+        "mobile_text_scale": 2,
+        "desktop_text_scale": 4,
+        "font": "font-heading",
+        "enable_animation": true,
+        "pause_on_hover": false,
+        "direction": "rtl",
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "reviews": {
+      "type": "landing-reviews",
+      "blocks": {
+        "review_tFVf6t": {
+          "type": "review",
+          "settings": {
+            "avatar": "shopify://shop_images/Screenshot_2026-09-22_at_07.55.25_1.jpg",
+            "show_stars": true,
+            "text": "<p>Realno imam v lajfu 100 stvari in ko tamali vpraša: »<em>Oči, kaj bova danes delala?</em>«, moja kreativnost ni ravno na vrhuncu. 😅<br/><br/>Tle pa sam odpreš knjigo, izberem kaj bomo delal in maš vse napisano step by step. In pol na koncu izpadeš k Jordan med fotri 😂<br/><br/>Najboljši del pa je, da sta tamala čist not padla. Zdej ne rabim več razmišljat kaj bomo počel, ampak tamaledva težita, katera naloga je naslednja.<br/><br/>Ne vem, če sem zarad knjige boljši fotr. Definitivno pa zgledam, kot da mam vedno enga asa v rokavu :)</p>",
+            "name": "Jure Prinčič, Domžale"
+          }
+        },
+        "review_zfDjGb": {
+          "type": "review",
+          "settings": {
+            "avatar": "shopify://shop_images/CC9B492B-DBFD-483E-8613-31F6290A14BD.webp",
+            "show_stars": true,
+            "text": "<p>Kot babica sem knjigo z veseljem kupila zetu, ker podarja tisto, kar se mi zdi najbolj dragoceno – <strong>skupni čas. </strong></p><p>Polna je zabavnih idej, ki očeta in otroka spodbudijo, da skupaj kaj doživita, se nasmejita in predvsem uživata drug z drugim, saj prav iz takih trenutkov nastanejo spomini, ki si jih otroci za vedno zapomnijo.</p>",
+            "name": "Simona S., Ljubljana"
+          }
+        }
+      },
+      "block_order": [
+        "review_tFVf6t",
+        "review_zfDjGb"
+      ],
+      "name": "Landing: Reviews",
+      "settings": {
+        "heading_avatar": "shopify://shop_images/image_7.webp",
+        "heading": "Tole pravijo tisti, ki so komplet preizkusili.",
+        "show_button": false,
+        "button_label": "Fotr, povej, kako je šlo",
+        "button_link": "https://judge.me/product_reviews/c703cde9-2e08-4cf3-978e-27bd133b7a1d/new?source=shareable-link",
+        "background_color": "#ffffff",
+        "heading_color": "#000000",
+        "text_color": "#2b2d45",
+        "stars_color": "#ee614c",
+        "avatar_border_color": "#000000",
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "fx_marquee": {
+      "type": "landing-fx-marquee",
+      "settings": {
+        "text": "Brez priprave. Resno.\nNajboljše darilo za novopečene fotre\nNič kompliciranja. Samo fotr, otrok in dobra ideja",
+        "separator": "star",
+        "separator_image": "",
+        "spin_separator": true,
+        "text_size": 56,
+        "text_size_mobile": 28,
+        "speed": 70,
+        "direction": "left",
+        "scroll_boost": true,
+        "tilt": -3,
+        "band_color": "#f72828",
+        "band_text_color": "#fef1d5",
+        "band_border_color": "#2b2d45",
+        "separator_color": "#f6b52e",
+        "show_second": true,
+        "text_2": "Preprosti skripti po korakih na odtrgljivih straneh\nManj potrebe za psiho-terapijo v prihodnosti",
+        "tilt_2": 2.5,
+        "band_color_2": "#2b2d45",
+        "band_text_color_2": "#fef1d5",
+        "band_border_color_2": "#2b2d45",
+        "separator_color_2": "#ee614c",
+        "background_color": "#ffffff",
+        "padding": 40,
+        "anchor_id": "",
+        "divider_bottom_color": "#fef1d5",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "fx_layer_returns": {
+      "type": "landing-fx-stickers",
+      "blocks": {
+        "s1": {
+          "type": "sticker",
+          "settings": {
+            "kind": "scallop",
+            "image": "",
+            "text": "30 dni\nza vračilo",
+            "text_size": 15,
+            "left": 12,
+            "top": 50,
+            "size": 150,
+            "rotate": -10,
+            "layer": 30,
+            "mobile_left": 12,
+            "mobile_top": 50,
+            "mobile_scale": 55,
+            "hide_mobile": false,
+            "motion": "none",
+            "strength": 60,
+            "reverse": false,
+            "slap": true,
+            "bg": "#f6b52e",
+            "fg": "#2b2d45",
+            "outline": "#2b2d45",
+            "shadow": true
+          }
+        }
+      },
+      "block_order": [
+        "s1"
+      ],
+      "settings": {
+        "height": 240
+      }
+    },
+    "product": {
+      "type": "landing-product",
+      "blocks": {
+        "feature_my3MNq": {
+          "type": "feature",
+          "settings": {
+            "emoji": "⛺",
+            "text": "<b>Knjiga z 28 misijami</b> za fotra in otroka"
+          }
+        },
+        "feature_jqVGr6": {
+          "type": "feature",
+          "settings": {
+            "emoji": "🗒️",
+            "text": "<b>Jasna navodila</b> po korakih"
+          }
+        },
+        "feature_nc3Vqy": {
+          "type": "feature",
+          "settings": {
+            "emoji": "🏆",
+            "text": "<b>28 nalepk</b> za opravljene misije"
+          }
+        },
+        "feature_XqyNXX": {
+          "type": "feature",
+          "settings": {
+            "emoji": "🔥",
+            "text": "<strong>Fotrovski megaplakat</strong> skupnih dosežkov"
+          }
+        },
+        "feature_qXgzmc": {
+          "type": "feature",
+          "settings": {
+            "emoji": "📲",
+            "text": "<strong>Digitalni pomočnik</strong> s pripravljenimi poročili za familijo in frende"
+          }
+        },
+        "feature_RYL43a": {
+          "type": "feature",
+          "settings": {
+            "emoji": "✉️",
+            "text": "<strong>Božičkovo pismo</strong>"
+          }
+        },
+        "feature_mT7LxU": {
+          "type": "feature",
+          "settings": {
+            "emoji": "📬",
+            "text": "<strong>Kuverta</strong> s Severnega pola"
+          }
+        },
+        "divider_dfV3PC": {
+          "type": "divider",
+          "settings": {
+            "color": "#2b2d45",
+            "opacity": 40
+          }
+        },
+        "feature_PUFT4B": {
+          "type": "feature",
+          "settings": {
+            "emoji": "❤️",
+            "text": "<strong>Fotr, časa je manj, kot misliš …</strong>"
+          }
+        },
+        "feature_dBzrwY": {
+          "type": "feature",
+          "settings": {
+            "emoji": "",
+            "text": "… začni ustvarjati spomine."
+          }
+        },
+        "trust_aiwKyw": {
+          "type": "trust",
+          "settings": {
+            "icon": "star",
+            "text": "Plakat in nalepke priložene"
+          }
+        },
+        "trust_iMW9Eq": {
+          "type": "trust",
+          "settings": {
+            "icon": "heart",
+            "text": "Varno plačilo"
+          }
+        },
+        "trust_bJQgyB": {
+          "type": "trust",
+          "settings": {
+            "icon": "clock",
+            "text": "30 dni za vračilo neodprtega kompleta"
+          }
+        }
+      },
+      "block_order": [
+        "feature_my3MNq",
+        "feature_jqVGr6",
+        "feature_nc3Vqy",
+        "feature_XqyNXX",
+        "feature_qXgzmc",
+        "feature_RYL43a",
+        "feature_mT7LxU",
+        "divider_dfV3PC",
+        "feature_PUFT4B",
+        "feature_dBzrwY",
+        "trust_aiwKyw",
+        "trust_iMW9Eq",
+        "trust_bJQgyB"
+      ],
+      "name": "Landing: Product",
+      "settings": {
+        "product": "the-best-dad-book",
+        "alt_product": "knjiga-najboljsi-fotr-na-svetu-komplet-s-plakatom-in-nalepkami",
+        "alt_language_code": "sl",
+        "product_handle": "the-best-dad-book,knjiga-najboljsi-fotr-na-svetu-komplet-s-plakatom-in-nalepkami",
+        "anchor_id": "dad-book-product-anchor",
+        "variant": "light",
+        "show_stars": true,
+        "banner_text": "Mednarodna uspešnica. Zdaj tudi v slovenščini.",
+        "title": "Jaz sem najboljši fotr na svetu – komplet s plakatom in nalepkami.",
+        "lead": "",
+        "text": "To ni samo knjiga. To je fotrovski komplet za spomine, ki ostanejo.",
+        "savings_label": "Prihrani [amount]",
+        "sale_note": "",
+        "button_label": "Kupi komplet",
+        "shipping_note": "Naročilo običajno odpošljemo naslednji delovni dan.",
+        "price_note": "* Najnižja cena v 30 dneh",
+        "alt_link_text": "Iščeš angleško izdajo? <b>The Best Dad Book</b> →",
+        "alt_link_url": "/products/the-best-dad-book",
+        "bar_enabled": false,
+        "bar_display": "both",
+        "bar_label_1": "Knjiga je na zalogi!",
+        "bar_label_2": "",
+        "bar_label_3": "",
+        "bar_link": "",
+        "bar_background_color": "#fef1d5",
+        "bar_chip_color": "#ee614c",
+        "bar_chip_text_color": "#ffffff",
+        "bar_photo_border_color": "#2b2d45",
+        "background_color": "#fef1d5",
+        "text_color": "#2b2d45",
+        "soft_color": "",
+        "accent_color": "#ee614c",
+        "price_color": "",
+        "banner_text_color": "#fef1d5",
+        "sale_note_color": "#f72828",
+        "gallery_border_color": "",
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "divider_bottom_color": "#ffffff",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "faq": {
+      "type": "landing-faq",
+      "blocks": {
+        "question_OR7meZ": {
+          "type": "question",
+          "settings": {
+            "title": "Za katero starost otroka je komplet primeren?",
+            "answer": "<p>Za skupno igro fotra in otroka od približno 1 do 12 let. Vsaka misija ni za vsako starost, zato pri izbiri pomagajo oznake v knjigi. Pri malčku več vodi fotr, starejšemu otroku pa lahko prepusti več načrtovanja in izvedbe.</p>"
+          }
+        },
+        "question_uxYl4E": {
+          "type": "question",
+          "settings": {
+            "title": "Lahko misije izpeljejo tudi mame, babice in dedki?",
+            "answer": "<p>Lahko. Knjiga je napisana za fotre, pri misijah pa lahko sodelujejo tudi mame, babice, dedki in drugi odrasli, ki so otroku blizu. Za gradnjo utrdbe iz WC-papirja ne preverjamo očetovstva.</p>"
+          }
+        },
+        "question_e4JeZW": {
+          "type": "question",
+          "settings": {
+            "title": "Se bo otrok teh skupnih podvigov res spomnil?",
+            "answer": "<p>Ne moremo obljubiti, da si bo zapomnil vsak trenutek. Misije pa fotru in otroku ponudijo nekaj nevsakdanjega, plakat z nalepkami pa priložnost, da podvige znova obujata. Ob njem si lahko pripovedujeta, kaj sta naredila in kaj ju je najbolj nasmejalo. In tako prideta do: »<em>A se spomniš, ko sva …?</em>«</p>"
+          }
+        },
+        "question_TO9a8N": {
+          "type": "question",
+          "settings": {
+            "title": "Kaj s kompletom pridobita fotr in otrok ter kako ju to povezuje?",
+            "answer": "<p>Otrok dobi fotrovo pozornost in priložnost, da predlaga, poskusi in skupaj z njim nekaj izpelje. Fotr dobi pripravljene ideje in jasna navodila, zato mu ni treba vsakič izumljati programa. Skupaj nabirata svoje fore in male zmage. Tudi fotri potrebujejo kakšen dokaz, da jim gre.</p>"
+          }
+        },
+        "question_pLuORG": {
+          "type": "question",
+          "settings": {
+            "title": "Zakaj je ta komplet boljši od igrače?",
+            "answer": "<p><strong>Ker zraven pride tudi fotr.</strong> Komplet <strong>Jaz sem najboljši fotr na svetu</strong> ponuja 28 idej za podvige, ki jih fotr in otrok izpeljeta skupaj. Igrač ima otrok mogoče že dovolj. Fotra v vlogi pirata pa verjetno še ni imel priložnosti oceniti.</p>"
+          }
+        },
+        "question_gysU5W": {
+          "type": "question",
+          "settings": {
+            "title": "Je to knjiga o starševstvu?",
+            "answer": "<p>To je knjiga za uporabo: 28 misij z navodili za skupno akcijo. Fotr izbere misijo, iztrga stran in se z otrokom lotita podviga. Pridige o tem, kaj vse starši delajo narobe, smo izpustili. Virov za to je že dovolj.</p>"
+          }
+        },
+        "question_GkRq9k": {
+          "type": "question",
+          "settings": {
+            "title": "Kako skupaj delujejo misije, nalepke in plakat?",
+            "answer": "<p>Fotrovski recept je preprost: <strong>akcija, čustva, ritual, opomnik</strong>. Fotr in otrok izbereta misijo in skupaj ušpičita nekaj nevsakdanjega. Smeh, presenečenje in ponos so del podviga. Opravljeno misijo proslavita z nalepko, Fotrovski megaplakat pa otroka spomni: »<em>To sva naredila midva z očijem.</em>«</p>"
+          }
+        },
+        "question_8aWvJz": {
+          "type": "question",
+          "settings": {
+            "title": "Se lahko misije ponavljajo?",
+            "answer": "<p>Lahko. Stran se iztrga enkrat, podvig pa lahko fotr in otrok ponovita ali si izmislita svojo različico. List z navodili lahko shranita za naslednjič. Če je otrok navdušen nad fotrovo piratsko kariero, je ni treba končati po eni odpravi.</p>"
+          }
+        },
+        "question_tBYvwW": {
+          "type": "question",
+          "settings": {
+            "title": "Bo otroku sploh mar za plakat?",
+            "answer": "<p>Na njem so njuni podvigi. Otrok lahko sam nalepi nalepko in pove, kaj mu je bilo pri misiji najbolj všeč. Plakat naj visi tam, kjer ga bo videl vsak dan. Tako ima pred očmi, kaj sta s fotrom že izpeljala in kaj ju še čaka.</p>"
+          }
+        },
+        "question_lwGGkV": {
+          "type": "question",
+          "settings": {
+            "title": "Zakaj se iz knjige trgajo strani?",
+            "answer": "<p>Strani z misijami so namenjene trganju. Fotr izbere misijo, preveri navodila in iztrga stran za skupno akcijo. To je ena redkih knjig, pri katerih manjkajoče strani pomenijo, da jo nekdo uporablja pravilno.</p>"
+          }
+        },
+        "question_Efudvh": {
+          "type": "question",
+          "settings": {
+            "title": "Koliko časa trajajo misije? Kaj pa, če je fotr zelo zaposlen?",
+            "answer": "<p>Krajše misije trajajo približno 15–30 minut, daljše uro ali dve. Ob vsaki so označeni trajanje, potrebščine in priprava. Tako fotr izbere misijo glede na čas, ki ga imata z otrokom. Ni treba vseh 28 izpeljati do nedelje.</p>"
+          }
+        },
+        "question_pIQsCF": {
+          "type": "question",
+          "settings": {
+            "title": "Bo veliko pospravljanja?",
+            "answer": "<p>Odvisno od misije. Skrivni pogovor pusti manj posledic kot slikarska seansa. Seznam potrebščin pomaga oceniti, koliko priprav in zaščite prostora bo potrebnih. Pri pospravljanju lahko sodelujeta fotr in otrok. Tudi to je skupna dejavnost, žal.</p>"
+          }
+        },
+        "question_K4nVI3": {
+          "type": "question",
+          "settings": {
+            "title": "Kaj pa, če fotr ni spreten ali mu je nerodno?",
+            "answer": "<p>Začne lahko z misijo, pri kateri mu je udobno. Dobi jasna navodila, popolne izvedbe pa nihče ne pričakuje. Če je njegova papirnata ladjica malo postrani, lahko z otrokom še vedno poskusita, ali plava. Ni treba, da je popolno. Mora se samo zgoditi.</p>"
+          }
+        },
+        "question_QadXsM": {
+          "type": "question",
+          "settings": {
+            "title": "Je to dobro darilo za fotra?",
+            "answer": "<p>Za fotra, ki bi z otrokom rad kaj počel, pa mu ob »<em>Kaj bova danes?</em>« zmanjka idej, je to zelo uporabno darilo. V kompletu dobi knjigo z misijami, nalepke in plakat, zraven pa še Božičkovo pismo s kuverto s Severnega pola. Plan smo napisali mi. Zasluge bo pobral on.</p>"
+          }
+        },
+        "question_gIzCa3": {
+          "type": "question",
+          "settings": {
+            "title": "Zakaj kupiti komplet že danes?",
+            "answer": "<p>Ker »<em>enkrat, ko bo manj dela</em>« rad ostane samo stavek. S kompletom so ideje pri roki, ko se pojavi priložnost za skupno akcijo. Za začetek fotr in otrok izbereta eno misijo. Fotrovska kariera se lahko nadgrajuje sproti.</p>"
+          }
+        },
+        "question_0UMolZ": {
+          "type": "question",
+          "settings": {
+            "title": "Ali jo bo fotr dejansko prebral?",
+            "answer": "<p>Knjiga je napisana s humorjem na račun fotrov. Zato ima dobre možnosti, da jo bo odprl tudi zaradi branja. Za prvi podvig pa zadostujejo navodila ene misije. Potem naj knjigo odloži in gre z otrokom v akcijo.</p>"
+          }
+        },
+        "question_ux2v9l": {
+          "type": "question",
+          "settings": {
+            "title": "Je komplet za novopečene fotre, veterane, očime in fotre ob vikendih?",
+            "answer": "<p>Za vse naštete. Uporabljajo ga lahko tudi posvojitelji, rejniki in drugi odrasli v očetovski vlogi. Izbira misije je odvisna od otrokove starosti in časa, ki ga imata skupaj. Tudi novopečeni fotr začne s tistimi, ki so primerne za njegovega otroka. Staž pri zlaganju papirnate ladjice tako ali tako ne pomaga nujno.</p>"
+          }
+        },
+        "question_0siCZg": {
+          "type": "question",
+          "settings": {
+            "title": "Je komplet zares uporaben ali je samo darilo za šalo?",
+            "answer": "<p>Vsaka misija ima konkreten načrt: kaj fotr in otrok potrebujeta, koliko časa si vzameta in kako se je lotita. Lahko iščeta piratski zaklad, gradita utrdbo ali iz palačink delata umetnine. Humor je priložen. Navodila so uporabna tudi, če se fotr nobeni naši šali ne nasmeje.</p>"
+          }
+        },
+        "question_K1bEtC": {
+          "type": "question",
+          "settings": {
+            "title": "Kaj s kompletom dobi otrok?",
+            "answer": "<p>Fotra, ki ima idejo in je pripravljen sodelovati. Skupaj se lotita podvigov, ki lahko postanejo njune zgodbe, na plakatu pa zbirata dokaze o opravljenih misijah. Komplet je napisan za fotra. Pri akciji sta glavna oba.</p>"
+          }
+        },
+        "question_ZBsmYj": {
+          "type": "question",
+          "settings": {
+            "title": "Kaj je vključeno v komplet?",
+            "answer": "<p>Vse je vključeno:</p><ul><li>Knjiga z 28 misijami in jasnimi navodili.</li><li>28 nalepk za opravljene misije.</li><li>Fotrovski megaplakat skupnih dosežkov.</li><li>Božičkovo pismo.</li><li>Kuverta s Severnega pola.</li></ul><p><br/>V knjigi so tudi QR-kode za poročila o opravljenih misijah, ki jih lahko fotr deli s familijo.</p>"
+          }
+        },
+        "question_S9Q3hL": {
+          "type": "question",
+          "settings": {
+            "title": "Zakaj so nalepke pomembne in ali lahko naročim dodatne?",
+            "answer": "<p>Nalepka je mala proslava skupnega podviga: fotr in otrok sta misijo izpeljala in na Fotrovskem megaplakatu je nov dokaz. Otrok vidi, kaj sta že doživela, in lahko izbere naslednji podvig.</p><p>Dodatne komplete nalepk lahko naročiš posebej: <a href=\"/products/paket-plakat-in-nalepke\" title=\"Paket: Plakat &quot;Dosežki najboljšega Fotra + komplet nalepk\">Paket: Plakat \"Dosežki najboljšega Fotra + komplet nalepk</a>. Tudi če je prvi komplet že na omari.</p>"
+          }
+        },
+        "question_LeAshy": {
+          "type": "question",
+          "settings": {
+            "title": "Je za misije potrebno posebno orodje ali izlet v Bauhaus?",
+            "answer": "<p>Večina potrebščin je običajno že doma. Pri vsaki misiji je seznam, zato fotr vnaprej preveri, kaj ima in kaj mora pripraviti ali dokupiti. Najprej pridejo na vrsto domači predali. Izlet v Bauhaus bo moral upravičiti kako drugače.</p>"
+          }
+        },
+        "question_f5kHRb": {
+          "type": "question",
+          "settings": {
+            "title": "So misije varne?",
+            "answer": "<p>Odrasli izbere misijo glede na otrokovo starost in sposobnosti, prebere navodila ter je ves čas zraven. Pri vodi, kuhanju, orodju ali drobnih predmetih poskrbi za ustrezne pripomočke in nadzor. Če otroku ali odraslemu nekaj ni prijetno ali varno, misijo prilagodita ali izbereta drugo.</p>"
+          }
+        },
+        "question_65JG0L": {
+          "type": "question",
+          "settings": {
+            "title": "Kaj pa, če otrok hitro izgubi zanimanje?",
+            "answer": "<p>Fotr lahko začne s krajšo misijo in otroku prepusti kakšno odločitev. Če ga misija ne pritegne, jo prilagodita, naredita premor ali izbereta drugo. Vseh 28 ni treba izpeljati po vrsti. Knjiga bo počakala. Tudi pirati imajo prost dan.</p>"
+          }
+        },
+        "question_n5mIHV": {
+          "type": "question",
+          "settings": {
+            "title": "Kakšnemu fotru bo komplet všeč?",
+            "answer": "<p>Predvsem takšnemu, ki mu je blizu malo fotrovske neumnosti in bi z otrokom rad kaj počel, pa mu včasih zmanjka idej. Dobi jasna navodila za skupne podvige, zato mu ni treba izumljati programa za vsako popoldne. Za prvo misijo zadostuje pripravljenost, da se pridruži igri.</p>"
+          }
+        },
+        "question_wNmRkv": {
+          "type": "question",
+          "settings": {
+            "title": "Kaj pa, če fotr ne mara brati?",
+            "answer": "<p>Knjige mu ni treba prebrati od prve do zadnje strani. Po oznakah izbere primerno misijo, prebere navodila in gre z otrokom v akcijo. Če mu branje ne diši, ga bo mogoče prepričalo trganje strani.</p>"
+          }
+        },
+        "question_GT47De": {
+          "type": "question",
+          "settings": {
+            "title": "Kje je knjiga natisnjena in kdaj dobim komplet?",
+            "answer": "<p>Knjigo tiskamo v <strong>EU</strong>. Naročilo običajno odpošljemo <strong>naslednji delovni dan</strong>. Dostava po Sloveniji predvidoma traja <strong>1–3 delovne dni od odpreme.</strong></p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_OR7meZ",
+        "question_uxYl4E",
+        "question_e4JeZW",
+        "question_TO9a8N",
+        "question_pLuORG",
+        "question_gysU5W",
+        "question_GkRq9k",
+        "question_8aWvJz",
+        "question_tBYvwW",
+        "question_lwGGkV",
+        "question_Efudvh",
+        "question_pIQsCF",
+        "question_K4nVI3",
+        "question_QadXsM",
+        "question_gIzCa3",
+        "question_0UMolZ",
+        "question_ux2v9l",
+        "question_0siCZg",
+        "question_K1bEtC",
+        "question_ZBsmYj",
+        "question_S9Q3hL",
+        "question_LeAshy",
+        "question_f5kHRb",
+        "question_65JG0L",
+        "question_n5mIHV",
+        "question_wNmRkv",
+        "question_GT47De"
+      ],
+      "name": "Landing: FAQ",
+      "settings": {
+        "anchor_id": "pogosta-vprasanja",
+        "title": "Pogosta vprašanja",
+        "intro": "Spodaj poiščite najpogosteje zastavljena vprašanja.",
+        "two_columns_desktop": true,
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "card_color": "#ffffff",
+        "border_color": "#000000",
+        "shadow_color": "#ee614c",
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    }
+  },
+  "order": [
+    "fx_hero",
+    "home_video",
+    "text_columns_with_images_dxBeAd",
+    "fx_kit",
+    "curved_text_3MKd4D",
+    "reviews",
+    "fx_marquee",
+    "fx_layer_returns",
+    "product",
+    "faq"
+  ]
+}

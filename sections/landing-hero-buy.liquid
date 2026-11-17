@@ -1,0 +1,103 @@
+{%- comment -%}
+  Landing: Buy buttons. Lives in the footer group next to "Landing: Sticky button".
+  On the listed landing templates:
+  1. It turns the red buttons that only scroll down to a product box (links starting with #product-offer)
+     into real buy buttons: a tap submits the first product box on the page (same add to cart and checkout
+     path as that box's own button). No product box, or sold out: the button keeps its normal scroll link.
+  2. A tap on the big image at the top (hero) scrolls to the section set below (default: #video).
+{%- endcomment -%}
+{%- liquid
+  assign allowed = section.settings.templates | remove: ' ' | split: ','
+  assign current_suffix = template.suffix | default: template.name
+  assign show = false
+  if allowed contains current_suffix
+    assign show = true
+  endif
+-%}
+
+{%- if show and request.design_mode == false -%}
+  {%- if section.settings.hero_image_target != blank -%}
+    <style>.lfx-hero__stage { cursor: pointer; }</style>
+  {%- endif -%}
+  <script>
+    (() => {
+      if (window.__landingHeroBuy) return;
+      window.__landingHeroBuy = true;
+      const buyOn = {{ section.settings.enabled | json }};
+      const scopeMode = {{ section.settings.scope | json }};
+      const imageTarget = {{ section.settings.hero_image_target | strip | json }};
+      const ready = (fn) => (document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn());
+      ready(() => {
+        const scope = document.getElementById('MainContent') || document;
+
+        if (buyOn) {
+          const selector = scopeMode === 'hero'
+            ? '.lfx-hero__cta a.landing-button, .landing-hero a.landing-button'
+            : 'a.landing-button[href^="#product-offer"]';
+          const buttons = [...scope.querySelectorAll(selector)].filter((el) => !el.closest('landing-product, [data-landing-sticky]'));
+          buttons.forEach((button) => {
+            button.addEventListener('click', (event) => {
+              const form = scope.querySelector('landing-product form');
+              const submit = form && form.querySelector('button[type="submit"]');
+              if (!form || !submit || submit.disabled) return;
+              event.preventDefault();
+              if (button.getAttribute('aria-busy') === 'true') return;
+              button.setAttribute('aria-busy', 'true');
+              form.requestSubmit();
+              setTimeout(() => button.removeAttribute('aria-busy'), 1500);
+            });
+          });
+        }
+
+        if (imageTarget) {
+          scope.querySelectorAll('.lfx-hero__stage').forEach((stage) => {
+            stage.addEventListener('click', (event) => {
+              if (event.target.closest('a, button')) return;
+              let target = null;
+              try { target = document.querySelector(imageTarget); } catch (e) { target = null; }
+              if (!target) return;
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+          });
+        }
+      });
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Landing: Buy buttons",
+  "tag": "div",
+  "class": "landing-hero-buy-section",
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "Red buttons add to cart", "default": true, "info": "On: the red buttons add the kit to the cart and go to checkout (same as the product box button). Off: they only scroll down to the product box." },
+    {
+      "type": "select",
+      "id": "scope",
+      "label": "Which buttons",
+      "options": [
+        { "value": "all", "label": "Every button that points to a product box" },
+        { "value": "hero", "label": "Only the top (hero) button" }
+      ],
+      "default": "all"
+    },
+    { "type": "header", "content": "Top image" },
+    {
+      "type": "text",
+      "id": "hero_image_target",
+      "label": "Tapping the top image scrolls to",
+      "default": "#video",
+      "info": "# plus the anchor ID of a section, e.g. #video. Leave empty to turn off."
+    },
+    { "type": "header", "content": "Pages" },
+    {
+      "type": "text",
+      "id": "templates",
+      "label": "Page templates",
+      "default": "landing_us_sell_b, landing_us_partners_b, landing_us_grandma_b",
+      "info": "Comma-separated template suffixes (the part after page. in the template name)."
+    }
+  ]
+}
+{% endschema %}

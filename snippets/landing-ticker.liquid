@@ -1,0 +1,132 @@
+{% doc %}
+  Scrolling text band (ticker) for landing sections. Full width of its parent, slightly tilted, loops forever.
+  Pauses while hovered. Stands still for visitors who turned on "reduce motion".
+  Screen readers get the text once, not the moving copies.
+
+  {% render 'landing-ticker',
+    text: section.settings.ticker_text,
+    bg: '#f72828', text_color: '#fef1d5', sep_color: '#f5e029',
+    speed: 60, tilt: -2, reverse: false, size: 28, sep: '✦',
+    font: 'Some Font, sans-serif'
+  %}
+
+  @param {string} text - Items separated by | (vertical bar)
+  @param {string} [bg] - Band color
+  @param {string} [text_color] - Text color
+  @param {string} [sep_color] - Color of the star between items
+  @param {number} [speed] - Seconds per loop (higher = slower)
+  @param {number} [tilt] - Tilt in degrees, e.g. -2 or 1.5
+  @param {boolean} [reverse] - Scroll left to right instead
+  @param {number} [size] - Text size on desktop in px (phones get about two thirds)
+  @param {string} [sep] - Character between items, e.g. ✦ or ★
+  @param {string} [font] - CSS font-family for the text
+{% enddoc %}
+{%- liquid
+  assign items = text | split: '|'
+  assign speed_value = speed | default: 60
+  assign tilt_value = tilt | default: 0
+  assign size_value = size | default: 28
+  assign size_min = size_value | times: 0.64 | round
+  assign size_vw = size_value | divided_by: 12.2
+  assign sep_value = sep | default: '✦'
+  assign plain = ''
+  for item in items
+    assign clean = item | strip
+    if clean != blank
+      if plain != ''
+        assign plain = plain | append: '. '
+      endif
+      assign plain = plain | append: clean
+    endif
+  endfor
+-%}
+{%- if plain != '' -%}
+  <div
+    class="landing-ticker{% if reverse %} landing-ticker--reverse{% endif %}"
+    style="--tk-bg: {{ bg | default: '#f72828' }}; --tk-text: {{ text_color | default: '#ffffff' }}; --tk-sep: {{ sep_color | default: text_color }}; --tk-speed: {{ speed_value }}s; --tk-tilt: {{ tilt_value }}deg; --tk-size: {{ size_value }}px; --tk-size-min: {{ size_min }}px; --tk-size-vw: {{ size_vw }}vw;{% if font != blank %} --tk-font: {{ font | escape }};{% endif %}"
+  >
+    <p class="landing-ticker__sr">{{ plain }}</p>
+    <div class="landing-ticker__track" aria-hidden="true">
+      {%- for group in (1..2) -%}
+        <div class="landing-ticker__group">
+          {%- for copy in (1..2) -%}
+            {%- for item in items -%}
+              {%- assign clean = item | strip -%}
+              {%- if clean != blank -%}
+                <span class="landing-ticker__item">{{ clean }}</span>
+                <span class="landing-ticker__sep">{{ sep_value }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% style %}
+  .landing-ticker {
+    position: relative;
+    z-index: 2;
+    box-sizing: border-box;
+    width: calc(100% + 80px);
+    margin-inline: -40px;
+    overflow: hidden;
+    background: var(--tk-bg);
+    color: var(--tk-text);
+    transform: rotate(var(--tk-tilt));
+    box-shadow: 0 6px 0 rgb(0 0 0 / 0.2);
+  }
+  .landing-ticker__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .landing-ticker__track {
+    display: flex;
+    width: max-content;
+    animation: landing-ticker-scroll var(--tk-speed) linear infinite;
+  }
+  .landing-ticker--reverse .landing-ticker__track {
+    animation-direction: reverse;
+  }
+  .landing-ticker:hover .landing-ticker__track {
+    animation-play-state: paused;
+  }
+  .landing-ticker__group {
+    display: flex;
+    flex: none;
+    align-items: center;
+  }
+  .landing-ticker__item {
+    padding-block: 13px 15px;
+    font-family: var(--tk-font, inherit);
+    font-size: clamp(var(--tk-size-min, 18px), var(--tk-size-vw, 2.3vw), var(--tk-size, 28px));
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .landing-ticker__sep {
+    padding-inline: 0.75em;
+    color: var(--tk-sep);
+    font-size: calc(clamp(var(--tk-size-min, 18px), var(--tk-size-vw, 2.3vw), var(--tk-size, 28px)) * 0.85);
+    line-height: 1;
+  }
+  @keyframes landing-ticker-scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .landing-ticker__track {
+      animation: none;
+    }
+  }
+{% endstyle %}

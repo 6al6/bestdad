@@ -1,31 +1,58 @@
 /* ─── Custom Webfont Declarations & Heading Styles ─── */
+/* Fixed 18.10: Liquid tags don't run inside a plain .css asset, so the old
+   {{ '...' | file_url }} links pointed at files that don't exist. The fonts live
+   next to this file in the theme's assets, so plain relative links work. */
 
 /* Myriad Pro Regular */
 @font-face {
   font-family: 'MyriadProRegular';
-  src: url("{{ 'MYRIADPRO-REGULAR.woff2' | file_url }}") format('woff2');
+  src: url("MYRIADPRO-REGULAR.woff2") format('woff2');
+  font-display: swap;
 }
 
 /* Myriad Pro Bold */
 @font-face {
   font-family: 'MyriadProBold';
-  src: url("{{ 'MYRIADPRO-BOLD.woff2' | file_url }}") format('woff2');
+  src: url("MYRIADPRO-BOLD.woff2") format('woff2');
+  font-display: swap;
 }
 
 /* Resolution Black */
 @font-face {
   font-family: 'ResolutionBlack';
-  src: url("{{ 'Resolution-Black.woff2' | file_url }}") format('woff2');
+  src: url("Resolution-Black.woff2") format('woff2');
+  font-display: swap;
 }
 
 /* Resolution Regular */
 @font-face {
   font-family: 'ResolutionRegular';
-  src: url("{{ 'Resolution-Regular.woff2' | file_url }}") format('woff2');
+  src: url("Resolution-Regular.woff2") format('woff2');
+  font-display: swap;
 }
 
 /* Quittance */
 @font-face {
   font-family: 'Quittance';
-  src: url("{{ 'Quittance.woff2' | file_url }}") format('woff2');
+  src: url("Quittance.woff2") format('woff2');
+  font-display: swap;
+}
+
+/* ─── Cookie banner (Shopify customer privacy), added 20.10 ───
+   Compact so the hero buy button stays visible: no title, 13px text,
+   Accept and Decline side by side, Manage preferences below.
+   On phones the banner sits at the TOP of the screen, so the product image,
+   price and buy button stay visible even on small phones.
+   Loaded on every page of both stores (najboljsifotr.si and bestdadbook.com).
+   The banner text itself is edited in Settings > Customer privacy > Cookie banner. */
+#shopify-pc__banner { padding: 10px 14px !important; }
+#shopify-pc__banner__body-title { display: none !important; }
+#shopify-pc__banner .shopify-pc__banner__wrapper { gap: 8px !important; }
+#shopify-pc__banner .shopify-pc__banner__body p { font-size: 13px !important; line-height: 1.35 !important; margin: 0 !important; }
+#shopify-pc__banner .shopify-pc__banner__body a { font-size: 13px !important; }
+#shopify-pc__banner .shopify-pc__banner__btns { display: flex !important; flex-direction: row !important; flex-wrap: wrap !important; gap: 8px !important; }
+#shopify-pc__banner__btn-accept, #shopify-pc__banner__btn-decline { flex: 1 1 40% !important; width: auto !important; padding: 9px !important; margin: 0 !important; font-size: 15px !important; order: 1 !important; }
+#shopify-pc__banner__btn-manage-prefs { flex: 1 1 100% !important; order: 2 !important; font-size: 12px !important; padding: 2px !important; margin: 0 !important; }
+@media (max-width: 749px) {
+  #shopify-pc__banner { top: 0 !important; bottom: auto !important; }
 }

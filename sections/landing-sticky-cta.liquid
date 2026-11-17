@@ -1,0 +1,296 @@
+{%- comment -%}
+  Landing: Sticky button. A buy bar fixed to the bottom of the screen on the landing pages.
+  Lives in the footer group, so it can reach every page; it only renders on the page templates listed in its settings.
+  The button label follows the page: it always shows the label of the last landing button the visitor scrolled past
+  (hero, story, gift, steps, product box). It hides while a product box's own add-to-cart button is on screen.
+{%- endcomment -%}
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign allowed = section.settings.templates | remove: ' ' | split: ','
+  assign current_suffix = template.suffix | default: template.name
+  assign show = false
+  if section.settings.enabled and allowed contains current_suffix
+    assign show = true
+  endif
+-%}
+
+{%- if show -%}
+  {{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+  <div
+    class="landing-sticky landing-sticky--{{ section.settings.show_on }}{% if request.design_mode %} is-visible{% endif %}"
+    data-landing-sticky
+    data-action="{{ section.settings.action }}"
+    data-show-on="{{ section.settings.show_on }}"
+    data-show-price="{{ section.settings.show_price }}"
+  >
+    <div class="landing-sticky__inner">
+      {%- if section.settings.show_price -%}
+        <p class="landing-sticky__price" data-sticky-price></p>
+      {%- endif -%}
+      <button class="landing-button landing-sticky__button" type="button" data-sticky-button>
+        <span data-sticky-label>{{ section.settings.fallback_label }}</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const bar = document.querySelector('[data-landing-sticky]');
+      if (!bar || bar.dataset.ready) return;
+      bar.dataset.ready = 'true';
+
+      const scope = document.getElementById('MainContent') || document.body;
+      const label = bar.querySelector('[data-sticky-label]');
+      const button = bar.querySelector('[data-sticky-button]');
+      const priceEl = bar.querySelector('[data-sticky-price]');
+      const designMode = {{ request.design_mode | json }};
+      const mobileOnly = bar.dataset.showOn === 'mobile';
+      const mobileQuery = window.matchMedia('(max-width: 749px)');
+
+      /* Buttons the bar mirrors: landing pill links that jump within the page (or have no link yet),
+         plus the add-to-cart buttons in the product boxes. Excerpt toggles and external links are skipped. */
+      const ctas = [...scope.querySelectorAll('a.landing-button, landing-product .landing-product__button .landing-button')].filter((el) => {
+        if (el.closest('[data-landing-sticky], .landing-excerpts, [data-sticky-ignore]')) return false;
+        const href = el.getAttribute('href');
+        if (el.tagName === 'A' && href && !href.startsWith('#')) return false;
+        return el.textContent.trim() !== '';
+      });
+      const productButtons = [...scope.querySelectorAll('landing-product button[type="submit"]')];
+      const productForm = scope.querySelector('landing-product form');
+      const productSection = productForm && productForm.closest('.shopify-section');
+      let reached = false; /* flips once the visitor has seen the product box */
+
+      if (!ctas.length && !productForm) return;
+
+      if (priceEl) {
+        const price = scope.querySelector('landing-product [data-price]');
+        const compare = scope.querySelector('landing-product [data-compare]');
+        if (price) {
+          const compareText = compare && !compare.hidden ? compare.textContent.trim() : '';
+          priceEl.innerHTML = (compareText ? '<s>' + compareText + '</s> ' : '') + '<span>' + price.textContent.trim() + '</span>';
+        } else {
+          priceEl.remove();
+        }
+      }
+
+      const sectionOf = (el) => el.closest('.shopify-section') || el;
+      const textOf = (el) => el.textContent.trim().replace(/\s+/g, ' ');
+      let current = null;
+
+      const setCurrent = (cta) => {
+        if (!cta || cta === current) return;
+        current = cta;
+        label.textContent = textOf(cta);
+      };
+      setCurrent(ctas[0]);
+
+      const isOnScreen = (el) => {
+        const r = el.getBoundingClientRect();
+        return r.bottom > 0 && r.top < window.innerHeight && r.width > 0;
+      };
+
+      const update = () => {
+        const line = window.innerHeight * 0.5;
+        let pick = ctas[0];
+        ctas.forEach((cta) => {
+          if (sectionOf(cta).getBoundingClientRect().top <= line) pick = cta;
+        });
+        setCurrent(pick);
+        if (productSection && productSection.getBoundingClientRect().top < line) reached = true;
+
+        if (designMode) return;
+        const first = ctas[0];
+        const passedFirst = first ? first.getBoundingClientRect().bottom < 0 : window.scrollY > window.innerHeight * 0.6;
+        const productOnScreen = productButtons.some(isOnScreen);
+        const deviceOk = !mobileOnly || mobileQuery.matches;
+        const visible = passedFirst && !productOnScreen && deviceOk;
+        bar.classList.toggle('is-visible', visible);
+        bar.setAttribute('aria-hidden', String(!visible));
+        document.body.classList.toggle('has-landing-sticky', visible);
+        document.documentElement.style.setProperty('--landing-sticky-height', bar.offsetHeight + 'px');
+      };
+
+      let ticking = false;
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          ticking = false;
+          update();
+        });
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      update();
+
+      const jumpTo = (cta) => {
+        const href = cta && cta.getAttribute && cta.getAttribute('href');
+        const target =
+          (href && href.length > 1 && document.querySelector(href)) ||
+          (productForm && productForm.closest('.shopify-section')) ||
+          document.querySelector('[id^="product-offer"]');
+        if (!target) return;
+        /* 'instant' beats the page-wide smooth scroll: a smooth scroll passes lazy images that load and push
+           the product box down, so it stopped short. Re-aim once after late images settle. */
+        target.scrollIntoView({ behavior: 'instant', block: 'start' });
+        setTimeout(() => {
+          if (Math.abs(target.getBoundingClientRect().top) > 40) target.scrollIntoView({ behavior: 'instant', block: 'start' });
+        }, 800);
+      };
+
+      /* Red buttons that point at a product box land on it the same way. */
+      scope.addEventListener('click', (event) => {
+        const link = event.target.closest('a[href^="#product-offer"]');
+        if (!link || !document.querySelector(link.getAttribute('href'))) return;
+        event.preventDefault();
+        jumpTo(link);
+      });
+
+      let busy = false;
+      button.addEventListener('click', () => {
+        if (busy) return;
+        const submit = productForm && productForm.querySelector('button[type="submit"]');
+        if ((bar.dataset.action === 'add' || (bar.dataset.action === 'smart' && reached)) && productForm && submit && !submit.disabled) {
+          busy = true;
+          button.setAttribute('aria-busy', 'true');
+          productForm.requestSubmit();
+          setTimeout(() => {
+            busy = false;
+            button.removeAttribute('aria-busy');
+          }, 1500);
+          return;
+        }
+        jumpTo(current);
+      });
+    })();
+  </script>
+
+  {% style %}
+    .landing-sticky {
+      --lb-bg: {{ section.settings.button_bg_color }};
+      --lb-text: {{ section.settings.button_text_color }};
+      --lb-border: {{ section.settings.background_color }};
+      --lb-shadow: {{ section.settings.text_color }};
+      --lb-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 40;
+      border-top: 1.5px solid {{ section.settings.border_color }};
+      background: {{ section.settings.background_color }};
+      color: {{ section.settings.text_color }};
+      box-shadow: 0 -6px 18px rgb(0 0 0 / 0.08);
+      transform: translateY(110%);
+      visibility: hidden;
+      transition: transform 0.25s ease, visibility 0s linear 0.25s;
+    }
+    .landing-sticky.is-visible {
+      transform: none;
+      visibility: visible;
+      transition: transform 0.25s ease, visibility 0s;
+    }
+    .landing-sticky__inner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      max-width: 560px;
+      margin-inline: auto;
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+    }
+    .landing-sticky__price {
+      flex: none;
+      margin: 0;
+      font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+      font-size: 20px;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+    .landing-sticky__price s {
+      display: block;
+      font-family: inherit;
+      font-size: 13px;
+      opacity: 0.6;
+    }
+    .landing-sticky .landing-sticky__button {
+      flex: 1;
+      height: 56px;
+    }
+    .landing-sticky .landing-sticky__button span {
+      height: 52px;
+      font-size: 16px;
+    }
+    .landing-sticky .landing-sticky__button[aria-busy='true'] span {
+      opacity: 0.7;
+    }
+    body.has-landing-sticky {
+      padding-bottom: var(--landing-sticky-height, 78px);
+    }
+    @media (min-width: 750px) {
+      .landing-sticky--mobile {
+        display: none;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .landing-sticky,
+      .landing-sticky.is-visible {
+        transition: none;
+      }
+    }
+  {% endstyle %}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Landing: Sticky button",
+  "tag": "div",
+  "class": "landing-sticky-section",
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "Show the sticky button", "default": true },
+    {
+      "type": "text",
+      "id": "templates",
+      "label": "Page templates",
+      "default": "landing, landing_us_general_new, landing_us_partners, landing_us_grandma",
+      "info": "Comma-separated template suffixes (the part after page. in the template name). The bar only appears on pages that use one of these."
+    },
+    {
+      "type": "select",
+      "id": "show_on",
+      "label": "Show on",
+      "options": [
+        { "value": "both", "label": "Mobile and desktop" },
+        { "value": "mobile", "label": "Mobile only" }
+      ],
+      "default": "both"
+    },
+    {
+      "type": "select",
+      "id": "action",
+      "label": "When tapped",
+      "options": [
+        { "value": "add", "label": "Add to cart (same as the product box button)" },
+        { "value": "jump", "label": "Scroll to the product box" },
+        { "value": "smart", "label": "Scroll to product box, then add to cart" }
+      ],
+      "default": "add",
+      "info": "If the product is sold out, the button always scrolls to the product box."
+    },
+    { "type": "checkbox", "id": "show_price", "label": "Show price next to the button", "default": true },
+    {
+      "type": "text",
+      "id": "fallback_label",
+      "label": "Fallback label",
+      "default": "Get the kit",
+      "info": "Only used if the page has no landing buttons. Normally the label follows the button the visitor last scrolled past."
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Bar background", "default": "#fef1d5" },
+    { "type": "color", "id": "text_color", "label": "Price text", "default": "#2b2d45" },
+    { "type": "color", "id": "border_color", "label": "Bar top border", "default": "#2b2d45" },
+    { "type": "color", "id": "button_bg_color", "label": "Button", "default": "#f72828" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" }
+  ]
+}
+{% endschema %}

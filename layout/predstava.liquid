@@ -4,6 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{{ page_title }}</title>
+  {%- if page_description %}
+  <meta name="description" content="{{ page_description | escape }}">
+  {%- endif %}
+  <link rel="canonical" href="{{ canonical_url }}">
+  {%- comment -%} SEO: the show page is Slovenian only, so it stays out of Google on the English domain. {%- endcomment -%}
+  {%- if request.locale.iso_code == 'en' %}
+  <meta name="robots" content="noindex">
+  {%- endif %}
   {{ content_for_header }}
 </head>
 <body class="predstava-layout">

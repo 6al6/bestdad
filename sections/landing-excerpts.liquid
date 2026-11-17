@@ -1,0 +1,404 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+  assign visible_count = section.settings.visible_count
+  assign has_more = false
+  if section.blocks.size > visible_count
+    assign has_more = true
+  endif
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+<section class="landing-excerpts landing-excerpts--{{ section.id }}"{% if section.settings.anchor_id != blank %} id="{{ section.settings.anchor_id }}"{% endif %}>
+  {%- if section.settings.background_image != blank -%}
+    {{-
+      section.settings.background_image
+      | image_url: width: 1600
+      | image_tag: class: 'landing-excerpts__bg', loading: 'lazy', widths: '390, 780, 1200, 1600', sizes: '100vw', alt: ''
+    -}}
+  {%- endif -%}
+
+  <landing-excerpts class="landing-excerpts__inner">
+    {%- if section.settings.heading != blank or section.settings.intro != blank -%}
+      <div class="landing-excerpts__intro">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="landing-excerpts__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.intro != blank -%}
+          <div class="landing-excerpts__intro-text landing-marker">{{ section.settings.intro }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="landing-excerpts__list">
+        {%- for block in section.blocks -%}
+          {%- comment -%} In the theme editor every excerpt stays visible so it can be edited {%- endcomment -%}
+          <article
+            class="landing-excerpts__item"
+            data-excerpt
+            {% if forloop.index > visible_count and request.design_mode == false %}hidden{% endif %}
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.title != blank -%}
+              <h3 class="landing-excerpts__title" tabindex="-1">{{ block.settings.title }}</h3>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="landing-excerpts__text">{{ block.settings.text }}</div>
+            {%- endif -%}
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if has_more and section.settings.button_label != blank -%}
+      <div class="landing-excerpts__more" data-more-wrap>
+        <button
+          type="button"
+          class="landing-button"
+          data-more
+          data-more-label="{{ section.settings.button_label | escape }}"
+          data-less-label="{{ section.settings.button_less_label | default: section.settings.button_label | escape }}"
+        >
+          <span>{{ section.settings.button_label }}</span>
+        </button>
+      </div>
+    {%- endif -%}
+  {%- if section.settings.cta_label != blank -%}
+      <div class="landing-cta">
+        {% render 'landing-button', label: section.settings.cta_label, link: section.settings.cta_link %}
+      </div>
+    {%- endif -%}
+  </landing-excerpts>
+</section>
+
+{% render 'landing-divider' %}
+
+{%- if has_more -%}
+  <script src="{{ 'landing-excerpts.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% style %}
+  .landing-excerpts--{{ section.id }} {
+    --lb-bg: {{ section.settings.button_bg_color }};
+    --lb-text: {{ section.settings.button_text_color }};
+    --lb-border: {{ section.settings.button_border_color }};
+    --lb-shadow: {{ section.settings.button_border_color }};
+    --lb-shadow-width: 4px;
+    --lb-border-width: 1.5px;
+    --lb-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --lm-color: color-mix(in srgb, {{ section.settings.highlight_color }} {{ section.settings.highlight_opacity }}%, transparent);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    text-align: center;
+  }
+  .landing-excerpts__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .landing-excerpts__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 60px 18px;
+  }
+  .landing-excerpts__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+  .landing-excerpts__heading,
+  .landing-excerpts__title {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    line-height: 1.05;
+    color: inherit;
+    text-transform: none;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+  .landing-excerpts__heading { font-size: 36px; }
+  .landing-excerpts__intro-text {
+    font-size: 17px;
+    line-height: 1.5;
+    color: {{ section.settings.intro_color }};
+  }
+  .landing-excerpts__intro-text p { margin: 0; }
+
+  .landing-excerpts__list {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 100%;
+  }
+  .landing-excerpts__item {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .landing-excerpts__item[hidden] { display: none; }
+  .landing-excerpts__title { font-size: 27px; }
+  .landing-excerpts__title:focus { outline: none; }
+  .landing-excerpts__text {
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+  .landing-excerpts__text p { margin: 0; }
+  .landing-excerpts__text strong { font-weight: 700; }
+
+  /* Smaller, auto-width version of the landing pill button */
+  .landing-excerpts__more .landing-button { width: auto; height: 56px; }
+  .landing-excerpts__more .landing-button span { height: 52px; padding: 6px 32px 8px; font-size: 16px; }
+
+  @media (min-width: 990px) {
+    .landing-excerpts__inner { max-width: 800px; padding: 64px 24px; gap: 48px; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Book excerpts",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 20,
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "info": "Lets a menu link jump here, e.g. /#kako-deluje"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Zabava se začne že pri branju in nadaljuje v igri."
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Text under the heading",
+      "info": "Use Underline to put the marker color behind a phrase.",
+      "default": "<p><u>Pokukaj v priročnik:</u></p>"
+    },
+    {
+      "type": "header",
+      "content": "Show more"
+    },
+    {
+      "type": "range",
+      "id": "visible_count",
+      "label": "Excerpts shown at first",
+      "info": "The rest appear when the button is clicked. In the theme editor all excerpts are always shown.",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "info": "Only shown when there are more excerpts than the number above.",
+      "default": "Prikaži več"
+    },
+    {
+      "type": "text",
+      "id": "button_less_label",
+      "label": "Button label when all are shown",
+      "info": "Clicking it hides the extra excerpts again.",
+      "default": "Skrij"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image",
+      "info": "Optional, for example a paper texture. Covers the whole section."
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f2eee7"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Headings and excerpts",
+      "default": "#2b2d45"
+    },
+    {
+      "type": "color",
+      "id": "intro_color",
+      "label": "Text under the heading",
+      "default": "#fef1d5"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "Marker highlight",
+      "default": "#ee614c"
+    },
+    {
+      "type": "range",
+      "id": "highlight_opacity",
+      "label": "Marker opacity (%)",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#2b2d45"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button border and shadow",
+      "default": "#2b2d45"
+    },
+    {
+      "type": "header",
+      "content": "Wavy divider"
+    },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        {
+          "value": "waves-1-patterned_1200x20",
+          "label": "Waves 1 (small)"
+        },
+        {
+          "value": "waves-2-patterned_1200x43",
+          "label": "Waves 2 (medium)"
+        },
+        {
+          "value": "waves-3-patterned_1200x84",
+          "label": "Waves 3 (large)"
+        },
+        {
+          "value": "zig-zag-2-patterned_1200x37",
+          "label": "Zig-zag"
+        },
+        {
+          "value": "circles-2-patterned_1200x35",
+          "label": "Circles"
+        },
+        {
+          "value": "spikes-1-patterned_1200x132",
+          "label": "Spikes"
+        }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_animate",
+      "label": "Animate divider",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Link button label"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link button link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "excerpt",
+      "name": "Excerpt",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Excerpt title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "info": "Shown in italics. Each paragraph starts on a new line.",
+          "default": "<p>Excerpt text</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Book excerpts",
+      "blocks": [
+        {
+          "type": "excerpt",
+          "settings": {
+            "title": "O popolnem Instagram fotru",
+            "text": "<p>In, jebi se, ti stereotipni vplivnež z Instagrama z brezhibno belimi zobmi, najmočnejšimi lasnimi mešički, radiatorji na trebuhu, kuharskimi sposobnostmi Gordona Ramsayja, znanjem izdelovanja glinenih izdelkov in cimetovih rolic z babičinimi drožmi, ti, presvitli, ki v prostem času skačeš s padalom, ustanavljaš startupe, si fotr superheroj, ki dela tibetanske vaje in dela od doma, da je na voljo družini … Ne seri!</p>"
+          }
+        },
+        {
+          "type": "excerpt",
+          "settings": {
+            "title": "Barčica po morju (zgolj in samo) plava",
+            "text": "<p>Porabi kakih 15 minut za zlaganje. Nato bahavo naznani: »Poglejte si moje mogočno plovilo!« Položi jo v vodo. Reci: »To čudo plava!« Pusti, da navdušenje malo odleži.</p><p>… Super, in kaj zdaj?</p><p>NIČ!</p><p>Ladjica pač … tam pluje.</p><p>Ti se dolgočasiš. Otrok se dolgočasi. Čas mineva. Življenje izgublja smisel. Vesolje se tiho smeji. A ni lepo?</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

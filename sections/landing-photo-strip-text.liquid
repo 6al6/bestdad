@@ -1,0 +1,375 @@
+{%- comment -%}
+  "Landing: Photo strip" with a text above it and optional video blocks.
+  The moving row reuses <landing-strip> (assets/landing-strip.js), which looks for .landing-strip__track.
+{%- endcomment -%}
+{%- liquid
+  assign body_font = settings.type_main_font
+  assign card_sizes = section.settings.card_width | append: 'px'
+-%}
+
+<section class="landing-pst landing-pst--{{ section.id }}">
+  {%- if section.settings.text != blank -%}
+    <div class="landing-pst__text">{{ section.settings.text }}</div>
+  {%- endif -%}
+
+  {%- capture items -%}
+    <ul class="landing-pst__track landing-strip__track" role="list">
+      {%- for block in section.blocks -%}
+        <li class="landing-pst__item" {{ block.shopify_attributes }}>
+          {%- case block.type -%}
+            {%- when 'video' -%}
+              {%- if block.settings.video != blank -%}
+                {%- liquid
+                  # Smallest MP4 that is still sharp at 2x the card width (or the largest one if none is)
+                  assign video = block.settings.video
+                  assign target_width = section.settings.card_width | times: 2
+                  assign video_src = ''
+                  assign best_width = 0
+                  for source in video.sources
+                    if source.mime_type != 'video/mp4'
+                      continue
+                    endif
+                    assign pick = false
+                    if source.width >= target_width
+                      if best_width < target_width or source.width < best_width
+                        assign pick = true
+                      endif
+                    elsif best_width < target_width and source.width > best_width
+                      assign pick = true
+                    endif
+                    if pick
+                      assign video_src = source.url
+                      assign best_width = source.width
+                    endif
+                  endfor
+                -%}
+                <div class="landing-pst__media landing-pst__media--video">
+                  {%- if video.preview_image != blank -%}
+                    {{-
+                      video.preview_image
+                      | image_url: width: 800
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '330, 440, 660, 800',
+                        sizes: card_sizes,
+                        alt: video.alt
+                    -}}
+                  {%- endif -%}
+                  {%- comment -%} No src until first play, so the page never downloads the video up front {%- endcomment -%}
+                  <video class="landing-pst__video" data-src="{{ video_src }}" muted loop playsinline preload="none"></video>
+                  <button type="button" class="landing-pst__play" aria-label="Predvajaj video" aria-pressed="false">
+                    <span class="landing-pst__play-icon">{% render 'icon-play' %}</span>
+                  </button>
+                  <button type="button" class="landing-pst__sound" aria-label="Vklopi zvok" aria-pressed="false">
+                    <svg class="landing-pst__sound-off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/>
+                      <path d="m16 9 5 6m0-6-5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    </svg>
+                    <svg class="landing-pst__sound-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/>
+                      <path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    </svg>
+                  </button>
+                </div>
+              {%- else -%}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'landing-pst__placeholder' }}
+              {%- endif -%}
+            {%- else -%}
+              {%- if block.settings.image != blank -%}
+                {{-
+                  block.settings.image
+                  | image_url: width: 800
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '330, 440, 660, 800',
+                    sizes: card_sizes,
+                    alt: block.settings.image.alt
+                -}}
+              {%- else -%}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'landing-pst__placeholder' }}
+              {%- endif -%}
+          {%- endcase -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endcapture -%}
+
+  {%- if section.settings.animate -%}
+    <landing-strip class="landing-pst__viewport" data-speed="{{ section.settings.scroll_speed }}">
+      {{- items -}}
+    </landing-strip>
+  {%- else -%}
+    <div class="landing-pst__viewport landing-pst__viewport--static">
+      {{- items -}}
+    </div>
+  {%- endif -%}
+</section>
+
+{% render 'landing-divider' %}
+
+{%- if section.settings.animate -%}
+  <script src="{{ 'landing-strip.js' | asset_url }}" defer></script>
+{%- endif -%}
+{%- for block in section.blocks -%}
+  {%- if block.type == 'video' and block.settings.video != blank -%}
+    <script src="{{ 'landing-pst-video.js' | asset_url }}" defer></script>
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{% style %}
+  .landing-pst--{{ section.id }} {
+    --lpst-card: {{ section.settings.card_width }}px;
+    --lpst-border: {{ section.settings.border_color }};
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+  }
+  .landing-pst__text {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 0 18px;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: center;
+  }
+  .landing-pst__text p { margin: 0; }
+  .landing-pst__text strong { font-weight: 700; }
+
+  /* Without JS the row is a normal scrollable strip */
+  .landing-pst__viewport { display: block; overflow-x: auto; scrollbar-width: none; }
+  .landing-pst__viewport::-webkit-scrollbar { display: none; }
+  .landing-pst__viewport.is-running { overflow: hidden; }
+  .landing-pst__track {
+    display: flex;
+    gap: 10px;
+    width: max-content;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  /* Still row: centered when it fits, otherwise swipeable */
+  .landing-pst__viewport--static .landing-pst__track { margin-inline: auto; padding-inline: 18px; }
+  .landing-pst__viewport.is-running .landing-pst__track {
+    animation: landing-pst-scroll var(--strip-duration) linear infinite;
+    will-change: transform;
+  }
+  .landing-pst__item {
+    flex: 0 0 var(--lpst-card);
+    aspect-ratio: 220 / 356;
+    overflow: hidden;
+    box-sizing: border-box;
+    border: 1.5px solid var(--lpst-border);
+    border-radius: 2px;
+  }
+  .landing-pst__item img,
+  .landing-pst__item video,
+  .landing-pst__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .landing-pst__placeholder { background: rgb(0 0 0 / 0.05); fill: var(--lpst-border); }
+
+  /* Video: cover image underneath, video fades in over it once it has a frame */
+  .landing-pst__media { position: relative; width: 100%; height: 100%; }
+  .landing-pst__video {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .landing-pst__media.has-started .landing-pst__video { opacity: 1; }
+  .landing-pst__play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+  }
+  .landing-pst__play:focus-visible { outline: 2px solid var(--lpst-border); outline-offset: -4px; }
+  .landing-pst__play-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgb(0 0 0 / 0.45);
+    transition: opacity 0.2s;
+  }
+  .landing-pst__play-icon svg { width: 20px; height: 20px; margin-left: 3px; }
+  .landing-pst__play-icon path { fill: currentColor; }
+  .landing-pst__media.is-playing .landing-pst__play-icon { opacity: 0; }
+  /* Sound toggle: bottom right corner, only once the video has started */
+  .landing-pst__sound {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgb(0 0 0 / 0.55);
+    color: #fff;
+    cursor: pointer;
+  }
+  .landing-pst__media.has-started .landing-pst__sound { display: flex; }
+  .landing-pst__sound:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .landing-pst__sound svg { width: 20px; height: 20px; }
+  .landing-pst__sound .landing-pst__sound-on,
+  .landing-pst__sound[aria-pressed='true'] .landing-pst__sound-off { display: none; }
+  .landing-pst__sound[aria-pressed='true'] .landing-pst__sound-on { display: block; }
+  /* The moving row stops while a video plays */
+  .landing-pst__viewport.is-running:has(.is-playing) .landing-pst__track { animation-play-state: paused; }
+
+  @keyframes landing-pst-scroll {
+    to { transform: translateX(calc(var(--strip-set) * -1)); }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Photos + text",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 21,
+  "settings": [
+    { "type": "header", "content": "Text" },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text above the photos",
+      "info": "Leave blank for no text. Use Bold and Italic for emphasis.",
+      "default": "<p>Da bo nekoč čim več zgodb, ki se začnejo z:</p><p><strong>»<em>A se spomniš, ko sva midva …</em>«</strong></p>"
+    },
+    { "type": "header", "content": "Photos" },
+    {
+      "type": "checkbox",
+      "id": "animate",
+      "label": "Move the row",
+      "info": "On: the row moves continuously. Off: the row stands still and visitors can swipe it.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "label": "Scroll speed (px per second)",
+      "info": "Higher is faster.",
+      "min": 10,
+      "max": 200,
+      "step": 5,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "label": "Photo width (px)",
+      "info": "Height follows automatically (220 x 356 ratio).",
+      "min": 140,
+      "max": 400,
+      "step": 10,
+      "default": 220
+    },
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Space above",
+      "unit": "px",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Space below",
+      "unit": "px",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 100
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#fef1d5" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#2b2d45" },
+    { "type": "color", "id": "border_color", "label": "Photo border", "default": "#2b2d45" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo", "info": "Portrait, ratio about 220 x 356." }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Plays on click (and on hover on desktop), muted until the visitor turns sound on. Portrait, ratio about 220 x 356. MP4 or MOV, keep it short."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Photos + text",
+      "blocks": [
+        { "type": "image" }, { "type": "image" }, { "type": "image" }, { "type": "image" },
+        { "type": "image" }, { "type": "image" }, { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

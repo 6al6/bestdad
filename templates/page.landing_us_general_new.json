@@ -1,0 +1,1282 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "landing_header_UM9V9L": {
+      "type": "landing-header",
+      "blocks": {
+        "label_T9jDiH": {
+          "type": "label",
+          "settings": {
+            "text": "30-DAY RETURNS"
+          }
+        },
+        "label_EkEMz9": {
+          "type": "label",
+          "settings": {
+            "text": "POSTER & STICKERS INCLUDED"
+          }
+        }
+      },
+      "block_order": [
+        "label_T9jDiH",
+        "label_EkEMz9"
+      ],
+      "name": "Landing: Header bar",
+      "settings": {
+        "background_image": "shopify://shop_images/Best_Dad_Book_Endpapers.webp",
+        "link": "",
+        "background_color": "#fef1d5",
+        "chip_color": "#ee614c",
+        "chip_text_color": "#ffffff",
+        "photo_border_color": "#2b2d45",
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "hero": {
+      "type": "landing-hero",
+      "settings": {
+        "show_stars": true,
+        "quote": "“<em>Fun, entertaining, effective.</em>”",
+        "quote_author": "— Brett Cloutier, Trustpilot",
+        "heading": "Become the best dad in the world.",
+        "heading_accent": "Yes, you.",
+        "text": "It’s not a book. <strong>It’s a system.</strong> Dad science, no parenting degree required. 28 missions. 28 stickers. 1 Dad Achievement Poster.",
+        "button_label": "Get the kit",
+        "button_link": "#product-offer-1",
+        "note": "Buying for another dad? Same kit. Gift section below.",
+        "background_color": "#fef1d5",
+        "text_color": "#2b2d45",
+        "accent_color": "#ee614c",
+        "star_color": "#f72828",
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "button_border_color": "#fef1d5",
+        "divider_top_color": "",
+        "divider_bottom_color": "#2c2d45",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_photo_strip_jRHdbN": {
+      "type": "landing-photo-strip",
+      "blocks": {
+        "image_6jc6m7": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/9943bf6c4de031091a7913816aebd2afca8fab03.webp"
+          }
+        },
+        "image_k9dcCV": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/09db86702caa0b390148579cddf29698c2211df8-1.webp"
+          }
+        },
+        "image_yRWAXe": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/399afb4006c15873a1cd267693c851f8a3b8b9f5-2.webp"
+          }
+        },
+        "image_tXLpCh": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/2b3c937ecb53cfb5152daeedd7a955ff0f93ce1d.webp"
+          }
+        },
+        "image_CDFCY3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/5287d7e5f8cbab9223d3d1a2ff844bb4d80a16c8.webp"
+          }
+        },
+        "image_GaBBWw": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/fac7c2c465fab7cb8ec7a7be672d864eb08d184a.webp"
+          }
+        },
+        "image_t4T9t9": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/cd0d65d08df2e0d6fcf2ff9ad94153e058b0a678.webp"
+          }
+        }
+      },
+      "block_order": [
+        "image_6jc6m7",
+        "image_k9dcCV",
+        "image_yRWAXe",
+        "image_tXLpCh",
+        "image_CDFCY3",
+        "image_GaBBWw",
+        "image_t4T9t9"
+      ],
+      "name": "Landing: Photo strip",
+      "settings": {
+        "scroll_speed": 40,
+        "card_width": 220,
+        "background_color": "#2b2d45",
+        "border_color": "#fef1d5",
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_quote_image_wzDEgR": {
+      "type": "landing-quote-image",
+      "disabled": true,
+      "name": "Landing: Quote with image",
+      "settings": {
+        "quote": "»Nisem ekspert za vzgojo. Za neumnosti pa sem kar dobro usposobljen.«",
+        "author": "Lado Bizovičar",
+        "author_role": "stric s televizije, fotr dveh punc in avtor knjige Jaz sem najboljši fotr na svetu",
+        "image": "shopify://shop_images/Screenshot_2026-09-15_at_18.31.04_1_ba2dc585-9897-4cae-9b99-99df1443b67e.webp",
+        "image_position": "below",
+        "text_align": "center",
+        "author_font": "body",
+        "author_role_bold": false,
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "role_color": "#2b2d45",
+        "divider_top_color": "#2c2d45",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_story_RtUbfE": {
+      "type": "landing-story",
+      "name": "Landing: Story text",
+      "settings": {
+        "heading": "Love your kid, but sometimes have no idea what to do with them?",
+        "body": "<p><span style=\"text-decoration:underline\">Saturday, 7:02 a.m. “<em>Dad, what are we doing today?</em>”</span></p><p>Every dad has been there. You Google it, call a family meeting and open sixteen tabs titled \"Things to do with your kid on a Saturday\". Still nothing.</p><p>Sure, you pushed the stroller. Sure, you survived the diaper disasters and their contents. Then that little creature you made – with some help, let’s not take all the credit – <strong>started staring at you like you have a plan.</strong></p><p><span style=\"text-decoration:underline\">Nobody handed us a manual.</span> So dads wrote one.</p>",
+        "button_label": "Get the kit",
+        "button_link": "#product-offer-1",
+        "note": "",
+        "background_color": "#fef1d5",
+        "text_color": "#2b2d45",
+        "highlight_color": "#ee614c",
+        "highlight_opacity": 50,
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "button_border_color": "#fef1d5",
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_offer_KJjqh6": {
+      "type": "landing-offer",
+      "blocks": {
+        "benefit_Nj9gDM": {
+          "type": "benefit",
+          "settings": {
+            "emoji": "🗒️",
+            "text": "Ready-made ideas and clear instructions."
+          }
+        },
+        "benefit_tpKcHX": {
+          "type": "benefit",
+          "settings": {
+            "emoji": "👥",
+            "text": "The tablet doesn’t do pirate voices. You do."
+          }
+        },
+        "benefit_XE7RBR": {
+          "type": "benefit",
+          "settings": {
+            "emoji": "❤️",
+            "text": "Nobody needs to know you read it off a page ten minutes ago."
+          }
+        },
+        "benefit_yXXAit": {
+          "type": "benefit",
+          "settings": {
+            "emoji": "🌟",
+            "text": "One more sticker. “Dad, when’s the next one?”"
+          }
+        },
+        "benefit_gaFR4m": {
+          "type": "benefit",
+          "settings": {
+            "emoji": "🎁",
+            "text": "The poster is your trophy wall."
+          }
+        },
+        "benefit_wjJE8T": {
+          "type": "benefit",
+          "settings": {
+            "emoji": "📲",
+            "text": "QR glory reports, ready to send to family and friends."
+          }
+        }
+      },
+      "block_order": [
+        "benefit_Nj9gDM",
+        "benefit_tpKcHX",
+        "benefit_XE7RBR",
+        "benefit_yXXAit",
+        "benefit_gaFR4m",
+        "benefit_wjJE8T"
+      ],
+      "name": "Landing: Offer",
+      "settings": {
+        "banner_text": "28 answers\nto the question:\n“What are we doing today?”",
+        "heading": "A script for every mission. You just show up.",
+        "body": "<p>You don’t need to be creative, funny or a Pinterest wizard. Every mission is a briefing: what you need, how it goes, what to say. That’s why the <strong>kit </strong><em><strong>I Am Best Dad In The World</strong></em> exists.</p><p>This isn’t a book that tells you what you’re doing wrong.</p><p>It’s a <strong>playbook.</strong></p><p>It gives you 28 ready-made missions with clear instructions. <span style=\"text-decoration:underline\">Open the book, pick a mission and go.</span> No Googling, no ChatGPT, no sixteen open tabs.</p>",
+        "closing": "<p><span style=\"text-decoration:underline\">They’ll forget the toys. They’ll remember the nonsense you did together.</span></p>",
+        "banner_bg_color": "#ee614c",
+        "banner_text_color": "#fef1d5",
+        "banner_border_color": "#fef1d5",
+        "banner_shadow_color": "#000000",
+        "background_color": "#2b2d45",
+        "text_color": "#ffffff",
+        "marker_color": "#ee614c",
+        "marker_opacity": 100,
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_excerpts_tgTUtE": {
+      "type": "landing-excerpts",
+      "blocks": {
+        "excerpt_z76cXY": {
+          "type": "excerpt",
+          "settings": {
+            "title": "On the perfect Instagram dad",
+            "text": "<p>And, f%$k you, you Instagram-influencing, perfectly white-toothed, never-seen-a-receding-hairline, abs-of-steel, gourmet-chef-level-cooking, grandma’s-handcrafts-making, flower-arranging-with-meaningful-intent, skydiving-in-your-free-time, startup-founding, stay-at-home superhero dad motherf...! Some of those ideas are great, but good luck not drowning in that nonsense.</p>"
+          }
+        },
+        "excerpt_drVwBD": {
+          "type": "excerpt",
+          "settings": {
+            "title": "Play with a Toy Boat",
+            "text": "<p>Spend a good 15 minutes folding it. Dramatically proclaim: “Behold, my mighty vessel!” Place it in the water. Say: “Look, it floats!” Cue the excitement. … Great, now what? The boat just... sits there. You’re bored. The kid’s bored. Everyone is questioning their life choices. Welcome to the most underwhelming adventure of your kid’s life.</p>"
+          }
+        },
+        "excerpt_Xjk7nV": {
+          "type": "excerpt",
+          "settings": {
+            "title": "Reading",
+            "text": "<p>Eventually, your kid will develop favorites. And by favorites, I mean the same book. Every. Single. Night. Welcome to the world of Reading the Same Exact Book for the 157th Time in a Row, where you could narrate it in your sleep. Actually, you probably are. Still—super important bonding moment!!!</p>"
+          }
+        },
+        "excerpt_3JgAHr": {
+          "type": "excerpt",
+          "settings": {
+            "title": "Pirate Treasure Hunt",
+            "text": "<p>The treasure: Three soggy cookies? Sure, why not. The treasure isn’t the point. It’s the fact that it was left by freaking pirates!</p>"
+          }
+        }
+      },
+      "block_order": [
+        "excerpt_z76cXY",
+        "excerpt_drVwBD",
+        "excerpt_Xjk7nV",
+        "excerpt_3JgAHr"
+      ],
+      "name": "Landing: Book excerpts",
+      "settings": {
+        "heading": "Read one page. You’ll know if it’s your book, or his.",
+        "intro": "<p><span style=\"text-decoration:underline\">Take a peek inside the book:</span></p>",
+        "visible_count": 2,
+        "button_label": "Show more",
+        "button_less_label": "Show less",
+        "background_image": "shopify://shop_images/Frame_1707480472.webp",
+        "background_color": "#f2eee7",
+        "text_color": "#2b2d45",
+        "intro_color": "#fef1d5",
+        "highlight_color": "#ee614c",
+        "highlight_opacity": 100,
+        "button_bg_color": "#ffffff",
+        "button_text_color": "#2b2d45",
+        "button_border_color": "#2b2d45",
+        "divider_top_color": "#2b2d45",
+        "divider_bottom_color": "#fef1d5",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_product_7gjWzC": {
+      "type": "landing-product",
+      "blocks": {
+        "feature_my3MNq": {
+          "type": "feature",
+          "settings": {
+            "emoji": "⛺",
+            "text": "<b>A book with 28 missions</b> for dad and kid"
+          }
+        },
+        "feature_jqVGr6": {
+          "type": "feature",
+          "settings": {
+            "emoji": "🗒️",
+            "text": "<b>Clear instructions</b> step by step"
+          }
+        },
+        "feature_nc3Vqy": {
+          "type": "feature",
+          "settings": {
+            "emoji": "🏆",
+            "text": "<b>28 stickers</b> for completed missions"
+          }
+        },
+        "feature_XqyNXX": {
+          "type": "feature",
+          "settings": {
+            "emoji": "🔥",
+            "text": "<strong>The Dad Achievement Poster</strong>"
+          }
+        },
+        "feature_zLwbhP": {
+          "type": "feature",
+          "settings": {
+            "emoji": "📱",
+            "text": "<strong>QR glory reports</strong>, ready to send to family and friends"
+          }
+        },
+        "divider_dfV3PC": {
+          "type": "divider",
+          "settings": {
+            "color": "#2b2d45",
+            "opacity": 40
+          }
+        },
+        "feature_PUFT4B": {
+          "type": "feature",
+          "settings": {
+            "emoji": "❤️",
+            "text": "<strong>Dad, there’s less time than you think…</strong>"
+          }
+        },
+        "feature_dBzrwY": {
+          "type": "feature",
+          "settings": {
+            "emoji": "",
+            "text": "…so pick a mission tonight."
+          }
+        },
+        "trust_aiwKyw": {
+          "type": "trust",
+          "settings": {
+            "icon": "star",
+            "text": "Poster & stickers included"
+          }
+        },
+        "trust_iMW9Eq": {
+          "type": "trust",
+          "settings": {
+            "icon": "heart",
+            "text": "Secure checkout"
+          }
+        },
+        "trust_bJQgyB": {
+          "type": "trust",
+          "settings": {
+            "icon": "clock",
+            "text": "30-day returns"
+          }
+        }
+      },
+      "block_order": [
+        "feature_my3MNq",
+        "feature_jqVGr6",
+        "feature_nc3Vqy",
+        "feature_XqyNXX",
+        "feature_zLwbhP",
+        "divider_dfV3PC",
+        "feature_PUFT4B",
+        "feature_dBzrwY",
+        "trust_aiwKyw",
+        "trust_iMW9Eq",
+        "trust_bJQgyB"
+      ],
+      "name": "Landing: Product",
+      "settings": {
+        "product": "the-best-dad-book",
+        "alt_product": "",
+        "alt_language_code": "sl",
+        "product_handle": "the-best-dad-book",
+        "anchor_id": "product-offer-1",
+        "variant": "light",
+        "show_stars": true,
+        "banner_text": "28 missions. Written by dads, for dads.",
+        "title": "I Am Best Dad In The World – the book, poster & sticker kit.",
+        "lead": "",
+        "text": "28 missions. 28 stickers. One poster to hang them on.",
+        "savings_label": "Save [amount]",
+        "sale_note": "",
+        "button_label": "Get the kit",
+        "shipping_note": "Ships next business day. Delivery in 5–7 business days.",
+        "price_note": "",
+        "bar_enabled": false,
+        "bar_display": "both",
+        "bar_label_1": "Poster & stickers included",
+        "bar_label_2": "30-day returns",
+        "bar_label_3": "",
+        "bar_link": "",
+        "bar_background_color": "#fef1d5",
+        "bar_chip_color": "#ee614c",
+        "bar_chip_text_color": "#ffffff",
+        "bar_photo_border_color": "#2b2d45",
+        "background_color": "#fef1d5",
+        "text_color": "#2b2d45",
+        "soft_color": "",
+        "accent_color": "#ee614c",
+        "price_color": "",
+        "banner_text_color": "#fef1d5",
+        "sale_note_color": "#f72828",
+        "gallery_border_color": "",
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "divider_top_color": "#fef1d5",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_accordion_66nWAm": {
+      "type": "landing-accordion",
+      "blocks": {
+        "item_cbxQGk": {
+          "type": "item",
+          "settings": {
+            "icon": "star",
+            "title": "What’s inside?",
+            "content": "<p>A dad–kid mission system built around a tear-out mission book, with trophy stickers, an achievement poster and bragging rights to earn.</p><p>Inside, you’ll find funny, practical missions with a script for each. Complete them, collect stickers, fill the achievement poster and work your way towards the ultimate title: <strong>Best Dad in the World</strong>.</p><p>No perfect parenting required. Just questionable decisions and stories worth retelling.</p>"
+          }
+        },
+        "item_qy9BV8": {
+          "type": "item",
+          "settings": {
+            "icon": "package",
+            "title": "Size & what’s included",
+            "content": "<p><strong>Book dimensions</strong></p><p>6.3 × 9 × 0.6 in (16 × 22.8 × 1.5 cm)<br/><br/>Weight: 1.0 lb (460 g)</p><p><strong>Included in the package</strong></p><p>The tear-out mission book<br/><br/>One Dad Achievement Poster<br/><br/>One themed sticker pack<br/><br/>One custom sticker envelope</p><p>Everything needed to start completing missions and earning your first sticker tonight.</p>"
+          }
+        },
+        "item_tByHaG": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Shipping & returns",
+            "content": "<p>Orders are normally shipped on the next business day and delivered within approximately <strong>5–7 business days</strong>.</p><p>We offer a <strong>30-day return period</strong>. To qualify for a return, the book must remain unused, unopened and in its original plastic wrapping. No pages may be removed, no stickers used, and the poster must be unused and unmarked.</p><p>Return shipping costs are covered by the customer.</p><p>To request a return or report a damaged or incorrect order, contact <strong>info@bestdadbook.com</strong> before sending anything back. Approved refunds are issued to the original payment method after the returned item has been received and inspected.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_cbxQGk",
+        "item_qy9BV8",
+        "item_tByHaG"
+      ],
+      "name": "Landing: Info accordion",
+      "settings": {
+        "background_color": "#fef1d5",
+        "box_color": "#dd6a54",
+        "chip_color": "#ee614c",
+        "text_color": "#fef1d5",
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_reviews_iExUAA": {
+      "type": "landing-reviews",
+      "blocks": {
+        "review_tFVf6t": {
+          "type": "review",
+          "settings": {
+            "avatar": "shopify://shop_images/Screenshot_2026-09-22_at_07.55.25_1.jpg",
+            "show_stars": true,
+            "text": "<p>Honestly, I’ve got 100 things going on, and when my little one asks “<em>Dad, what are we doing today?</em>”, my creativity isn’t exactly at its peak. 😅<br/><br/>Here you just open the book, pick what you’re doing, and it’s all written out step by step. And in the end you come out looking like the Jordan of dads 😂<br/><br/>The best part is the kids are completely hooked. I don’t have to think about what we’re doing anymore – now the two of them keep nagging about which mission is next.<br/><br/>I don’t know if the book made me a better dad. But I definitely look like I always have an ace up my sleeve :)</p>",
+            "name": "Jure Prinčič, Slovenia (translated)"
+          }
+        },
+        "review_zfDjGb": {
+          "type": "review",
+          "settings": {
+            "avatar": "shopify://shop_images/CC9B492B-DBFD-483E-8613-31F6290A14BD.webp",
+            "show_stars": true,
+            "text": "<p>As a grandma, I happily bought the book for my son-in-law, because it gives what I think is the most precious thing – <strong>time together.</strong><br/><br/>It’s full of fun ideas that get a dad and his kid to experience something together, laugh and, above all, enjoy each other – because that’s exactly where the memories kids keep forever come from.</p>",
+            "name": "Simone S."
+          }
+        }
+      },
+      "block_order": [
+        "review_tFVf6t",
+        "review_zfDjGb"
+      ],
+      "name": "Landing: Reviews",
+      "settings": {
+        "heading": "Don’t just take our word for it. Here’s what people who’ve already tried the kit say.",
+        "show_button": false,
+        "button_label": "Dad, tell us how it went",
+        "button_link": "https://bestdadbook.com/pages/review",
+        "background_color": "#ffffff",
+        "heading_color": "#000000",
+        "text_color": "#2b2d45",
+        "stars_color": "#ee614c",
+        "avatar_border_color": "#000000",
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "divider_top_color": "",
+        "divider_bottom_color": "#2c2d45",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_testimonial_9fCLgE": {
+      "type": "landing-testimonial",
+      "disabled": true,
+      "custom_css": [],
+      "name": "Landing: Quote 2",
+      "settings": {
+        "avatar": "shopify://shop_images/image_7-1.webp",
+        "quote": "Drage mame!",
+        "text": "<p>To knjigo kupite svojim partnerjem zato, ker nujno potrebujete nekaj časa samo zase. Otroke boste sicer dobile nazaj umazane in utrujene, a srečne in zadovoljne.&nbsp;</p><p>Včasih se lahko pridružite njihovim pustolovščinam, da ne boste samo hišni policaj.</p><p>Je pa res, da niso vsi očetje po naravi tako otročji in trapasti kot je Lado, zagotovo pa imajo svoje potomce tako neskončno radi kot on.&nbsp;</p><p>In ljubezen iz vseh nas lahko naredi čarovnike, pirate, in najboljše fotre na svetu.</p>",
+        "author": "Desa Muck",
+        "author_role": "pisateljica, dramatičarka, publicistka, igralka, scenaristka in publicistka",
+        "background_color": "#2b2d45",
+        "text_color": "#ffffff",
+        "role_color": "#fef1d5",
+        "avatar_border_color": "#fef1d5",
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_gift_mydhzF": {
+      "type": "landing-gift",
+      "name": "Landing: Gift card",
+      "settings": {
+        "show_card": true,
+        "image": "shopify://shop_images/Bestdad_Bundle_ENG_01_Cement.jpg",
+        "title": "Bring something better than a bottle.",
+        "subtitle": "For the new dad. The brother-in-law. The buddy with two kids and no plan.",
+        "text": "<p>Every new dad gets a bottle. Then a mug. Give him 28 missions instead. He gets a script for every Saturday. His kid gets stories that start with: <strong>“</strong><em><strong>You know what me and Dad did…</strong></em><strong>”</strong> <strong>You get the credit for the idea.</strong></p>",
+        "button_label": "Send him the kit",
+        "button_link": "#product-offer-1",
+        "button_note": "P.S.: Socks are still an option. We won’t judge. Out loud.",
+        "note_title": "",
+        "note_text": "",
+        "note_author": "",
+        "note_role": "",
+        "background_color": "#ffffff",
+        "text_color": "#2b2d45",
+        "role_color": "#2b2d45",
+        "avatar_border_color": "#2b2d45",
+        "card_color": "#ee614c",
+        "card_text_color": "#fef1d5",
+        "card_border_color": "#fef1d5",
+        "shadow_color": "#000000",
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "button_shadow_color": "#2b2d45",
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_photo_strip_Lnkm3b": {
+      "type": "landing-photo-strip",
+      "blocks": {
+        "image_iqRnJx": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/f99ad4ff13e5cf8ed0981cce185b87edb1c37fc5.webp"
+          }
+        },
+        "image_7FRPCe": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/feea76bba047390ab6ef93c642d3148808291f75.webp"
+          }
+        },
+        "image_fckrrr": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/bc9e5d2fb4e5e8340a1e2b949c8d52225968f3e9.webp"
+          }
+        },
+        "image_TwMX37": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/0a7b80ca43da71353beecd014b618d8ecb35dc10.webp"
+          }
+        },
+        "image_BQjnjG": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/2ad1240952442a674643bcf56a7b09cc70d00a8e.webp"
+          }
+        },
+        "image_HgJr7w": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/06752e9f06e7c51d2a5d62eae5488a728d650392.webp"
+          }
+        },
+        "image_MnkEif": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/9e472bae1c77c63fc0a09d76d5d79a2522b2b62c.webp"
+          }
+        }
+      },
+      "block_order": [
+        "image_iqRnJx",
+        "image_7FRPCe",
+        "image_fckrrr",
+        "image_TwMX37",
+        "image_BQjnjG",
+        "image_HgJr7w",
+        "image_MnkEif"
+      ],
+      "name": "Landing: Photo strip",
+      "settings": {
+        "scroll_speed": 40,
+        "card_width": 220,
+        "background_color": "#2b2d45",
+        "border_color": "#fef1d5",
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_steps_tmCYCG": {
+      "type": "landing-steps",
+      "blocks": {
+        "step_3Kj3D3": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/I_AM_BEST_Tear_Off_M.gif",
+            "title": "#1 - Pick a mission.",
+            "text": "28 missions are waiting in the book. The icons tell you which one won’t wreck the apartment, the kid or your mental health today. Found it? Tear the page out. Yes, really!"
+          }
+        },
+        "step_qQBk8h": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/Best_Dad_Vadalism_Deluxe_V2.jpg",
+            "title": "#2 - Follow the script.",
+            "text": "Read it off the page. Keep a straight face. Do the voices."
+          }
+        },
+        "step_TBeDVU": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/BD_Sticker_on_poster_1-1.jpg",
+            "title": "#3 - Stick on the proof of glory.",
+            "text": "Your kid awards the sticker. Earned, not given."
+          }
+        },
+        "step_iEEiXD": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/33897a89452be682a8824d49898f6d1bdea92157.webp",
+            "title": "#4 - Put it where they’ll see it.",
+            "text": "Hang the poster by your kid’s bed. Every sticker is evidence. You’re welcome."
+          }
+        },
+        "step_QR5report": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/800px_BEST_DAD_BOOK-18.jpg",
+            "title": "#5 - Report to family and friends.",
+            "text": "QR codes lead to ready-made glory reports for family and friends. Bragging is a lot easier when it’s already written."
+          }
+        }
+      },
+      "block_order": [
+        "step_3Kj3D3",
+        "step_qQBk8h",
+        "step_TBeDVU",
+        "step_iEEiXD",
+        "step_QR5report"
+      ],
+      "name": "Landing: Steps",
+      "settings": {
+        "heading": "Five steps to winning at dad life. No complications.",
+        "button_label": "Get the kit",
+        "button_link": "#product-offer-2",
+        "note": "",
+        "background_color": "#2b2d45",
+        "text_color": "#fef1d5",
+        "card_color": "#ee614c",
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "button_border_color": "#2b2d45",
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_benefits_KgAMpg": {
+      "type": "landing-benefits",
+      "blocks": {
+        "benefit_ALKK7F": {
+          "type": "benefit",
+          "settings": {
+            "callout": "Less Googling. More pirate voices.",
+            "text": "<p>When your kid asks “<em>What are we doing today?</em>”, you don’t have to scramble for an idea. Pick a mission, check the instructions and go.</p><p>You both have fun. <strong>Together you build, search, cook, make a mess or rescue something.</strong> Sometimes successfully.</p>",
+            "image": "shopify://shop_images/399afb4006c15873a1cd267693c851f8a3b8b9f5.webp"
+          }
+        },
+        "benefit_CfEx84": {
+          "type": "benefit",
+          "settings": {
+            "callout": "A poster that reminds your kid every day: “Me and Dad did that.”",
+            "text": "<p>Hang the poster next to your kid’s bed and it becomes a map of what you two pulled off. <strong>Every sticker is proof it happened,</strong> and the next mission is waiting.</p>",
+            "image": "shopify://shop_images/f56902fa88d08ed975bbdbf5a05956e9726234f5.webp"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_ALKK7F",
+        "benefit_CfEx84"
+      ],
+      "name": "Landing: Benefits",
+      "settings": {
+        "heading": "It’s not rocket science. It’s dad science.",
+        "closing": "You don’t need to know every rule of child psychology. It’s enough to show up, pull off a mission and watch your kid have fun with you. Dads need some proof we’re doing OK too.",
+        "background_color": "#fef1d5",
+        "text_color": "#2b2d45",
+        "callout_color": "#ee614c",
+        "callout_text_color": "#fef1d5",
+        "callout_border_color": "#fef1d5",
+        "divider_top_color": "#2c2d45",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_pillars_aKVLpc": {
+      "type": "landing-pillars",
+      "blocks": {
+        "pillar_JEX7MA": {
+          "type": "pillar",
+          "settings": {
+            "title": "ACTION",
+            "text": "Pull off something stupid. On purpose."
+          }
+        },
+        "pillar_Gd3KzQ": {
+          "type": "pillar",
+          "settings": {
+            "title": "EMOTION",
+            "text": "They laugh. You look like a genius."
+          }
+        },
+        "pillar_MUpJwh": {
+          "type": "pillar",
+          "settings": {
+            "title": "RITUAL",
+            "text": "Mission done. Sticker earned."
+          }
+        },
+        "pillar_TxgeAm": {
+          "type": "pillar",
+          "settings": {
+            "title": "REMINDER",
+            "text": "The poster is your trophy wall."
+          }
+        }
+      },
+      "block_order": [
+        "pillar_JEX7MA",
+        "pillar_Gd3KzQ",
+        "pillar_MUpJwh",
+        "pillar_TxgeAm"
+      ],
+      "name": "Landing: Pillars",
+      "settings": {
+        "background_color": "#2b2d45",
+        "stripe_color": "#94494b",
+        "text_color": "#fef1d5",
+        "stripe_width": 34,
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_letter_xqjbdb": {
+      "type": "landing-letter",
+      "name": "Landing: Letter",
+      "settings": {
+        "avatar": "shopify://shop_images/image_7.webp",
+        "heading": "“I’m no parenting expert. But I’m pretty well trained in nonsense.”",
+        "body": "<p><strong>I’m not a parenting expert. Not even close.</strong> I’m a dad of two girls and I deal with the same problems as every other dad: confusion, helplessness, pretending I know what I’m doing, and the feeling that I’ll miss everything that matters.</p><p>But I do know one thing. For most of my life <span style=\"text-decoration:underline\">I’ve been turning ordinary situations into stories, shows and nonsense that people enjoy.</span></p><p>That’s why I created the I Am Best Dad In The World kit. Not to lecture dads on how to raise their kids, but so that when we hear <strong>“</strong><em><strong>What are we doing today?</strong></em><strong>” we don’t have to invent the answer all over again.</strong></p><p><span style=\"text-decoration:underline\">I tested the missions at home. On my own kids.</span> Some ended in laughter, some in a mess, the best ones in both. They turned into moments we still talk about.</p><p>If this kit <strong>helps you show up for your kid more often, pull something off and really be there, it’s done its job.</strong> If it also makes you the family hero for a few minutes, I won’t complain.</p><p><strong>— From the author himself, Lado</strong></p>",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "avatar_border_color": "#000000",
+        "marker_color": "#ee614c",
+        "marker_opacity": 50,
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_product_Ljzbz6": {
+      "type": "landing-product",
+      "blocks": {
+        "feature_hpMKib": {
+          "type": "feature",
+          "settings": {
+            "emoji": "⛺",
+            "text": "<b>A book with 28 missions</b> for dad and kid"
+          }
+        },
+        "feature_fYKVy7": {
+          "type": "feature",
+          "settings": {
+            "emoji": "🗒️",
+            "text": "<b>Clear instructions</b> step by step"
+          }
+        },
+        "feature_egmYkg": {
+          "type": "feature",
+          "settings": {
+            "emoji": "🏆",
+            "text": "<b>28 stickers</b> for completed missions"
+          }
+        },
+        "feature_mA6UiQ": {
+          "type": "feature",
+          "settings": {
+            "emoji": "🔥",
+            "text": "<strong>The Dad Achievement Poster</strong>"
+          }
+        },
+        "feature_9a9fHY": {
+          "type": "feature",
+          "settings": {
+            "emoji": "📱",
+            "text": "<strong>QR glory reports</strong>, ready to send to family and friends"
+          }
+        },
+        "divider_EPMMNY": {
+          "type": "divider",
+          "settings": {
+            "color": "#ffffff",
+            "opacity": 40
+          }
+        },
+        "feature_nWUJzm": {
+          "type": "feature",
+          "settings": {
+            "emoji": "❤️",
+            "text": "<strong>Dad, there’s less time than you think…</strong>"
+          }
+        },
+        "feature_h6XWFM": {
+          "type": "feature",
+          "settings": {
+            "emoji": "",
+            "text": "…so pick a mission tonight."
+          }
+        },
+        "trust_MDdgBt": {
+          "type": "trust",
+          "settings": {
+            "icon": "star",
+            "text": "Poster & stickers included"
+          }
+        },
+        "trust_J867Pg": {
+          "type": "trust",
+          "settings": {
+            "icon": "heart",
+            "text": "Secure checkout"
+          }
+        },
+        "trust_krjqgP": {
+          "type": "trust",
+          "settings": {
+            "icon": "clock",
+            "text": "30-day returns"
+          }
+        }
+      },
+      "block_order": [
+        "feature_hpMKib",
+        "feature_fYKVy7",
+        "feature_egmYkg",
+        "feature_mA6UiQ",
+        "feature_9a9fHY",
+        "divider_EPMMNY",
+        "feature_nWUJzm",
+        "feature_h6XWFM",
+        "trust_MDdgBt",
+        "trust_J867Pg",
+        "trust_krjqgP"
+      ],
+      "name": "Landing: Product (dark)",
+      "settings": {
+        "product": "the-best-dad-book",
+        "alt_product": "",
+        "alt_language_code": "sl",
+        "product_handle": "the-best-dad-book",
+        "anchor_id": "product-offer-2",
+        "variant": "dark",
+        "show_stars": false,
+        "banner_text": "",
+        "title": "More “Remember when…?”, less “What now?”",
+        "lead": "We don’t promise perfect fatherhood. We give you 28 chances to pull something off.",
+        "text": "Less hunting for ideas. More laughing together. And a wall of stickers as evidence.",
+        "savings_label": "Save [amount]",
+        "sale_note": "",
+        "button_label": "Get the kit",
+        "shipping_note": "Ships next business day. Delivery in 5–7 business days.",
+        "price_note": "",
+        "bar_enabled": true,
+        "bar_display": "mobile",
+        "bar_label_1": "POSTER & STICKERS INCLUDED",
+        "bar_label_2": "30-day returns",
+        "bar_label_3": "",
+        "bar_background_image": "shopify://shop_images/Best_Dad_Book_Endpapers.webp",
+        "bar_photo": "shopify://shop_images/image_7.webp",
+        "bar_link": "",
+        "bar_background_color": "#fef1d5",
+        "bar_chip_color": "#ee614c",
+        "bar_chip_text_color": "#ffffff",
+        "bar_photo_border_color": "#2b2d45",
+        "background_color": "",
+        "text_color": "",
+        "soft_color": "",
+        "accent_color": "",
+        "price_color": "",
+        "banner_text_color": "",
+        "sale_note_color": "",
+        "gallery_border_color": "",
+        "button_bg_color": "",
+        "button_text_color": "",
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_faq_6W7fCC": {
+      "type": "landing-faq",
+      "blocks": {
+        "question_BAc9wV": {
+          "type": "question",
+          "settings": {
+            "title": "What ages is the kit for?",
+            "answer": "<p>Roughly ages 1–12. Not every mission is right for every age, so the book includes guidance to help you choose. With toddlers, you take the lead. Older kids can help plan, make decisions, and occasionally inform you that your entire approach is wrong.</p>"
+          }
+        },
+        "question_3sxudz": {
+          "type": "question",
+          "settings": {
+            "title": "What’s included in the kit?",
+            "answer": "<p>The complete kit includes:</p><ul><li>A physical <strong>softcover</strong> book with <strong>28 tear-out, unfoldable missions</strong> and step-by-step instructions.</li><li><strong>28 premium gold-foiled trophy stickers</strong> to award for completed missions.</li><li>The <strong>Dad Achievement Poster</strong> to collect those trophies and display your shared wins.</li><li><strong>A letter from Santa</strong>, tucked into its special envelope.</li></ul><p>It’s a physical kit, not a download or a book of generic parenting tips. Dad glory comes in the package. Actual glory requires a little work.</p>"
+          }
+        },
+        "question_ZSapzE": {
+          "type": "question",
+          "settings": {
+            "title": "How do the missions, stickers, and poster work together?",
+            "answer": "<p>Pick a mission. Tear out and unfold its page. Do the activity together. When you’ve earned it, your kid awards you a premium gold-foiled trophy sticker, which goes on the Dad Achievement Poster.</p><p>Hang the poster where your kid can see it. Every sticker marks something you did together. Every empty space is another mission waiting to happen. Your kid might start requesting the next mission without you having to pitch it.</p><p>A reward system for you. Finally, someone understands management.</p>"
+          }
+        },
+        "question_EsXUPJ": {
+          "type": "question",
+          "settings": {
+            "title": "Why are the pages meant to be torn out?",
+            "answer": "<p>Because they’re mission sheets, not sacred manuscripts. Tear one out, unfold it, and bring the instructions wherever the action takes you. Keep it afterward if you want another round.</p><p>It’s one of the few books where missing pages mean you’re doing it right.</p>"
+          }
+        },
+        "question_Mr8P0k": {
+          "type": "question",
+          "settings": {
+            "title": "Can we do the missions more than once?",
+            "answer": "<p>Of course. The page gets torn out once. The mission can happen as many times as you like. Keep the instructions and repeat a favorite, or change it up as your kid grows.</p><p>If your pirate career is going well, there’s no need to retire after one voyage.</p>"
+          }
+        },
+        "question_efwaut": {
+          "type": "question",
+          "settings": {
+            "title": "Is this going to make a huge mess?",
+            "answer": "<p>Depends on the mission. Some leave almost no evidence. Others may require a towel, a protected table, and a convincing explanation for the other parent.</p><p>Check the supplies and setup first. You and your kid can tackle the cleanup together, too. Apparently that’s also quality time. Terrible news.</p>"
+          }
+        },
+        "question_T7LY0N": {
+          "type": "question",
+          "settings": {
+            "title": "What if I’m not crafty or I feel ridiculous doing this stuff?",
+            "answer": "<p>Good. You’re qualified.</p><p>The missions come with instructions, so you don’t need to be an artist, an engineer, or a suspiciously perfect Instagram dad. Start with something comfortable and go from there.</p><p>If the paper boat is crooked, see if it floats. Your kid isn’t judging the craftsmanship. Well, not <em>officially</em>.</p>"
+          }
+        },
+        "question_KNJNjy": {
+          "type": "question",
+          "settings": {
+            "title": "Do we need special tools or a trip to Home Depot?",
+            "answer": "<p>Most missions use things you probably have around the house. Some need extra supplies or a bit of preparation, so each mission tells you what to check before starting.</p><p>Start with the kitchen drawers and the closet. If you still want a trip to Home Depot, you’ll need a different excuse.</p>"
+          }
+        },
+        "question_cIFk71": {
+          "type": "question",
+          "settings": {
+            "title": "Are the missions safe?",
+            "answer": "<p>You choose activities appropriate for your child’s age and abilities, read the instructions, and supervise throughout. Anything involving water, cooking, tools, or small objects needs the right precautions.</p><p>If a mission doesn’t suit your kid or your space, adapt it safely or pick another. The Dad of the Year trophy is not worth a trip to the ER.</p>"
+          }
+        },
+        "question_xHETMO": {
+          "type": "question",
+          "settings": {
+            "title": "What if my kid gets bored halfway through?",
+            "answer": "<p>Start with a shorter mission. Let your kid make a decision or two. If an activity isn’t clicking, change it, take a break, or try a different one later.</p><p>You don’t have to complete all 28 in order. Even pirates take days off.</p>"
+          }
+        },
+        "question_0fj2hS": {
+          "type": "question",
+          "settings": {
+            "title": "How long do the missions take? What if I’m busy?",
+            "answer": "<p>Some are quick activities, while others take more time or preparation. The mission guides help you check the time, supplies, and setup before choosing one that fits your day.</p><p>You don’t need to do them in order, and nobody expects all 28 by Sunday night. This is fatherhood, not a quarterly performance review.</p>"
+          }
+        },
+        "question_mbsKN6": {
+          "type": "question",
+          "settings": {
+            "title": "Why buy it now instead of someday?",
+            "answer": "<p>Because “when things calm down” has a funny way of turning into next month, next year, and “Wait, when did you get so big?”</p><p>This isn’t about rushing through 28 missions. It’s about having a plan ready when you and your kid get an afternoon together. Start with one. Your rise to glory can be gradual.</p>"
+          }
+        },
+        "question_2CqaAV": {
+          "type": "question",
+          "settings": {
+            "title": "Is this another parenting advice book?",
+            "answer": "<p>Nope. It’s a book you <em>use</em>, not one that tells you everything you’re doing wrong. Inside are 28 guided missions. Pick one, tear out and unfold the page, follow the steps, and get into it with your kid.</p><p>We skipped the parenting lectures. The internet has that department fully staffed.</p>"
+          }
+        },
+        "question_vuT7yr": {
+          "type": "question",
+          "settings": {
+            "title": "What do my kid and I actually get out of this?",
+            "answer": "<p>Your kid gets your attention, a say in the mission, and someone willing to join the nonsense. You get 28 ready-made plans instead of having to invent an entire childhood every Saturday morning.</p><p>Together you collect inside jokes, small victories, and stories that belong to you both. You also get physical evidence that you occasionally know what you’re doing.</p>"
+          }
+        },
+        "question_QTrzRN": {
+          "type": "question",
+          "settings": {
+            "title": "Why is this better than buying another toy?",
+            "answer": "<p>Because you come with it.</p><p>A toy gives your kid something to play with. This kit gives you and your kid 28 things to do <em>together</em>, with instructions to get the fun started and a poster to celebrate what you did.</p><p>Your kid probably owns enough toys. A chance to review your performance as a pirate? That’s new.</p>"
+          }
+        },
+        "question_HDBQkL": {
+          "type": "question",
+          "settings": {
+            "title": "Will my kid actually remember this?",
+            "answer": "<p>We can’t promise which moments will stick. But doing something ridiculous together gives you a story, and the sticker-covered poster gives you a reason to tell it again. Remember the disastrous pancake masterpiece? The highly suspicious pirate treasure?</p><p>That’s the idea: more “Remember when we…” and fewer Saturdays nobody can remember.</p>"
+          }
+        },
+        "question_gaWZTD": {
+          "type": "question",
+          "settings": {
+            "title": "Will my kid even care about the poster?",
+            "answer": "<p>The poster is a record of missions your kid helped complete, with shiny trophy stickers they get to award. Let them add the sticker, tell you their favorite part, and choose what to try next.</p><p>Hang it somewhere they’ll see it. There’s no guarantee every kid becomes a sticker fanatic, but seeing your shared wins can be a pretty good reason to ask, “Can we do another one?”</p>"
+          }
+        },
+        "question_ybnf1o": {
+          "type": "question",
+          "settings": {
+            "title": "Why are the stickers important? Can I get extras?",
+            "answer": "<p>The gold-foiled stickers are trophies, not filler. After a mission, your kid gets to award one and add it to the poster. That’s how an afternoon of silliness becomes a little ceremony, with a visible reminder of what you did together.</p><p>Want another child to have their own trophy wall? Check out the <a href=\"https://bestdadbook.com/products/epic-dad-achievement-poster-sticker-pack-bundle\">extra poster and sticker bundle</a> for availability.</p><p>One dad. Multiple performance evaluations.</p>"
+          }
+        },
+        "question_sBAjm4": {
+          "type": "question",
+          "settings": {
+            "title": "What does my kid get out of it?",
+            "answer": "<p>A dad who’s ready to get involved. Your kid gets to explore, make decisions, celebrate completed missions, and see their wins on the poster.</p><p>The writing is for you. The experience belongs to both of you. And your kid gets to hand out the trophies, which is a frankly alarming amount of authority.</p>"
+          }
+        },
+        "question_pBfY86": {
+          "type": "question",
+          "settings": {
+            "title": "Can moms, grandmas, and grandpas do the missions too?",
+            "answer": "<p>Absolutely. The book is written for dads, but moms, grandparents, and other grown-ups can join in. We’re not checking birth certificates before anyone builds a living-room fort.</p><p>Dad gets the title. Everyone can get in on the fun.</p>"
+          }
+        },
+        "question_AUuw9j": {
+          "type": "question",
+          "settings": {
+            "title": "Where is the book printed, how long is shipping, and what if I need to return it?",
+            "answer": "<p>The book is <strong>printed in the EU</strong>. We ship internationally, including to the <strong>United States and Canada</strong>. Delivery times and shipping costs depend on the destination and are shown through our ordering process. See the <a href=\"https://bestdadbook.com/policies/shipping-policy\">Shipping Policy</a> for details. If you need the kit by a specific date, contact <a href=\"mailto:info@bestdadbook.com\">info@bestdadbook.com</a> before placing your order.</p><p>Changed your mind? Eligible unused, unopened kits can be returned under our <strong>30-day voluntary return policy</strong>, including sale purchases. For US and Canadian orders, returns are sent back to Slovenia at the customer’s expense. EU customers also have separate statutory withdrawal rights. See the full <a href=\"https://bestdadbook.com/policies/refund-policy\">Return Policy</a> for conditions, deadlines, and exceptions.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_BAc9wV",
+        "question_3sxudz",
+        "question_ZSapzE",
+        "question_EsXUPJ",
+        "question_Mr8P0k",
+        "question_efwaut",
+        "question_T7LY0N",
+        "question_KNJNjy",
+        "question_cIFk71",
+        "question_xHETMO",
+        "question_0fj2hS",
+        "question_mbsKN6",
+        "question_2CqaAV",
+        "question_vuT7yr",
+        "question_QTrzRN",
+        "question_HDBQkL",
+        "question_gaWZTD",
+        "question_ybnf1o",
+        "question_sBAjm4",
+        "question_pBfY86",
+        "question_AUuw9j"
+      ],
+      "name": "Landing: FAQ",
+      "settings": {
+        "anchor_id": "faq",
+        "title": "Buying it for yourself?",
+        "intro": "Questions you’d rather ask here than in front of the kid.",
+        "two_columns_desktop": true,
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "card_color": "#ffffff",
+        "border_color": "#000000",
+        "shadow_color": "#ee614c",
+        "divider_top_color": "#2c2d45",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_faq_gift_dadtodad": {
+      "type": "landing-faq",
+      "blocks": {
+        "question_w6Us3f": {
+          "type": "question",
+          "settings": {
+            "title": "Is it actually a good gift for a dad?",
+            "answer": "<p>For a dad who wants to do more with his kid but sometimes runs out of ideas? Absolutely. Instead of another mug announcing he’s the world’s greatest dad, give him a kit with 28 opportunities to make a case for the title.</p><p>You give the gift. We provide the plans. He takes all the credit.</p>"
+          }
+        },
+        "question_tpdmZF": {
+          "type": "question",
+          "settings": {
+            "title": "Is this actually useful, or just a gag gift?",
+            "answer": "<p>It’s funny, but there’s a real plan inside. Each mission shows Dad how to get started, what he’ll need, and how to do the activity with his kid. This is a kit for actual use, not a joke that gets one laugh and retires to a shelf.</p><p>Humor included. Participation required. Dad competence optional.</p>"
+          }
+        },
+        "question_QLC7cN": {
+          "type": "question",
+          "settings": {
+            "title": "Will he actually read it?",
+            "answer": "<p>It’s written with humor at a dad’s expense, so there’s a decent chance he’ll read more than he intended. But he doesn’t need to finish the whole thing before using it.</p><p>One mission. A few instructions. Then the book goes down and he gets up. A surprisingly effective reading strategy.</p>"
+          }
+        },
+        "question_0GkKlu": {
+          "type": "question",
+          "settings": {
+            "title": "What if he hates reading?",
+            "answer": "<p>Perfect. He isn’t signing up for a book club. He can scan the mission details, pick one that works, read the instructions, and get going.</p><p>If reading doesn’t sell him on it, maybe the part where he’s encouraged to rip out the pages will.</p>"
+          }
+        },
+        "question_sE86nl": {
+          "type": "question",
+          "settings": {
+            "title": "Is it for new dads, veteran dads, stepdads, and weekend dads?",
+            "answer": "<p>Yep. First-time dads, seasoned pros, stepdads, adoptive dads, foster dads, and dads sharing custody can all use it. Pick missions suited to your kid’s age and the time you have together.</p><p>Buying for a brand-new dad? It’s an activity kit, not a newborn-care manual. Some missions will be for later. His qualifications at folding paper boats won’t matter either way.</p>"
+          }
+        },
+        "question_PdpF2C": {
+          "type": "question",
+          "settings": {
+            "title": "What kind of dad will love this?",
+            "answer": "<p>The dad who likes being silly with his kid. The dad who wants to be that guy but doesn’t always know where to start. The dad who’s terrific at big plans and mysteriously short on ideas by Saturday at 10:17 a.m.</p><p>He doesn’t have to be naturally creative. He just has to be willing to show up and follow the plan. The dramatic pirate voice is optional. Technically.</p>"
+          }
+        },
+        "question_T7LY0Nb": {
+          "type": "question",
+          "settings": {
+            "title": "What if he isn’t crafty or feels ridiculous doing this stuff?",
+            "answer": "<p>Good. He’s qualified.</p><p>The missions come with instructions, so he doesn’t need to be an artist, engineer, or suspiciously perfect Instagram dad. Start with something comfortable and go from there.</p><p>If the paper boat is crooked, see if it floats. Your kid isn’t judging the craftsmanship. Well, not <em>officially</em>.</p>"
+          }
+        },
+        "question_AUuw9jb": {
+          "type": "question",
+          "settings": {
+            "title": "Where is the book printed, how long is shipping, and what if I need to return it?",
+            "answer": "<p>The book is <strong>printed in the EU</strong>. We ship internationally, including to the <strong>United States and Canada</strong>. Delivery times and shipping costs depend on the destination and are shown through our ordering process. See the <a href=\"https://bestdadbook.com/policies/shipping-policy\">Shipping Policy</a> for details. If you need the kit by a specific date, contact <a href=\"mailto:info@bestdadbook.com\">info@bestdadbook.com</a> before placing your order.</p><p>Changed your mind? Eligible unused, unopened kits can be returned under our <strong>30-day voluntary return policy</strong>, including sale purchases. For US and Canadian orders, returns are sent back to Slovenia at the customer’s expense. EU customers also have separate statutory withdrawal rights. See the full <a href=\"https://bestdadbook.com/policies/refund-policy\">Return Policy</a> for conditions, deadlines, and exceptions.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_w6Us3f",
+        "question_tpdmZF",
+        "question_QLC7cN",
+        "question_0GkKlu",
+        "question_sE86nl",
+        "question_PdpF2C",
+        "question_T7LY0Nb",
+        "question_AUuw9jb"
+      ],
+      "name": "Landing: FAQ",
+      "settings": {
+        "anchor_id": "faq-gift",
+        "title": "Buying it for another dad?",
+        "intro": "Questions from the guy holding the gift receipt.",
+        "two_columns_desktop": true,
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "card_color": "#ffffff",
+        "border_color": "#000000",
+        "shadow_color": "#ee614c",
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    }
+  },
+  "order": [
+    "landing_header_UM9V9L",
+    "hero",
+    "landing_photo_strip_jRHdbN",
+    "landing_quote_image_wzDEgR",
+    "landing_story_RtUbfE",
+    "landing_offer_KJjqh6",
+    "landing_excerpts_tgTUtE",
+    "landing_product_7gjWzC",
+    "landing_accordion_66nWAm",
+    "landing_gift_mydhzF",
+    "landing_reviews_iExUAA",
+    "landing_testimonial_9fCLgE",
+    "landing_photo_strip_Lnkm3b",
+    "landing_steps_tmCYCG",
+    "landing_benefits_KgAMpg",
+    "landing_pillars_aKVLpc",
+    "landing_letter_xqjbdb",
+    "landing_product_Ljzbz6",
+    "landing_faq_6W7fCC",
+    "landing_faq_gift_dadtodad"
+  ]
+}

@@ -5,7 +5,7 @@
 
 {{ 'landing-shared.css' | asset_url | stylesheet_tag }}
 
-<section class="landing-letter landing-letter--{{ section.id }}">
+<section class="landing-letter landing-letter--{{ section.id }}"{% if section.settings.anchor_id != blank %} id="{{ section.settings.anchor_id }}"{% endif %}>
   <div class="landing-letter__inner">
     {%- if section.settings.avatar != blank or section.settings.heading != blank -%}
       <div class="landing-letter__intro">
@@ -87,6 +87,12 @@
   "class": "landing-section",
   "settings": [
     {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "info": "Lets a menu link jump here, e.g. /#kako-deluje"
+    },
+    {
       "type": "image_picker",
       "id": "avatar",
       "label": "Photo above heading",
@@ -105,11 +111,34 @@
       "info": "Use Underline to highlight a phrase with the marker color. Use Bold and Italic for emphasis.",
       "default": "<p><strong>Jaz nisem strokovnjak za vzgojo. Niti približno.</strong> Sem fotr dveh punc in ukvarjam se z enakimi težavami kot drugi fotri: z zbeganostjo, nebogljenostjo, pretvarjanjem, da vem, kaj delam, in občutkom, da bom vse pomembno zamudil.</p><p>Znam pa nekaj drugega. Že večino življenja <u>iz običajnih situacij delam zgodbe, predstave in neumnosti, ob katerih se ljudje zabavajo.</u></p><p>Zato sem ustvaril komplet Jaz sem najboljši fotr na svetu. Ne zato, da bi fotrom razlagal, kako morajo vzgajati svoje otroke, ampak da nam ob vprašanju <strong>»<em>Kaj bomo danes počeli?</em>« ne bi bilo treba vedno znova izumljati odgovora.</strong></p><p><u>Misije sem preizkusil doma. Na lastnih otrocih.</u> Nekatere so se končale s smehom, druge z neredom, najboljše pa z obojim. Iz njih so nastali trenutki, o katerih se še vedno pogovarjamo.</p><p>Če ti ta komplet <strong>pomaga, da se s svojim otrokom večkrat pojaviš, nekaj izpelješ in si zares zraven, je opravil svoje delo.</strong> Če zaradi tega za nekaj minut postaneš še družinski heroj, pa tudi ne bom protestiral.</p>"
     },
-    { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "background_color", "label": "Background", "default": "#ffffff" },
-    { "type": "color", "id": "text_color", "label": "Text", "default": "#000000" },
-    { "type": "color", "id": "avatar_border_color", "label": "Photo border", "default": "#000000" },
-    { "type": "color", "id": "marker_color", "label": "Marker highlight", "default": "#ee614c" },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "avatar_border_color",
+      "label": "Photo border",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "marker_color",
+      "label": "Marker highlight",
+      "default": "#ee614c"
+    },
     {
       "type": "range",
       "id": "marker_opacity",
@@ -119,7 +148,10 @@
       "step": 5,
       "default": 50
     },
-    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "header",
+      "content": "Wavy divider"
+    },
     {
       "type": "color",
       "id": "divider_top_color",
@@ -137,17 +169,44 @@
       "id": "divider_style",
       "label": "Divider style",
       "options": [
-        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
-        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
-        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
-        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
-        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
-        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+        {
+          "value": "waves-1-patterned_1200x20",
+          "label": "Waves 1 (small)"
+        },
+        {
+          "value": "waves-2-patterned_1200x43",
+          "label": "Waves 2 (medium)"
+        },
+        {
+          "value": "waves-3-patterned_1200x84",
+          "label": "Waves 3 (large)"
+        },
+        {
+          "value": "zig-zag-2-patterned_1200x37",
+          "label": "Zig-zag"
+        },
+        {
+          "value": "circles-2-patterned_1200x35",
+          "label": "Circles"
+        },
+        {
+          "value": "spikes-1-patterned_1200x132",
+          "label": "Spikes"
+        }
       ],
       "default": "waves-1-patterned_1200x20"
     },
-    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+    {
+      "type": "checkbox",
+      "id": "divider_animate",
+      "label": "Animate divider",
+      "default": true
+    }
   ],
-  "presets": [{ "name": "Landing: Letter" }]
+  "presets": [
+    {
+      "name": "Landing: Letter"
+    }
+  ]
 }
 {% endschema %}

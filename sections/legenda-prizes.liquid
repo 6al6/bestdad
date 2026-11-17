@@ -1,0 +1,290 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+<section class="legenda-prizes legenda-prizes--{{ section.id }}">
+  <div class="legenda-prizes__inner">
+    {%- if section.settings.heading != blank or section.settings.banner_text != blank -%}
+      <div class="legenda-prizes__intro">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="legenda-prizes__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.banner_text != blank -%}
+          <p class="legenda-prizes__lead">{{ section.settings.banner_text | escape | newline_to_br }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="legenda-prizes__list" role="list">
+        {%- for block in section.blocks -%}
+          <li class="legenda-prizes__item{% if block.settings.featured %} legenda-prizes__item--featured{% endif %}" {{ block.shopify_attributes }}>
+            <div class="legenda-prizes__card">
+              {%- if block.settings.image != blank -%}
+                {%- liquid
+                  if block.settings.featured
+                    assign sizes = '(min-width: 750px) 900px, calc(100vw - 60px)'
+                  else
+                    assign sizes = '(min-width: 750px) 440px, calc(100vw - 60px)'
+                  endif
+                -%}
+                {{-
+                  block.settings.image
+                  | image_url: width: 1400
+                  | image_tag: class: 'legenda-prizes__image', loading: 'lazy', widths: '400, 600, 900, 1400', sizes: sizes, alt: block.settings.image.alt | default: block.settings.title
+                -}}
+              {%- endif -%}
+              <div class="legenda-prizes__body">
+                {%- if block.settings.label != blank -%}
+                  <span class="legenda-prizes__chip">{{ block.settings.label }}</span>
+                {%- endif -%}
+                {%- if block.settings.title != blank -%}
+                  <h3 class="legenda-prizes__title">{{ block.settings.title }}</h3>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <p class="legenda-prizes__text">{{ block.settings.text }}</p>
+                {%- endif -%}
+              </div>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .legenda-prizes--{{ section.id }} {
+    --lp-text: {{ section.settings.text_color }};
+    --lp-card-text: {{ section.settings.card_text_color }};
+    background: {{ section.settings.background_color }};
+    color: var(--lp-text);
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    text-align: center;
+  }
+  .legenda-prizes__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 52px 12px;
+  }
+  .legenda-prizes__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .legenda-prizes__heading {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.05;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .legenda-prizes__lead {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-size: 20px;
+    line-height: 1.2;
+    overflow-wrap: break-word;
+  }
+  .legenda-prizes__list {
+    display: grid;
+    gap: 36px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  /* Cards: same as "Landing: Steps" (room for the offset black card) */
+  .legenda-prizes__item {
+    isolation: isolate;
+    margin: 0 16px 16px 0;
+  }
+  .legenda-prizes__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 22px 22px 26px;
+    border: 2px solid var(--lp-text);
+    background: {{ section.settings.card_color }};
+    color: var(--lp-card-text);
+  }
+  .legenda-prizes__card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    border: 2px solid var(--lp-text);
+    background: #000;
+    transform: translate(14px, 16px);
+  }
+  .legenda-prizes__image {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 220px;
+    border: 1.5px solid var(--lp-card-text);
+    border-radius: 6px;
+    background: #d9d9d9;
+    object-fit: cover;
+  }
+  .legenda-prizes__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+  }
+  .legenda-prizes__chip {
+    padding: 4px 12px;
+    border-radius: 40px;
+    background: {{ section.settings.chip_color }};
+    color: {{ section.settings.chip_text_color }};
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .legenda-prizes__title {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 1.05;
+    text-transform: none;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+  .legenda-prizes__text {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .legenda-prizes__text strong { font-weight: 700; }
+
+  /* Main prize: biggest and most visible */
+  .legenda-prizes__item--featured .legenda-prizes__card {
+    background: {{ section.settings.featured_card_color }};
+    color: {{ section.settings.featured_text_color }};
+  }
+  .legenda-prizes__item--featured .legenda-prizes__image { height: 300px; border-color: currentColor; }
+  .legenda-prizes__item--featured .legenda-prizes__title { font-size: 40px; }
+  .legenda-prizes__item--featured .legenda-prizes__text { font-size: 19px; }
+
+  @media (min-width: 750px) {
+    .legenda-prizes__inner { max-width: 1000px; padding-inline: 24px; }
+    .legenda-prizes__heading { font-size: 44px; }
+    .legenda-prizes__intro { gap: 36px; }
+    .legenda-prizes__lead { font-size: 24px; }
+    /* Cards stacked, one per row, at a readable width */
+    .legenda-prizes__list { width: 100%; max-width: 760px; margin-inline: auto; gap: 40px; }
+    .legenda-prizes__image,
+    .legenda-prizes__item--featured .legenda-prizes__image { height: 340px; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Legenda: Prizes",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Nagrada ni švoh!" },
+    {
+      "type": "textarea",
+      "id": "banner_text",
+      "label": "Text above the cards",
+      "info": "Shown under the heading.",
+      "default": "Objavljeni prispevki sodelujejo v žrebu za naziv:"
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#2b2d45" },
+    { "type": "color", "id": "text_color", "label": "Text and borders", "default": "#fef1d5" },
+    { "type": "color", "id": "card_color", "label": "Card", "default": "#ee614c" },
+    { "type": "color", "id": "card_text_color", "label": "Card text", "default": "#fef1d5" },
+    { "type": "color", "id": "featured_card_color", "label": "Main prize card", "default": "#fef1d5" },
+    { "type": "color", "id": "featured_text_color", "label": "Main prize card text", "default": "#2b2d45" },
+    { "type": "color", "id": "chip_color", "label": "Label background", "default": "#f72828" },
+    { "type": "color", "id": "chip_text_color", "label": "Label text", "default": "#ffffff" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "prize",
+      "name": "Title and prize",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "info": "Small chip above the title, e.g. Glavna nagrada." },
+        { "type": "text", "id": "title", "label": "Title", "default": "Fotr tedna" },
+        { "type": "inline_richtext", "id": "text", "label": "Prize", "default": "Dobi [tedenska nagrada]." },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Main prize",
+          "info": "Larger title, label chip and the main prize colors.",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Legenda: Prizes",
+      "blocks": [
+        { "type": "prize", "settings": { "title": "Fotr tedna", "text": "Dobi [tedenska nagrada]." } },
+        { "type": "prize", "settings": { "title": "Fotr meseca", "text": "Dobi [mesečna nagrada]." } },
+        {
+          "type": "prize",
+          "settings": {
+            "label": "Glavna nagrada",
+            "title": "Fotr sezone",
+            "text": "Pelje celo familijo na skupni podvig na naš račun: <strong>[glavna nagrada]</strong>.",
+            "featured": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

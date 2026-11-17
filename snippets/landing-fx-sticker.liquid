@@ -1,0 +1,90 @@
+{%- doc -%}
+  One Landing FX sticker: a PNG cut-out (astronaut, moon...) or a text sticker in a shape
+  (burst, scallop, tape...). Positioned absolutely inside its parent, which must be position: relative.
+  Motion is driven by assets/landing-fx.js; styles live in assets/landing-fx.css.
+  If the block has a "link" setting filled in, the whole sticker becomes a clickable link.
+
+  @param {object} block - A "sticker" block (same settings in every Landing FX section)
+{%- enddoc -%}
+{%- liquid
+  assign s = block.settings
+  assign kind = s.kind | default: 'burst'
+  assign ratio = '1'
+  if kind == 'tape'
+    assign ratio = '2.4'
+  endif
+
+  assign classes = 'lfx-sticker lfx-sticker--' | append: kind
+  if s.slap
+    assign classes = classes | append: ' is-slap'
+  endif
+  if s.motion == 'wobble'
+    assign classes = classes | append: ' is-wobble'
+  endif
+  if s.hide_mobile
+    assign classes = classes | append: ' is-hide-mobile'
+  endif
+  if s.shadow
+    assign classes = classes | append: ' has-shadow'
+  endif
+
+  assign scale = s.mobile_scale | divided_by: 100.0
+  assign strength = s.strength | divided_by: 100.0
+  assign shadow_x = '0.035'
+  assign shadow_y = '0.035'
+  if kind == 'tape'
+    assign shadow_x = '0.016'
+    assign shadow_y = '0.07'
+  endif
+  assign has_link = false
+  if s.link != blank
+    assign has_link = true
+  endif
+-%}
+<div
+  class="{{ classes }}"
+  style="--l:{{ s.left }}%;--t:{{ s.top }}%;--ml:{{ s.mobile_left }}%;--mt:{{ s.mobile_top }}%;--w:{{ s.size }}px;--ms:{{ scale }};--rot:{{ s.rotate }}deg;--sbg:{{ s.bg }};--sfg:{{ s.fg }};--sink:{{ s.outline }};--fs:{{ s.text_size }};--z:{{ s.layer }};--ratio:{{ ratio }};{% if has_link %}pointer-events:auto;cursor:pointer;{% endif %}"
+  {%- if s.motion == 'spin' or s.motion == 'drift' or s.motion == 'travel' %}
+    data-lfx-motion="{{ s.motion }}"
+    data-lfx-centered="true"
+    data-lfx-strength="{{ strength }}"
+    data-lfx-dir="{% if s.reverse %}-1{% else %}1{% endif %}"
+  {%- endif %}
+  {% unless has_link %}aria-hidden="true"{% endunless %}
+  {{ block.shopify_attributes }}
+>
+  {%- if has_link -%}
+    <a href="{{ s.link }}" aria-label="{{ s.text | strip_newlines | escape }}" style="position:absolute;inset:0;z-index:2;border-radius:50%;"></a>
+  {%- endif -%}
+  <div class="lfx-sticker__slap">
+    <div class="lfx-sticker__wobble">
+      {%- if kind == 'image' -%}
+        {%- if s.image != blank -%}
+          {%- capture sticker_sizes -%}(min-width: 750px) {{ s.size }}px, {{ s.size | times: scale | ceil }}px{%- endcapture -%}
+          {{-
+            s.image
+            | image_url: width: 800
+            | image_tag:
+              class: 'lfx-sticker__img',
+              loading: 'lazy',
+              widths: '200, 300, 400, 600, 800',
+              sizes: sticker_sizes,
+              alt: ''
+          -}}
+        {%- endif -%}
+      {%- else -%}
+        <div class="lfx-sticker__shape">
+          <svg viewBox="0 0 1 1" preserveAspectRatio="none" focusable="false">
+            {%- if s.shadow -%}
+              <path class="lfx-sticker__shadow" transform="translate({{ shadow_x }} {{ shadow_y }})" d="{% render 'landing-fx-shape', name: kind %}"/>
+            {%- endif -%}
+            <path class="lfx-sticker__fill" d="{% render 'landing-fx-shape', name: kind %}"/>
+          </svg>
+          {%- if s.text != blank -%}
+            <span class="lfx-sticker__text"><span>{{ s.text | escape | newline_to_br }}</span></span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

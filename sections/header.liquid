@@ -200,7 +200,17 @@
         </div>
       </li>
       {%- endif -%}
-      {% for link in section.settings.main_linklist.links %}
+      {%- liquid
+        assign nav_menu = section.settings.main_linklist
+        # Slovenian market: a menu named <handle>-si replaces <handle> (e.g. main-menu-si)
+        if localization.market.handle == 'si'
+          assign si_menu_handle = nav_menu.handle | append: '-si'
+          if linklists[si_menu_handle].links.size > 0
+            assign nav_menu = linklists[si_menu_handle]
+          endif
+        endif
+      -%}
+      {% for link in nav_menu.links %}
         <li
           class="no-js-focus-wrapper inline-block h-full"
           {% if nested_nav_style == 'dropdown' %}

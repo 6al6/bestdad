@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header - UGC",
@@ -17,12 +26,11 @@
     },
     "announcement-bar": {
       "type": "announcement-bar",
-      "disabled": true,
       "custom_css": [],
       "settings": {
         "home_page_only": false,
         "display": "scrolling_text",
-        "text": "CHRISTMAS SALE JUST DROPPED 🎄     DUE TO HIGH DEMAND, ORDERS MAY TAKE LONGER THAN USUAL",
+        "text": "BLACK FRIDAY RUSH IS ON. ORDER NOW.",
         "link": "#dad-book-product-anchor",
         "color_scheme": "scheme5",
         "use_gradient_background": false,

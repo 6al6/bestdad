@@ -1,0 +1,1009 @@
+{%- comment -%}
+  Landing: Team. Team / "about us" cards with photo slots.
+  Layout "featured": the first person is shown large, the rest below in smaller cards.
+  Layout "equal": everyone gets the same card.
+  Market setting: show the section to everyone, only to the Slovenian market, or to everyone except Slovenia
+  (same check as the SI menu switch in sections/header.liquid). In the theme editor it always shows, with a note.
+  Extras: a round "mission patch" sticker next to the heading, sticker-style labels on the photos, slightly tilted cards,
+  and two scrolling text bands (snippets/landing-ticker): one under the intro, one above the closing text.
+  Every extra has its own settings (text, colors, tilt, direction, size, speed, on/off) in the theme editor.
+{%- endcomment -%}
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+  assign is_si = false
+  if localization.market.handle == 'si'
+    assign is_si = true
+  endif
+  assign show = true
+  if section.settings.market == 'si' and is_si == false
+    assign show = false
+  endif
+  if section.settings.market == 'not_si' and is_si
+    assign show = false
+  endif
+  if request.design_mode
+    assign show = true
+  endif
+  assign featured = false
+  if section.settings.layout == 'featured' and section.blocks.size > 0
+    assign featured = true
+  endif
+  assign heading_tag = section.settings.heading_tag | default: 'h2'
+  assign rest_count = section.blocks.size
+  if featured
+    assign rest_count = rest_count | minus: 1
+  endif
+  assign cols = rest_count
+  if cols > 3
+    assign cols = 3
+  endif
+  if featured and cols > 2
+    assign cols = 2
+  endif
+  if cols < 1
+    assign cols = 1
+  endif
+  assign heading_stack = heading_font.family | append: ', ' | append: heading_font.fallback_families
+  assign patch_on = false
+  if section.settings.patch_enable and section.settings.patch_text != blank
+    assign patch_on = true
+  endif
+  assign patch_position = section.settings.patch_position | default: 'right'
+-%}
+
+{%- if show -%}
+  {{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+  {%- if request.design_mode and section.settings.market != 'all' -%}
+    <div class="landing-team__editor-note">
+      {%- if section.settings.market == 'si' -%}
+        Editor only: this section is shown only on the Slovenian market (najboljsifotr.si).
+      {%- else -%}
+        Editor only: this section is shown everywhere except the Slovenian market.
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <section class="landing-team landing-team--{{ section.id }}{% if featured %} landing-team--featured{% endif %}">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.intro != blank -%}
+      <div class="landing-team__inner landing-team__inner--head">
+        <div class="landing-team__head{% if patch_on %} landing-team__head--patch-{{ patch_position }}{% endif %}">
+          {%- if patch_on -%}
+            <svg class="landing-team__patch{% if section.settings.patch_spin %} landing-team__patch--spin{% endif %}" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false">
+              <defs>
+                <path id="LandingTeamRing-{{ section.id }}" d="M80 80 m-57 0 a57 57 0 1 1 114 0 a57 57 0 1 1 -114 0"/>
+                <clipPath id="LandingTeamPatchClip-{{ section.id }}"><circle cx="80" cy="80" r="44"/></clipPath>
+              </defs>
+              <circle cx="80" cy="80" r="79" fill="#ffffff"/>
+              <circle cx="80" cy="80" r="73" fill="var(--lt-patch)"/>
+              <circle cx="80" cy="80" r="44" fill="var(--lt-card)"/>
+              <g class="landing-team__patch-ring">
+                <text><textPath href="#LandingTeamRing-{{ section.id }}" xlink:href="#LandingTeamRing-{{ section.id }}" textLength="356" lengthAdjust="spacingAndGlyphs">{{ section.settings.patch_text | upcase }}</textPath></text>
+              </g>
+              {%- if section.settings.patch_image != blank -%}
+                {%- assign patch_src = section.settings.patch_image | image_url: width: 240 -%}
+                <image href="{{ patch_src }}" xlink:href="{{ patch_src }}" x="36" y="36" width="88" height="88" preserveAspectRatio="xMidYMid slice" clip-path="url(#LandingTeamPatchClip-{{ section.id }})"/>
+              {%- else -%}
+              <g transform="translate(51 50) scale(0.58)" fill="var(--lt-card-text)">
+                <circle cx="50" cy="46" r="43"/>
+                <rect x="2" y="36" width="12" height="26" rx="6"/>
+                <rect x="86" y="36" width="12" height="26" rx="6"/>
+                <path d="M9 79 Q50 70 91 79 L95 103 Q50 113 5 103 Z"/>
+                <circle cx="50" cy="44" r="33" stroke="var(--lt-card)" stroke-width="3.2"/>
+                <path d="M28 41 C25 31 33 20 43 18 C49 17 49 22 45 26 C39 32 35 38 32 43 C30 46 28 45 28 41 Z" fill="var(--lt-card)"/>
+                <ellipse cx="17" cy="77" rx="4.2" ry="2.8" transform="rotate(28 17 77)" fill="var(--lt-patch)"/>
+                <g fill="none" stroke="var(--lt-card)" stroke-width="3.2" stroke-linecap="round">
+                  <path d="M14 86 Q50 80 86 86"/>
+                  <path d="M12 94 Q50 88 88 94"/>
+                  <path d="M11 102 Q50 96 89 102"/>
+                </g>
+              </g>
+              {%- endif -%}
+            </svg>
+          {%- endif -%}
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="landing-team__eyebrow">{{ section.settings.eyebrow }}</p>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <{{ heading_tag }} class="landing-team__heading">
+              {{- section.settings.heading -}}
+              {%- if section.settings.heading_accent != blank %}
+                <span class="landing-team__accent">{{ section.settings.heading_accent }}</span>
+              {%- endif -%}
+            </{{ heading_tag }}>
+          {%- endif -%}
+          {%- if section.settings.intro != blank -%}
+            <div class="landing-team__intro landing-marker">{{ section.settings.intro }}</div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.ticker_text != blank -%}
+      {%- render 'landing-ticker',
+        text: section.settings.ticker_text,
+        bg: section.settings.ticker_bg_color,
+        text_color: section.settings.ticker_text_color,
+        sep_color: section.settings.ticker_sep_color,
+        speed: section.settings.ticker_speed,
+        tilt: section.settings.ticker_tilt,
+        reverse: section.settings.ticker_reverse,
+        size: section.settings.ticker_size,
+        sep: section.settings.ticker_separator,
+        font: heading_stack
+      -%}
+    {%- endif -%}
+
+    <div class="landing-team__inner landing-team__inner--body">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign is_lead = false
+          if featured and forloop.first
+            assign is_lead = true
+          endif
+          assign initials = ''
+          assign name_words = block.settings.name | split: ' '
+          for word in name_words limit: 2
+            assign first_letter = word | slice: 0
+            assign initials = initials | append: first_letter
+          endfor
+        -%}
+
+        {%- if featured and forloop.index == 2 -%}
+          {%- if section.settings.team_heading != blank -%}
+            <h2 class="landing-team__subheading">{{ section.settings.team_heading }}</h2>
+          {%- endif -%}
+          <div class="landing-team__grid">
+        {%- elsif featured == false and forloop.first -%}
+          <div class="landing-team__grid">
+        {%- endif -%}
+
+        <article class="landing-team__card{% if is_lead %} landing-team__card--lead{% endif %}" {{ block.shopify_attributes }}>
+          <div class="landing-team__photo">
+            {%- if block.settings.image != blank -%}
+              {%- if is_lead -%}
+                {%- assign img_sizes = '(min-width: 900px) 560px, 100vw' -%}
+              {%- else -%}
+                {%- assign img_sizes = '(min-width: 750px) 380px, 100vw' -%}
+              {%- endif -%}
+              {%- liquid
+                case block.settings.photo_focus
+                  when 'center'
+                    assign img_position = 'object-position: 50% 50%'
+                  when 'focal'
+                    assign img_position = block.settings.image.presentation.focal_point | default: '50% 50%' | prepend: 'object-position: '
+                  else
+                    assign img_position = 'object-position: 50% 25%'
+                endcase
+              -%}
+              {{-
+                block.settings.image
+                | image_url: width: 1200
+                | image_tag:
+                  class: 'landing-team__img',
+                  loading: 'lazy',
+                  widths: '360, 540, 720, 960, 1200',
+                  sizes: img_sizes,
+                  style: img_position,
+                  alt: block.settings.name
+              -}}
+            {%- else -%}
+              <div class="landing-team__placeholder" aria-hidden="true">
+                {%- if block.settings.placeholder == 'spaceman' -%}
+                  <svg class="landing-team__spaceman" viewBox="0 0 100 112" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                    <circle cx="50" cy="46" r="43" fill="currentColor"/>
+                    <rect x="2" y="36" width="12" height="26" rx="6" fill="currentColor"/>
+                    <rect x="86" y="36" width="12" height="26" rx="6" fill="currentColor"/>
+                    <path d="M9 79 Q50 70 91 79 L95 103 Q50 113 5 103 Z" fill="currentColor"/>
+                    <circle cx="50" cy="44" r="33" fill="currentColor" stroke="var(--lt-cream)" stroke-width="3.2"/>
+                    <path d="M28 41 C25 31 33 20 43 18 C49 17 49 22 45 26 C39 32 35 38 32 43 C30 46 28 45 28 41 Z" fill="var(--lt-cream)"/>
+                    <ellipse cx="17" cy="77" rx="4.2" ry="2.8" transform="rotate(28 17 77)" fill="var(--lt-accent)"/>
+                    <g fill="none" stroke="var(--lt-cream)" stroke-width="3.2" stroke-linecap="round">
+                      <path d="M14 86 Q50 80 86 86"/>
+                      <path d="M12 94 Q50 88 88 94"/>
+                      <path d="M11 102 Q50 96 89 102"/>
+                    </g>
+                  </svg>
+                {%- else -%}
+                  <span class="landing-team__initials">{{ initials | upcase }}</span>
+                {%- endif -%}
+                {%- if request.design_mode -%}
+                  <span class="landing-team__placeholder-hint">Add a photo in this block (portrait works best)</span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            {%- if block.settings.badge != blank -%}
+              <span class="landing-team__badge">{{ block.settings.badge }}</span>
+            {%- endif -%}
+          </div>
+
+          <div class="landing-team__body">
+            {%- if block.settings.name != blank -%}
+              <h3 class="landing-team__name">{{ block.settings.name }}</h3>
+            {%- endif -%}
+            {%- if block.settings.role != blank -%}
+              <p class="landing-team__role">{{ block.settings.role }}</p>
+            {%- endif -%}
+            {%- if block.settings.quote != blank -%}
+              <blockquote class="landing-team__quote">{{ block.settings.quote | escape | newline_to_br }}</blockquote>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="landing-team__text landing-marker">{{ block.settings.text }}</div>
+            {%- endif -%}
+            {%- if block.settings.link_label != blank and block.settings.link_url != blank -%}
+              <a class="landing-team__link" href="{{ block.settings.link_url }}">{{ block.settings.link_label }}</a>
+            {%- endif -%}
+          </div>
+        </article>
+
+        {%- if forloop.last -%}
+          {%- if featured == false or forloop.index > 1 -%}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.ticker2_text != blank -%}
+      {%- render 'landing-ticker',
+        text: section.settings.ticker2_text,
+        bg: section.settings.ticker2_bg_color,
+        text_color: section.settings.ticker2_text_color,
+        sep_color: section.settings.ticker2_sep_color,
+        speed: section.settings.ticker_speed,
+        tilt: section.settings.ticker2_tilt,
+        reverse: section.settings.ticker2_reverse,
+        size: section.settings.ticker_size,
+        sep: section.settings.ticker_separator,
+        font: heading_stack
+      -%}
+    {%- endif -%}
+
+    {%- if section.settings.closing != blank or section.settings.button_label != blank -%}
+      <div class="landing-team__inner landing-team__inner--closing{% if section.settings.ticker2_text == blank %} landing-team__inner--tight{% endif %}">
+        <div class="landing-team__closing">
+          {%- if section.settings.closing != blank -%}
+            <div class="landing-team__closing-text landing-marker">{{ section.settings.closing }}</div>
+          {%- endif -%}
+          {%- if section.settings.button_label != blank -%}
+            <a class="landing-button landing-team__button" href="{{ section.settings.button_link | default: '#' }}">
+              <span>{{ section.settings.button_label }}</span>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.note != blank -%}
+            <p class="landing-team__note">{{ section.settings.note }}</p>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </section>
+
+  {% render 'landing-divider' %}
+
+  {% style %}
+    .landing-team__editor-note {
+      padding: 8px 14px;
+      background: #2b2d45;
+      color: #ffffff;
+      font-size: 13px;
+      line-height: 1.4;
+      text-align: center;
+    }
+    .landing-team--{{ section.id }} {
+      --lm-color: color-mix(in srgb, {{ section.settings.marker_color }} {{ section.settings.marker_opacity }}%, transparent);
+      --lt-text: {{ section.settings.text_color }};
+      --lt-accent: {{ section.settings.accent_color }};
+      --lt-card: {{ section.settings.card_color }};
+      --lt-border: {{ section.settings.border_color }};
+      --lt-shadow: {{ section.settings.shadow_color }};
+      --lt-chip: {{ section.settings.chip_color }};
+      --lt-chip-text: {{ section.settings.chip_text_color }};
+      --lt-placeholder: {{ section.settings.placeholder_color }};
+      --lt-cream: {{ section.settings.card_color }};
+      --lt-card-text: {{ section.settings.card_text_color }};
+      --lt-patch: {{ section.settings.patch_color }};
+      --lt-patch-text: {{ section.settings.patch_text_color }};
+      --lt-sticker: {{ section.settings.sticker_color }};
+      --lt-sticker-text: {{ section.settings.sticker_text_color }};
+      --lt-sticker-tilt: {{ section.settings.sticker_tilt }}deg;
+      --lt-card-tilt: {{ section.settings.card_tilt }}deg;
+      --lt-cols: {{ cols }};
+      --lb-bg: {{ section.settings.button_bg_color }};
+      --lb-text: {{ section.settings.button_text_color }};
+      --lb-border: {{ section.settings.background_color }};
+      --lb-shadow: {{ section.settings.text_color }};
+      --lb-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+      overflow: hidden;
+      background: {{ section.settings.background_color }};
+      color: var(--lt-text);
+      font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    }
+    .landing-team--{{ section.id }} .landing-team__inner {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      box-sizing: border-box;
+      max-width: 1120px;
+      margin-inline: auto;
+      padding: 44px 18px 48px;
+    }
+    .landing-team--{{ section.id }} .landing-team__inner--head {
+      padding-top: 56px;
+      padding-bottom: 40px;
+    }
+    .landing-team--{{ section.id }} .landing-team__inner--closing {
+      padding-top: 44px;
+      padding-bottom: 64px;
+    }
+    .landing-team--{{ section.id }} .landing-team__inner--tight {
+      padding-top: 0;
+    }
+    .landing-team--{{ section.id }} .landing-team__head {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      max-width: 720px;
+      margin-inline: auto;
+      text-align: center;
+    }
+    .landing-team--{{ section.id }} .landing-team__eyebrow {
+      display: inline-block;
+      margin: 0;
+      padding: 4px 12px 5px;
+      border: 2px solid #ffffff;
+      border-radius: 8px;
+      background: var(--lt-chip);
+      color: var(--lt-chip-text);
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transform: rotate(calc(var(--lt-sticker-tilt) * -0.75));
+      box-shadow: 3px 3px 0 rgb(0 0 0 / 0.25);
+    }
+    /* Labels on the photos look like stickers: white die-cut edge, slight tilt */
+    .landing-team--{{ section.id }} .landing-team__badge {
+      display: inline-block;
+      margin: 0;
+      padding: 6px 12px 7px;
+      border: 3px solid #ffffff;
+      border-radius: 10px;
+      background: var(--lt-sticker);
+      color: var(--lt-sticker-text);
+      font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+      font-size: 14px;
+      line-height: 1.15;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      transform: rotate(calc(var(--lt-sticker-tilt) * -1));
+      box-shadow: 3px 3px 0 rgb(0 0 0 / 0.28);
+    }
+    .landing-team--{{ section.id }} .landing-team__grid > .landing-team__card:nth-child(even) .landing-team__badge {
+      transform: rotate(calc(var(--lt-sticker-tilt) * 0.75));
+    }
+    /* Round mission patch next to the heading */
+    .landing-team--{{ section.id }} .landing-team__patch {
+      display: block;
+      width: 104px;
+      height: 104px;
+      margin-bottom: 2px;
+      overflow: visible;
+      transform: rotate(-8deg);
+      filter: drop-shadow(4px 5px 0 rgb(0 0 0 / 0.3));
+    }
+    .landing-team--{{ section.id }} .landing-team__patch text {
+      fill: var(--lt-patch-text);
+      font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+      font-size: 13px;
+      letter-spacing: 0.08em;
+    }
+    .landing-team--{{ section.id }} .landing-team__patch-ring {
+      transform-origin: 80px 80px;
+    }
+    .landing-team--{{ section.id }} .landing-team__patch--spin .landing-team__patch-ring {
+      animation: landing-team-spin 26s linear infinite;
+    }
+    @keyframes landing-team-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    @media (min-width: 1100px) {
+      .landing-team--{{ section.id }} .landing-team__head--patch-right .landing-team__patch,
+      .landing-team--{{ section.id }} .landing-team__head--patch-left .landing-team__patch {
+        position: absolute;
+        top: -14px;
+        width: 168px;
+        height: 168px;
+        margin: 0;
+      }
+      .landing-team--{{ section.id }} .landing-team__head--patch-right .landing-team__patch {
+        right: -196px;
+      }
+      .landing-team--{{ section.id }} .landing-team__head--patch-left .landing-team__patch {
+        left: -196px;
+        transform: rotate(8deg);
+      }
+    }
+    .landing-team--{{ section.id }} .landing-team__heading,
+    .landing-team--{{ section.id }} .landing-team__subheading,
+    .landing-team--{{ section.id }} .landing-team__name,
+    .landing-team--{{ section.id }} .landing-team__quote,
+    .landing-team--{{ section.id }} .landing-team__initials {
+      font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    .landing-team--{{ section.id }} .landing-team__heading {
+      margin: 0;
+      font-size: clamp(34px, 6vw, 54px);
+      line-height: 1.04;
+      overflow-wrap: break-word;
+    }
+    .landing-team--{{ section.id }} .landing-team__accent {
+      display: block;
+      color: var(--lt-accent);
+    }
+    .landing-team--{{ section.id }} .landing-team__intro,
+    .landing-team--{{ section.id }} .landing-team__closing-text {
+      font-size: 18px;
+      line-height: 1.5;
+    }
+    .landing-team--{{ section.id }} .landing-team__intro p,
+    .landing-team--{{ section.id }} .landing-team__closing-text p,
+    .landing-team--{{ section.id }} .landing-team__text p {
+      margin: 0 0 1em;
+    }
+    .landing-team--{{ section.id }} .landing-team__intro p:last-child,
+    .landing-team--{{ section.id }} .landing-team__closing-text p:last-child,
+    .landing-team--{{ section.id }} .landing-team__text p:last-child {
+      margin-bottom: 0;
+    }
+    .landing-team--{{ section.id }} strong { font-weight: 700; }
+    /* Highlights on the section background are solid, with card-colored text: a see-through marker turns muddy on a dark background. */
+    .landing-team--{{ section.id }} .landing-team__head .landing-marker u,
+    .landing-team--{{ section.id }} .landing-team__head .landing-marker [style*='underline'],
+    .landing-team--{{ section.id }} .landing-team__closing .landing-marker u,
+    .landing-team--{{ section.id }} .landing-team__closing .landing-marker [style*='underline'] {
+      --lm-color: {{ section.settings.marker_color }};
+      color: var(--lt-card-text);
+    }
+    .landing-team--{{ section.id }} .landing-team__subheading {
+      margin: 12px 0 -8px;
+      font-size: clamp(26px, 4vw, 34px);
+      line-height: 1.1;
+      text-align: center;
+    }
+    .landing-team--{{ section.id }} .landing-team__grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 28px;
+    }
+    .landing-team--{{ section.id }} .landing-team__grid > .landing-team__card {
+      flex: 1 1 100%;
+      min-width: 0;
+    }
+    .landing-team--{{ section.id }} .landing-team__card {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1.5px solid var(--lt-border);
+      border-radius: 18px;
+      background: var(--lt-card);
+      color: var(--lt-card-text);
+      box-shadow: 6px 6px 0 var(--lt-shadow);
+    }
+    {%- if section.settings.card_tilt > 0 %}
+    /* Cards sit slightly crooked, like photos stuck on a wall, and straighten up on hover.
+       Each card is only as tall as its text, so short bios don't leave empty space. */
+    .landing-team--{{ section.id }} .landing-team__grid {
+      align-items: flex-start;
+    }
+    .landing-team--{{ section.id }} .landing-team__grid > .landing-team__card {
+      transform: rotate(calc(var(--lt-card-tilt) * -1));
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .landing-team--{{ section.id }} .landing-team__grid > .landing-team__card:nth-child(even) {
+      transform: rotate(var(--lt-card-tilt));
+    }
+    .landing-team--{{ section.id }} .landing-team__grid > .landing-team__card:hover {
+      transform: rotate(0deg) translateY(-4px);
+      box-shadow: 10px 10px 0 var(--lt-shadow);
+    }
+    {%- endif %}
+    .landing-team--{{ section.id }} .landing-team__photo {
+      position: relative;
+      flex-shrink: 0;
+      aspect-ratio: 4 / 5;
+      border-bottom: 1.5px solid var(--lt-border);
+      background: var(--lt-placeholder);
+    }
+    .landing-team--{{ section.id }} .landing-team__card--lead .landing-team__photo {
+      aspect-ratio: 5 / 4;
+    }
+    .landing-team--{{ section.id }} .landing-team__img {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .landing-team--{{ section.id }} .landing-team__badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 1;
+    }
+    .landing-team--{{ section.id }} .landing-team__placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 18px;
+      text-align: center;
+    }
+    .landing-team--{{ section.id }} .landing-team__initials {
+      color: var(--lt-accent);
+      font-size: 96px;
+      line-height: 1;
+    }
+    .landing-team--{{ section.id }} .landing-team__spaceman {
+      display: block;
+      width: 46%;
+      max-width: 190px;
+      height: auto;
+      color: var(--lt-card-text);
+    }
+    .landing-team--{{ section.id }}.landing-team--featured .landing-team__grid .landing-team__spaceman {
+      width: 34%;
+    }
+    .landing-team--{{ section.id }} .landing-team__placeholder-hint {
+      max-width: 220px;
+      font-size: 13px;
+      line-height: 1.35;
+      opacity: 0.75;
+    }
+    .landing-team--{{ section.id }} .landing-team__body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 10px;
+      padding: 22px 22px 26px;
+    }
+    .landing-team--{{ section.id }} .landing-team__name {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.05;
+    }
+    .landing-team--{{ section.id }} .landing-team__card--lead .landing-team__name {
+      font-size: clamp(32px, 4vw, 44px);
+    }
+    .landing-team--{{ section.id }} .landing-team__role {
+      margin: 0;
+      color: {{ section.settings.role_color }};
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .landing-team--{{ section.id }} .landing-team__quote {
+      margin: 6px 0 2px;
+      padding: 0;
+      border: 0;
+      color: var(--lt-accent);
+      font-size: 21px;
+      font-style: normal;
+      line-height: 1.18;
+    }
+    .landing-team--{{ section.id }} .landing-team__card--lead .landing-team__quote {
+      font-size: clamp(22px, 2.6vw, 28px);
+    }
+    .landing-team--{{ section.id }} .landing-team__text {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .landing-team--{{ section.id }} .landing-team__card--lead .landing-team__text {
+      font-size: 17px;
+    }
+    .landing-team--{{ section.id }} .landing-team__text a,
+    .landing-team--{{ section.id }} .landing-team__intro a,
+    .landing-team--{{ section.id }} .landing-team__closing-text a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .landing-team--{{ section.id }}.landing-team--featured .landing-team__grid .landing-team__photo {
+      aspect-ratio: 4 / 3;
+    }
+    .landing-team--{{ section.id }}.landing-team--featured .landing-team__grid .landing-team__initials {
+      font-size: 72px;
+    }
+    .landing-team--{{ section.id }} .landing-team__link {
+      margin-top: 4px;
+      color: var(--lt-card-text);
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .landing-team--{{ section.id }} .landing-team__closing {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      max-width: 560px;
+      margin-inline: auto;
+      text-align: center;
+    }
+    .landing-team--{{ section.id }} .landing-team__button {
+      max-width: 420px;
+    }
+    .landing-team--{{ section.id }} .landing-team__note {
+      margin: 0;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    @media (min-width: 750px) {
+      .landing-team--{{ section.id }} .landing-team__grid > .landing-team__card {
+        flex: 0 1 calc((100% - (var(--lt-cols) - 1) * 28px) / var(--lt-cols));
+      }
+      .landing-team--{{ section.id }}.landing-team--featured .landing-team__grid .landing-team__spaceman {
+        width: 62%;
+      }
+      .landing-team--{{ section.id }}.landing-team--featured .landing-team__grid {
+        max-width: 960px;
+        margin-inline: auto;
+        width: 100%;
+      }
+      .landing-team--{{ section.id }}.landing-team--featured .landing-team__grid .landing-team__card {
+        flex-direction: row;
+      }
+      .landing-team--{{ section.id }}.landing-team--featured .landing-team__grid .landing-team__photo {
+        flex: 0 0 38%;
+        aspect-ratio: auto;
+        min-height: 240px;
+        border-bottom: 0;
+        border-right: 1.5px solid var(--lt-border);
+      }
+      .landing-team--{{ section.id }}.landing-team--featured .landing-team__grid .landing-team__body {
+        justify-content: center;
+        padding: 20px 20px 22px;
+      }
+      .landing-team--{{ section.id }}.landing-team--featured .landing-team__grid .landing-team__name {
+        font-size: 26px;
+      }
+      .landing-team--{{ section.id }}.landing-team--featured .landing-team__grid .landing-team__text {
+        font-size: 15px;
+      }
+    }
+    @media (min-width: 900px) {
+      .landing-team--{{ section.id }} .landing-team__card--lead {
+        flex-direction: row;
+      }
+      .landing-team--{{ section.id }} .landing-team__card--lead .landing-team__photo {
+        flex: 0 0 52%;
+        aspect-ratio: auto;
+        min-height: 460px;
+        border-bottom: 0;
+        border-right: 1.5px solid var(--lt-border);
+      }
+      .landing-team--{{ section.id }} .landing-team__card--lead .landing-team__body {
+        justify-content: center;
+        padding: 36px 40px;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .landing-team--{{ section.id }} .landing-team__patch-ring {
+        animation: none;
+      }
+      .landing-team--{{ section.id }} .landing-team__grid > .landing-team__card {
+        transition: none;
+      }
+    }
+  {% endstyle %}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Landing: Team",
+  "tag": "div",
+  "class": "landing-section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "select",
+      "id": "market",
+      "label": "Show to",
+      "options": [
+        { "value": "all", "label": "Everyone" },
+        { "value": "si", "label": "Slovenian market only (najboljsifotr.si)" },
+        { "value": "not_si", "label": "Everyone except the Slovenian market" }
+      ],
+      "default": "all",
+      "info": "Lets one page carry a Slovenian and an English version. The theme editor always shows the section."
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "featured", "label": "First person large, the rest smaller" },
+        { "value": "equal", "label": "Everyone the same size" }
+      ],
+      "default": "equal"
+    },
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "eyebrow", "label": "Label above heading", "default": "About us" },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading level",
+      "options": [
+        { "value": "h1", "label": "H1 (first section on the page)" },
+        { "value": "h2", "label": "H2" }
+      ],
+      "default": "h1"
+    },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The people behind the product." },
+    { "type": "text", "id": "heading_accent", "label": "Heading, second line (accent color)" },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Intro",
+      "info": "Use Underline to highlight a phrase with the marker color."
+    },
+    {
+      "type": "text",
+      "id": "team_heading",
+      "label": "Heading above the smaller cards",
+      "info": "Only used with the 'First person large' layout."
+    },
+    { "type": "richtext", "id": "closing", "label": "Closing text" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "note", "label": "Note under button" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#fef1d5" },
+    { "type": "color", "id": "text_color", "label": "Heading and text on the background", "default": "#2b2d45" },
+    { "type": "color", "id": "accent_color", "label": "Accent (heading line 2, quotes, initials)", "default": "#ee614c" },
+    { "type": "color", "id": "role_color", "label": "Role line (in the cards)", "default": "#2b2d45" },
+    { "type": "color", "id": "card_color", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "card_text_color", "label": "Card text", "default": "#2b2d45" },
+    { "type": "color", "id": "border_color", "label": "Card border", "default": "#2b2d45" },
+    { "type": "color", "id": "shadow_color", "label": "Card shadow", "default": "#ee614c" },
+    { "type": "color", "id": "placeholder_color", "label": "Empty photo background (helmet uses the card text color)", "default": "#f6dfb4" },
+    { "type": "color", "id": "chip_color", "label": "Label background", "default": "#ee614c" },
+    { "type": "color", "id": "chip_text_color", "label": "Label text", "default": "#ffffff" },
+    { "type": "color", "id": "button_bg_color", "label": "Button", "default": "#f72828" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
+    { "type": "color", "id": "marker_color", "label": "Marker highlight", "default": "#ee614c" },
+    {
+      "type": "range",
+      "id": "marker_opacity",
+      "label": "Marker opacity (%)",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "default": 50
+    },
+    { "type": "header", "content": "Round patch sticker" },
+    { "type": "checkbox", "id": "patch_enable", "label": "Show the round patch", "default": true },
+    {
+      "type": "text",
+      "id": "patch_text",
+      "label": "Text around the patch",
+      "default": "28 missions • 28 stickers • 1 poster • ",
+      "info": "Runs once around the circle. End with ' • ' so the start and end meet nicely."
+    },
+    {
+      "type": "select",
+      "id": "patch_position",
+      "label": "Patch position on desktop",
+      "options": [
+        { "value": "right", "label": "Right of the heading" },
+        { "value": "left", "label": "Left of the heading" },
+        { "value": "top", "label": "Above the heading" }
+      ],
+      "default": "right",
+      "info": "On phones the patch always sits above the heading."
+    },
+    {
+      "type": "image_picker",
+      "id": "patch_image",
+      "label": "Picture in the middle (optional)",
+      "info": "Replaces the helmet. Square works best; it is cropped to a circle."
+    },
+    { "type": "checkbox", "id": "patch_spin", "label": "Spin the text slowly", "default": true },
+    { "type": "color", "id": "patch_color", "label": "Patch color", "default": "#f72828" },
+    { "type": "color", "id": "patch_text_color", "label": "Patch text", "default": "#fef1d5" },
+    { "type": "header", "content": "Photo labels and cards" },
+    { "type": "color", "id": "sticker_color", "label": "Photo label sticker", "default": "#f5e029" },
+    { "type": "color", "id": "sticker_text_color", "label": "Photo label sticker text", "default": "#2b2d45" },
+    {
+      "type": "range",
+      "id": "sticker_tilt",
+      "label": "Label tilt",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "unit": "deg",
+      "default": 4,
+      "info": "Also tilts the small label above the heading. 0 = straight."
+    },
+    {
+      "type": "range",
+      "id": "card_tilt",
+      "label": "Card tilt",
+      "min": 0,
+      "max": 3,
+      "step": 0.5,
+      "unit": "deg",
+      "default": 1,
+      "info": "0 = straight cards of equal height. Above 0, cards tilt and are only as tall as their text."
+    },
+    { "type": "header", "content": "Scrolling text" },
+    {
+      "type": "text",
+      "id": "ticker_text",
+      "label": "Band under the intro",
+      "info": "Separate items with | (vertical bar). Leave empty to hide the band."
+    },
+    { "type": "color", "id": "ticker_bg_color", "label": "Band color", "default": "#f72828" },
+    { "type": "color", "id": "ticker_text_color", "label": "Band text", "default": "#fef1d5" },
+    { "type": "color", "id": "ticker_sep_color", "label": "Band star", "default": "#f5e029" },
+    {
+      "type": "range",
+      "id": "ticker_tilt",
+      "label": "Band tilt",
+      "min": -5,
+      "max": 5,
+      "step": 0.5,
+      "unit": "deg",
+      "default": -2
+    },
+    { "type": "checkbox", "id": "ticker_reverse", "label": "Scroll left to right", "default": false },
+    {
+      "type": "text",
+      "id": "ticker2_text",
+      "label": "Band above the closing text",
+      "info": "Separate items with |. Scrolls the other way. Leave empty to hide."
+    },
+    { "type": "color", "id": "ticker2_bg_color", "label": "Second band color", "default": "#fef1d5" },
+    { "type": "color", "id": "ticker2_text_color", "label": "Second band text", "default": "#2b2d45" },
+    { "type": "color", "id": "ticker2_sep_color", "label": "Second band star", "default": "#f72828" },
+    {
+      "type": "range",
+      "id": "ticker2_tilt",
+      "label": "Second band tilt",
+      "min": -5,
+      "max": 5,
+      "step": 0.5,
+      "unit": "deg",
+      "default": 1.5
+    },
+    { "type": "checkbox", "id": "ticker2_reverse", "label": "Second band scrolls left to right", "default": true },
+    {
+      "type": "text",
+      "id": "ticker_separator",
+      "label": "Symbol between items (both bands)",
+      "default": "✦",
+      "info": "One character or emoji, e.g. ✦ ★ ●"
+    },
+    {
+      "type": "range",
+      "id": "ticker_size",
+      "label": "Band text size on desktop (both bands)",
+      "min": 16,
+      "max": 44,
+      "step": 2,
+      "unit": "px",
+      "default": 28,
+      "info": "Phones get about two thirds of this."
+    },
+    {
+      "type": "range",
+      "id": "ticker_speed",
+      "label": "Seconds per loop (higher = slower)",
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "unit": "s",
+      "default": 60
+    },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "member",
+      "name": "Person",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo",
+          "info": "Portrait (4:5) for the small cards, landscape (5:4) for the large first card. Set the focal point in the image picker so faces don't get cut."
+        },
+        {
+          "type": "select",
+          "id": "photo_focus",
+          "label": "Photo crop",
+          "options": [
+            { "value": "face", "label": "Keep the face (upper part)" },
+            { "value": "center", "label": "Center" },
+            { "value": "focal", "label": "Focal point set in Files" }
+          ],
+          "default": "face"
+        },
+        {
+          "type": "select",
+          "id": "placeholder",
+          "label": "Without a photo, show",
+          "options": [
+            { "value": "initials", "label": "Initials" },
+            { "value": "spaceman", "label": "Spaceman helmet" }
+          ],
+          "default": "initials"
+        },
+        { "type": "text", "id": "badge", "label": "Label on the photo", "info": "Short, e.g. AUTHOR." },
+        { "type": "text", "id": "name", "label": "Name", "info": "Without a photo, the card shows the initials of the name." },
+        { "type": "text", "id": "role", "label": "Role line" },
+        { "type": "textarea", "id": "quote", "label": "Quote (optional)" },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "info": "Use Underline to highlight a phrase with the marker color."
+        },
+        { "type": "text", "id": "link_label", "label": "Link label (optional)" },
+        { "type": "url", "id": "link_url", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Team",
+      "blocks": [
+        { "type": "member", "settings": { "name": "First person" } },
+        { "type": "member", "settings": { "name": "Second person" } },
+        { "type": "member", "settings": { "name": "Third person" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

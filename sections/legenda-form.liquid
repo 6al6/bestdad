@@ -1,0 +1,693 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+  assign form_id = 'LegendaForm-' | append: section.id
+  assign privacy_url = section.settings.privacy_link | default: shop.privacy_policy.url
+  # With "Terms part" blocks the terms open in a popup instead of following the link
+  assign terms_id = 'LegendaTerms-' | append: section.id
+  assign privacy_id = 'LegendaPrivacy-' | append: section.id
+  assign terms_blocks = section.blocks | where: 'type', 'terms_part'
+  assign privacy_blocks = section.blocks | where: 'type', 'privacy_part'
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="legenda-form legenda-form--{{ section.id }}"
+  {% if section.settings.anchor_id != blank %}id="{{ section.settings.anchor_id | handle }}"{% endif %}
+>
+  <div class="legenda-form__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="legenda-form__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.lead != blank -%}
+      <p class="legenda-form__lead">{{ section.settings.lead }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.face_note != blank -%}
+      <div class="legenda-form__face">
+        {%- if section.settings.face_image != blank -%}
+          {{-
+            section.settings.face_image
+            | image_url: width: 240
+            | image_tag: class: 'legenda-form__face-image', loading: 'lazy', widths: '120, 240', sizes: '96px', alt: section.settings.face_image.alt
+          -}}
+        {%- endif -%}
+        <div class="legenda-form__face-text">{{ section.settings.face_note }}</div>
+      </div>
+    {%- endif -%}
+
+    <div class="legenda-form__card">
+      {%- if section.settings.embed_code != blank -%}
+        {%- comment -%} Form from an external service that supports file uploads (Tally, Jotform, Typeform …) {%- endcomment -%}
+        <div class="legenda-form__embed">{{ section.settings.embed_code }}</div>
+      {%- else -%}
+        {%- form 'contact', id: form_id, class: 'legenda-form__form' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="legenda-form__success" role="status">
+              <p class="legenda-form__success-title">{{ section.settings.success_title }}</p>
+              {%- if section.settings.success_text != blank -%}
+                <p class="legenda-form__success-text">{{ section.settings.success_text }}</p>
+              {%- endif -%}
+              {%- assign again_link = request.path | append: '#' | append: form_id -%}
+              {% render 'landing-button', label: section.settings.again_label, link: again_link %}
+            </div>
+          {%- else -%}
+            {%- if form.errors -%}
+              <div class="legenda-form__errors" role="alert">{{ form.errors | default_errors }}</div>
+            {%- endif -%}
+
+            <input type="hidden" name="contact[Prispevek]" value="{{ section.settings.form_tag | escape }}">
+
+            <div class="legenda-form__field">
+              <label for="{{ form_id }}-name">{{ section.settings.name_label }} *</label>
+              <input id="{{ form_id }}-name" type="text" name="contact[name]" autocomplete="name" required value="{{ form.name }}">
+            </div>
+
+            <div class="legenda-form__field">
+              <label for="{{ form_id }}-email">{{ section.settings.email_label }} *</label>
+              <input id="{{ form_id }}-email" type="email" name="contact[email]" autocomplete="email" autocapitalize="off" spellcheck="false" required value="{{ form.email }}">
+            </div>
+
+            <div class="legenda-form__field">
+              <label for="{{ form_id }}-file">{{ section.settings.file_label }} *</label>
+              <input id="{{ form_id }}-file" type="url" name="contact[Povezava do fotke ali videa]" inputmode="url" placeholder="https://" required>
+              {%- if section.settings.file_help != blank -%}
+                <p class="legenda-form__help">{{ section.settings.file_help }}</p>
+              {%- endif -%}
+            </div>
+
+            <div class="legenda-form__field">
+              <label for="{{ form_id }}-body">{{ section.settings.body_label }}</label>
+              <textarea id="{{ form_id }}-body" name="contact[body]" rows="4">{{ form.body }}</textarea>
+            </div>
+
+            {%- comment -%}
+              Consent fields, all unchecked by default. Links in the labels to #pogoji-sodelovanja
+              or #politika-zasebnosti open the popups. Only checked boxes reach the email.
+            {%- endcomment -%}
+            <div class="legenda-form__checks">
+              {%- if section.settings.terms_heading != blank -%}
+                <p class="legenda-form__check-heading">{{ section.settings.terms_heading }}</p>
+              {%- endif -%}
+              <label class="legenda-form__check">
+                <input type="checkbox" name="contact[Pogoji sodelovanja]" value="Sprejemam" required>
+                <span>{{ section.settings.terms_check }} *</span>
+              </label>
+            </div>
+
+            <div class="legenda-form__checks">
+              {%- if section.settings.publish_heading != blank -%}
+                <p class="legenda-form__check-heading">{{ section.settings.publish_heading }}</p>
+              {%- endif -%}
+              <label class="legenda-form__check">
+                <input type="checkbox" name="contact[Objava v akciji]" value="Dovolim" required>
+                <span>{{ section.settings.publish_check }} *</span>
+              </label>
+              {%- if section.settings.publish_note != blank -%}
+                <p class="legenda-form__help legenda-form__check-note">{{ section.settings.publish_note }}</p>
+              {%- endif -%}
+            </div>
+
+            <div class="legenda-form__checks">
+              {%- if section.settings.extra_heading != blank -%}
+                <p class="legenda-form__check-heading">{{ section.settings.extra_heading }}</p>
+              {%- endif -%}
+              <label class="legenda-form__check">
+                <input type="checkbox" name="contact[Promocija izdelkov]" value="Dovolim">
+                <span>{{ section.settings.promo_check }}</span>
+              </label>
+              <label class="legenda-form__check">
+                <input type="checkbox" name="contact[Plačani oglasi]" value="Dovolim">
+                <span>{{ section.settings.ads_check }}</span>
+              </label>
+              {%- if section.settings.extra_note != blank -%}
+                <p class="legenda-form__help legenda-form__check-note">{{ section.settings.extra_note }}</p>
+              {%- endif -%}
+            </div>
+
+            <div class="legenda-form__checks">
+              {%- if section.settings.rights_heading != blank -%}
+                <p class="legenda-form__check-heading">{{ section.settings.rights_heading }}</p>
+              {%- endif -%}
+              <label class="legenda-form__check">
+                <input type="checkbox" name="contact[Pravice in dovoljenja]" value="Potrjujem" required>
+                <span>{{ section.settings.rights_check }} *</span>
+              </label>
+            </div>
+
+            {% render 'landing-button', label: section.settings.submit_label, type: 'submit' %}
+          {%- endif -%}
+        {%- endform -%}
+      {%- endif -%}
+    </div>
+
+    <ul class="legenda-form__links" role="list">
+      {%- if section.settings.guide_link != blank -%}
+        <li><a href="{{ section.settings.guide_link }}">Navodila za posnetke</a></li>
+      {%- endif -%}
+      {%- if terms_blocks.size > 0 -%}
+        <li>
+          <button type="button" class="legenda-form__terms-open" data-terms-open aria-haspopup="dialog" aria-controls="{{ terms_id }}">
+            Pogoji sodelovanja
+          </button>
+        </li>
+      {%- elsif section.settings.terms_link != blank -%}
+        <li><a href="{{ section.settings.terms_link }}">Pogoji sodelovanja</a></li>
+      {%- endif -%}
+      {%- if privacy_blocks.size > 0 -%}
+        <li>
+          <button type="button" class="legenda-form__terms-open" data-terms-open aria-haspopup="dialog" aria-controls="{{ privacy_id }}">
+            Politika zasebnosti
+          </button>
+        </li>
+      {%- elsif privacy_url != blank -%}
+        <li><a href="{{ privacy_url }}">Politika zasebnosti</a></li>
+      {%- endif -%}
+    </ul>
+  </div>
+
+  {%- comment -%}
+    One popup per block type. Links in the text to #pogoji-sodelovanja or #politika-zasebnosti open them too.
+  {%- endcomment -%}
+  {%- for kind in (1..2) -%}
+    {%- liquid
+      if kind == 1
+        assign dialog_blocks = terms_blocks
+        assign dialog_id = terms_id
+        assign dialog_title = section.settings.terms_title
+        assign dialog_anchor = 'pogoji-sodelovanja'
+      else
+        assign dialog_blocks = privacy_blocks
+        assign dialog_id = privacy_id
+        assign dialog_title = section.settings.privacy_title
+        assign dialog_anchor = 'politika-zasebnosti'
+      endif
+    -%}
+    {%- if dialog_blocks.size > 0 -%}
+      <dialog class="legenda-terms" id="{{ dialog_id }}" data-anchor="{{ dialog_anchor }}" aria-labelledby="{{ dialog_id }}-title">
+        <div class="legenda-terms__head">
+          <h2 class="legenda-terms__title" id="{{ dialog_id }}-title">{{ dialog_title }}</h2>
+          <button type="button" class="legenda-terms__close" data-terms-close aria-label="Zapri">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+              <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+        <div class="legenda-terms__body">
+          {%- for block in dialog_blocks -%}
+            <div class="legenda-terms__part" {{ block.shopify_attributes }}>
+              {%- if block.settings.title != blank -%}
+                <h3 class="legenda-terms__part-title">{{ block.settings.title }}</h3>
+              {%- endif -%}
+              {{ block.settings.text }}
+            </div>
+          {%- endfor -%}
+        </div>
+      </dialog>
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if terms_blocks.size > 0 or privacy_blocks.size > 0 -%}
+    <script src="{{ 'legenda-terms.js' | asset_url }}" defer></script>
+  {%- endif -%}
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .legenda-form--{{ section.id }} {
+    --lf-text: {{ section.settings.text_color }};
+    --lb-bg: {{ section.settings.button_bg_color }};
+    --lb-text: {{ section.settings.button_text_color }};
+    --lb-border: {{ section.settings.button_border_color }};
+    --lb-shadow: {{ section.settings.text_color }};
+    --lb-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    background: {{ section.settings.background_color }};
+    color: var(--lf-text);
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    scroll-margin-top: var(--landing-anchor-offset, 16px);
+  }
+  .legenda-form__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 48px 18px 52px;
+  }
+  .legenda-form__heading {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.05;
+    text-align: center;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .legenda-form__lead {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .legenda-form__face {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1.5px dashed var(--lf-text);
+    border-radius: 10px;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+  .legenda-form__face-image {
+    flex: none;
+    width: 72px;
+    height: 72px;
+    border: 1.5px solid var(--lf-text);
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .legenda-form__face-text p { margin: 0; }
+  .legenda-form__face-text strong { font-weight: 700; }
+
+  /* Card with an offset block behind it, same as the "Landing: FAQ" cards */
+  .legenda-form__card {
+    position: relative;
+    isolation: isolate;
+    margin: 0 13px 15px 0;
+    padding: 22px 18px 24px;
+    border: 2px solid var(--lf-text);
+    background: {{ section.settings.card_color }};
+  }
+  .legenda-form__card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    border: 2px solid var(--lf-text);
+    background: {{ section.settings.shadow_color }};
+    transform: translate(13px, 15px);
+  }
+  .legenda-form__form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .legenda-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .legenda-form__card { color: var(--lf-text); }
+  .legenda-form__field label {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--lf-text);
+  }
+  /* Section id in the selectors so the theme's own input styles (grey fill, inner ring) never win */
+  .legenda-form--{{ section.id }} .legenda-form__field input,
+  .legenda-form--{{ section.id }} .legenda-form__field textarea {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 52px;
+    padding: 13px 14px;
+    border: 2px solid var(--lf-text);
+    border-radius: 10px;
+    background: {{ section.settings.field_color }};
+    box-shadow: none;
+    color: var(--lf-text);
+    font: inherit;
+    font-size: 16px; /* 16px stops iOS from zooming in */
+    line-height: 1.4;
+    cursor: text;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .legenda-form--{{ section.id }} .legenda-form__field textarea { min-height: 120px; resize: vertical; }
+  .legenda-form--{{ section.id }} .legenda-form__field input::placeholder,
+  .legenda-form--{{ section.id }} .legenda-form__field textarea::placeholder {
+    color: var(--lf-text);
+    opacity: 0.5;
+  }
+  .legenda-form--{{ section.id }} .legenda-form__field input:focus,
+  .legenda-form--{{ section.id }} .legenda-form__field textarea:focus { background: #fff; }
+  .legenda-form--{{ section.id }} .legenda-form__field input:focus-visible,
+  .legenda-form--{{ section.id }} .legenda-form__field textarea:focus-visible,
+  .legenda-form--{{ section.id }} .legenda-form__check input:focus-visible {
+    outline: 3px solid {{ section.settings.shadow_color }};
+    outline-offset: 2px;
+  }
+  .legenda-form__help {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .legenda-form__checks {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .legenda-form__check {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--lf-text);
+    cursor: pointer;
+  }
+  .legenda-form__check-heading {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .legenda-form__check-note { padding-left: 34px; }
+  .legenda-form__check a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .legenda-form__check input {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: {{ section.settings.button_bg_color }};
+  }
+  .legenda-form__errors {
+    padding: 12px 14px;
+    border: 2px solid {{ section.settings.button_bg_color }};
+    border-radius: 10px;
+    font-size: 15px;
+  }
+  .legenda-form__errors ul { margin: 6px 0 0; padding-left: 18px; }
+  .legenda-form__success {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+  .legenda-form__success:focus { outline: none; }
+  .legenda-form__success-title {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-size: 30px;
+    line-height: 1.1;
+  }
+  .legenda-form__success-text { margin: 0; font-size: 17px; line-height: 1.45; }
+  .legenda-form__embed iframe { display: block; width: 100%; border: 0; }
+  .legenda-form__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 15px;
+  }
+  .legenda-form__links a,
+  .legenda-form__terms-open { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+  .legenda-form__terms-open {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  /* Terms popup */
+  html:has(.legenda-terms[open]) { overflow: hidden; }
+  .legenda-terms {
+    box-sizing: border-box;
+    width: min(720px, calc(100vw - 32px));
+    max-height: calc(100dvh - 48px);
+    padding: 0;
+    border: 2px solid var(--lf-text);
+    background: {{ section.settings.card_color }};
+    color: var(--lf-text);
+    box-shadow: 10px 12px 0 {{ section.settings.shadow_color }};
+    overflow: hidden;
+  }
+  .legenda-terms[open] { display: flex; flex-direction: column; }
+  .legenda-terms::backdrop { background: rgb(0 0 0 / 0.55); }
+  .legenda-terms__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 20px 16px;
+    border-bottom: 1.5px solid var(--lf-text);
+  }
+  .legenda-terms__title {
+    flex: 1;
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.15;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .legenda-terms__close {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+  .legenda-terms__close:focus-visible { outline: 3px solid {{ section.settings.shadow_color }}; outline-offset: 2px; }
+  .legenda-terms__body {
+    padding: 20px 20px 28px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    font-size: 15px;
+    line-height: 1.55;
+    text-align: left;
+  }
+  .legenda-terms__part + .legenda-terms__part { margin-top: 22px; }
+  .legenda-terms__part-title {
+    margin: 0 0 8px;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.2;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .legenda-terms__part p,
+  .legenda-terms__part ul { margin: 0 0 8px; }
+  .legenda-terms__part ul { padding-left: 20px; }
+  .legenda-terms__part > :last-child { margin-bottom: 0; }
+  .legenda-terms__part strong { font-weight: 700; }
+  .legenda-terms__part a { color: inherit; text-decoration: underline; }
+  @media (min-width: 750px) {
+    .legenda-form__inner { padding-block: 64px; }
+    .legenda-form__heading { font-size: 44px; }
+    .legenda-form__card { padding: 30px 30px 32px; }
+    .legenda-terms__head { padding: 26px 28px 18px; }
+    .legenda-terms__title { font-size: 26px; }
+    .legenda-terms__body { padding: 24px 28px 32px; font-size: 16px; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Legenda: Submission form",
+  "tag": "section",
+  "class": "landing-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "info": "Buttons linking to #oddaja scroll here.",
+      "default": "oddaja"
+    },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Pošlji fotko ali video" },
+    { "type": "text", "id": "lead", "label": "Text above the form", "default": "Pošlješ lahko več fotk ali videov." },
+    {
+      "type": "richtext",
+      "id": "face_note",
+      "label": "Note next to the form",
+      "default": "<p><strong>Otrokovega obraza ni treba pokazati.</strong> Roke, hrbet, objem, silhueta ali pogled čez ramo so čisto dovolj.</p>"
+    },
+    { "type": "image_picker", "id": "face_image", "label": "Example shot without a face", "info": "Small round image next to the note." },
+    { "type": "header", "content": "External form (file upload)" },
+    {
+      "type": "html",
+      "id": "embed_code",
+      "label": "Form embed code",
+      "info": "Shopify's own form can't upload files. Paste the embed code of a form with file upload (e.g. Tally, Jotform) and it replaces the built-in form below."
+    },
+    { "type": "header", "content": "Built-in form" },
+    { "type": "text", "id": "form_tag", "label": "Subject shown in the email", "default": "Legenda – nov prispevek" },
+    { "type": "text", "id": "name_label", "label": "Name label", "default": "Ime in priimek" },
+    { "type": "text", "id": "email_label", "label": "Email label", "default": "E-poštni naslov" },
+    { "type": "text", "id": "file_label", "label": "File link label", "default": "Povezava do fotke ali videa" },
+    {
+      "type": "text",
+      "id": "file_help",
+      "label": "File link help",
+      "default": "Naloži datoteko na WeTransfer, Google Drive ali Dropbox in prilepi povezavo."
+    },
+    { "type": "text", "id": "body_label", "label": "Description label", "default": "Kratek opis trenutka" },
+    { "type": "header", "content": "Consent fields" },
+    {
+      "type": "paragraph",
+      "content": "All boxes start unchecked. Links to #pogoji-sodelovanja or #politika-zasebnosti open the popups. Leave a heading or note empty to hide it."
+    },
+    { "type": "text", "id": "terms_heading", "label": "Terms heading", "default": "Obvezno sprejetje pravil akcije:" },
+    {
+      "type": "inline_richtext",
+      "id": "terms_check",
+      "label": "Terms checkbox (required)",
+      "default": "Strinjam se s <a href=\"#pogoji-sodelovanja\">Pogoji sodelovanja v nagradni akciji Fotr meseca in Fotr leta</a>."
+    },
+    { "type": "text", "id": "publish_heading", "label": "Publishing heading", "default": "Dovoljenje za objavo v akciji:" },
+    {
+      "type": "inline_richtext",
+      "id": "publish_check",
+      "label": "Publishing checkbox (required)",
+      "default": "Dovoljujem objavo izbranega prispevka za predstavitev akcije. Seznanjen/-a sem s <a href=\"#pogoji-sodelovanja\">Pogoji uporabe uporabniških vsebin</a> in <a href=\"#politika-zasebnosti\">Politiko zasebnosti</a>."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "publish_note",
+      "label": "Publishing note",
+      "default": "V žrebu sodelujejo izbrani in objavljeni prispevki. Dovoljenje lahko kadarkoli prekličeš na <a href=\"mailto:info@najboljsifotr.si\">info@najboljsifotr.si</a>."
+    },
+    { "type": "text", "id": "extra_heading", "label": "Optional permissions heading", "default": "Dodatni prostovoljni dovoljenji:" },
+    {
+      "type": "inline_richtext",
+      "id": "promo_check",
+      "label": "Product promotion checkbox (optional)",
+      "default": "Dovoljujem tudi uporabo prispevka za promocijo izdelkov Jaz sem najboljši Fotr na svetu na spletnih straneh in profilih družbenih omrežij Periskop d.o.o., tudi po izteku obdobja objave za akcijo. Uporaba je brezplačna, svetovna in brez vnaprej določenega končnega datuma, dokler je potrebna za ta namen oziroma do preklica."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "ads_check",
+      "label": "Paid ads checkbox (optional)",
+      "default": "Dovoljujem tudi uporabo prispevka, vključno s prikazano podobo in glasom, v plačanih spletnih oglasih Periskop d.o.o. za izdelke Jaz sem najboljši Fotr na svetu. Uporaba je brezplačna, svetovna in brez vnaprej določenega končnega datuma, dokler je potrebna za ta namen oziroma do preklica."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "extra_note",
+      "label": "Optional permissions note",
+      "default": "Dodatni dovoljenji nista pogoj za sodelovanje in ne povečata možnosti za nagrado."
+    },
+    { "type": "text", "id": "rights_heading", "label": "Rights heading", "default": "Potrditev pravic in dovoljenj:" },
+    {
+      "type": "inline_richtext",
+      "id": "rights_check",
+      "label": "Rights checkbox (required)",
+      "default": "Potrjujem, da sem polnoleten/-na in imam potrebne avtorske pravice ter dovoljenja vseh prepoznavnih oseb za izbrane uporabe. Za prikazane otroke sem zakoniti zastopnik ali imam ustrezna dovoljenja zakonitih zastopnikov, vključno z drugim staršem, kadar je potrebno. Upošteval/-a sem tudi otrokovo voljo in korist."
+    },
+    { "type": "text", "id": "submit_label", "label": "Submit button", "default": "Oddaj prispevek" },
+    { "type": "text", "id": "success_title", "label": "Success message", "default": "Hvala! Tvoj prispevek smo prejeli." },
+    { "type": "text", "id": "success_text", "label": "Success text" },
+    { "type": "text", "id": "again_label", "label": "Send another button", "default": "Pošlji še en prispevek" },
+    { "type": "header", "content": "Links under the form" },
+    { "type": "url", "id": "guide_link", "label": "Navodila za posnetke", "info": "E.g. #navodila" },
+    { "type": "url", "id": "terms_link", "label": "Pogoji sodelovanja", "info": "Only used when there are no Terms part blocks. With blocks, the link opens the terms in a popup." },
+    {
+      "type": "url",
+      "id": "privacy_link",
+      "label": "Politika zasebnosti",
+      "info": "Only used when there are no Privacy part blocks. Leave empty to use the store's privacy policy."
+    },
+    { "type": "header", "content": "Terms popup" },
+    {
+      "type": "paragraph",
+      "content": "Add Terms part blocks to show the terms in a popup. The Pogoji sodelovanja link under the form opens it. In any block text, a link to #pogoji-sodelovanja or #politika-zasebnosti opens that popup."
+    },
+    {
+      "type": "text",
+      "id": "terms_title",
+      "label": "Popup heading",
+      "default": "Pogoji sodelovanja"
+    },
+    { "type": "header", "content": "Privacy popup" },
+    {
+      "type": "paragraph",
+      "content": "Add Privacy part blocks to show the privacy policy in a popup. The Politika zasebnosti link opens it."
+    },
+    {
+      "type": "text",
+      "id": "privacy_title",
+      "label": "Popup heading",
+      "default": "Politika zasebnosti"
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#fef1d5" },
+    { "type": "color", "id": "text_color", "label": "Text and borders", "default": "#2b2d45" },
+    { "type": "color", "id": "card_color", "label": "Form card", "default": "#ffffff" },
+    { "type": "color", "id": "field_color", "label": "Input fields", "default": "#fef1d5" },
+    { "type": "color", "id": "shadow_color", "label": "Card offset block", "default": "#ee614c" },
+    { "type": "color", "id": "button_bg_color", "label": "Button background", "default": "#f72828" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
+    { "type": "color", "id": "button_border_color", "label": "Button inner border", "default": "#ffffff" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "presets": [{ "name": "Legenda: Submission form" }],
+  "max_blocks": 50,
+  "blocks": [
+    {
+      "type": "terms_part",
+      "name": "Terms part",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "info": "E.g. 1. Organizator. Leave blank for none." },
+        { "type": "richtext", "id": "text", "label": "Text" }
+      ]
+    },
+    {
+      "type": "privacy_part",
+      "name": "Privacy part",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "info": "E.g. 1) Osebni podatki, ki jih zbiramo. Leave blank for none." },
+        { "type": "richtext", "id": "text", "label": "Text" }
+      ]
+    }
+  ]
+}
+{% endschema %}

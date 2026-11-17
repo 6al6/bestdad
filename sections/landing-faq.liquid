@@ -4,7 +4,10 @@
   assign two_columns = section.settings.two_columns_desktop
 -%}
 
-<section class="landing-faq landing-faq--{{ section.id }}">
+<section
+  class="landing-faq landing-faq--{{ section.id }}"
+  {% if section.settings.anchor_id != blank %}id="{{ section.settings.anchor_id | handle }}"{% endif %}
+>
   <div class="landing-faq__inner">
     {%- if section.settings.title != blank -%}
       <h2 class="landing-faq__title">{{ section.settings.title }}</h2>
@@ -44,6 +47,7 @@
 
 {% style %}
   .landing-faq--{{ section.id }} {
+    scroll-margin-top: var(--landing-anchor-offset, 16px);
     --lf-card: {{ section.settings.card_color }};
     --lf-border: {{ section.settings.border_color }};
     --lf-shadow: {{ section.settings.shadow_color }};
@@ -158,6 +162,12 @@
   "class": "landing-section",
   "max_blocks": 50,
   "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "info": "Optional, e.g. pogoji. Links ending in #pogoji then scroll to this section."
+    },
     { "type": "inline_richtext", "id": "title", "label": "Heading", "default": "Pogosta vprašanja" },
     {
       "type": "inline_richtext",

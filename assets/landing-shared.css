@@ -191,3 +191,10 @@
     animation: none;
   }
 }
+
+/* Centered button row under a section's content */
+.landing-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}

@@ -11,6 +11,14 @@
   elsif request.page_type == 'password'
     assign og_url = request.origin
   endif
+
+  # Slovenian market gets its own OG image on homepage, pages and blogs.
+  # Product and collection pages keep their own image.
+  assign si_og_image = 'https://cdn.shopify.com/s/files/1/0896/8309/9990/files/OG_Lado_Najboljsifotr_2.jpg?v=1791746075'
+  assign use_si_og = false
+  if localization.market.handle == 'si' and request.page_type != 'product' and request.page_type != 'collection'
+    assign use_si_og = true
+  endif
 %}
 
 {%- liquid
@@ -25,7 +33,11 @@
 <meta property="og:type" content="{{ og_type }}">
 <meta property="og:description" content="{{ og_description | escape }}">
 
-{%- if page_image -%}
+{%- if use_si_og -%}
+  <meta property="og:image" content="{{ si_og_image }}">
+  <meta property="og:image:secure_url" content="{{ si_og_image }}">
+  <meta property="og:image:alt" content="Lado Bizovičar z nalepko iz kompleta Jaz sem najboljši fotr na svetu, obkrožen z vsemi predmeti iz kompleta.">
+{%- elsif page_image -%}
   <meta property="og:image" content="http:{{ page_image | image_url }}">
   <meta
     property="og:image:secure_url"

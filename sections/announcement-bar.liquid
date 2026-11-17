@@ -6,6 +6,24 @@
   if section.settings.home_page_only == false or template.name == 'index'
     assign show_announcement_bar = true
   endif
+
+  # "Show only on these templates" overrides the home page setting when filled in
+  assign only_templates = section.settings.only_templates | strip
+  if only_templates != blank
+    assign show_announcement_bar = false
+    assign template_full = template.name
+    if template.suffix != blank
+      assign template_full = template.name | append: '.' | append: template.suffix
+    endif
+    assign wanted_templates = only_templates | split: ','
+    for wanted in wanted_templates
+      assign wanted = wanted | strip
+      if wanted == template_full or wanted == template.suffix
+        assign show_announcement_bar = true
+        break
+      endif
+    endfor
+  endif
 -%}
 
 {%- if show_announcement_bar -%}
@@ -45,6 +63,12 @@
       "id": "home_page_only",
       "label": "t:common.settings.home_page_only.label",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "only_templates",
+      "label": "Show only on these templates",
+      "info": "Template names separated by commas, e.g. product-page-latest or product.product-page-latest. When filled in, the bar shows only there and the home page setting above is ignored. Leave blank to use the setting above."
     },
     {
       "type": "select",

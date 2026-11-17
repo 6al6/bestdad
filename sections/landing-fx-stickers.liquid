@@ -1,0 +1,39 @@
+{{ 'landing-fx.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'landing-fx.js' | asset_url }}" defer></script>
+
+<div class="lfx-layer lfx-layer--{{ section.id }}" aria-hidden="true">
+  <div class="lfx-layer__box">
+    {%- for block in section.blocks -%}
+      {% render 'landing-fx-sticker', block: block %}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    position: relative;
+    z-index: 40;
+    height: 0;
+    overflow: visible;
+  }
+  .lfx-layer--{{ section.id }} {
+    --lfx-head: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc({{ section.settings.height }}px / -2);
+    height: {{ section.settings.height }}px;
+    overflow-x: clip;
+    pointer-events: none;
+  }
+  .lfx-layer--{{ section.id }} .lfx-layer__box {
+    position: relative;
+    max-width: 1440px;
+    height: 100%;
+    margin-inline: auto;
+  }
+{% endstyle %}
+
+{% schema %}
+{"name":"Landing FX: Sticker layer","tag":"div","class":"landing-section lfx-layer-section","max_blocks":8,"settings":[{"type":"paragraph","content":"Takes up no space. Its stickers sit on the seam between the section above and the section below. Vertical 50% is exactly on the seam."},{"type":"range","id":"height","label":"Sticker area height","min":80,"max":600,"step":20,"unit":"px","default":240}],"blocks":[{"type":"sticker","name":"Sticker","settings":[{"type":"select","id":"kind","label":"Sticker type","options":[{"value":"image","label":"Image (PNG cut-out)"},{"value":"burst","label":"Text: burst"},{"value":"spiky","label":"Text: spiky star"},{"value":"soft-burst","label":"Text: soft burst"},{"value":"scallop","label":"Text: scalloped circle"},{"value":"circle","label":"Text: circle"},{"value":"tape","label":"Text: tape"},{"value":"blob","label":"Text: blob"}],"default":"burst"},{"type":"image_picker","id":"image","label":"Image","info":"Used when the type is Image. Transparent PNG or WebP works best (astronaut, moon, plane...)."},{"type":"textarea","id":"text","label":"Text","info":"Used for text stickers. Line breaks are kept.","default":"28 missions"},{"type":"range","id":"text_size","label":"Text size","min":6,"max":30,"step":1,"default":15},{"type":"header","content":"Position (desktop)"},{"type":"range","id":"left","label":"Horizontal position","min":-10,"max":110,"step":2,"unit":"%","default":88},{"type":"range","id":"top","label":"Vertical position","min":-30,"max":130,"step":2,"unit":"%","default":50},{"type":"range","id":"size","label":"Width","min":40,"max":420,"step":5,"unit":"px","default":150},{"type":"range","id":"rotate","label":"Tilt","min":-45,"max":45,"step":1,"unit":"°","default":-8},{"type":"range","id":"layer","label":"Layer","info":"Higher sits on top.","min":1,"max":60,"step":1,"default":30},{"type":"header","content":"Position (mobile)"},{"type":"range","id":"mobile_left","label":"Horizontal position","min":-10,"max":110,"step":2,"unit":"%","default":86},{"type":"range","id":"mobile_top","label":"Vertical position","min":-30,"max":130,"step":2,"unit":"%","default":50},{"type":"range","id":"mobile_scale","label":"Size on mobile","min":30,"max":120,"step":5,"unit":"%","default":60},{"type":"checkbox","id":"hide_mobile","label":"Hide on mobile","default":false},{"type":"header","content":"Motion"},{"type":"select","id":"motion","label":"While scrolling","options":[{"value":"none","label":"Stay still"},{"value":"spin","label":"Rotate"},{"value":"drift","label":"Float up and down"},{"value":"travel","label":"Travel sideways"},{"value":"wobble","label":"Wobble (always)"}],"default":"spin"},{"type":"range","id":"strength","label":"Motion strength","min":10,"max":200,"step":10,"unit":"%","default":100},{"type":"checkbox","id":"reverse","label":"Reverse direction","default":false},{"type":"checkbox","id":"slap","label":"Slap on when it scrolls into view","default":true},{"type":"header","content":"Colors"},{"type":"color","id":"bg","label":"Sticker color","default":"#f6b52e"},{"type":"color","id":"fg","label":"Text","default":"#2b2d45"},{"type":"color","id":"outline","label":"Outline and shadow","default":"#2b2d45"},{"type":"checkbox","id":"shadow","label":"Hard shadow","default":true}]}],"presets":[{"name":"Landing FX: Sticker layer","blocks":[{"type":"sticker"}]}]}
+{% endschema %}

@@ -4,7 +4,7 @@
   assign money_format = shop.money_format
   assign money_with_currency_format = shop.money_with_currency_format
   if cart.currency.iso_code == 'EUR'
-    assign money_format = shop.money_format | remove: '&euro;' | remove: '€' | strip | append: ' €'
+    assign money_format = shop.money_format | remove: '&euro;' | remove: '€' | strip | append: ' €'
       assign money_with_currency_format = money_format
   endif
 -%}

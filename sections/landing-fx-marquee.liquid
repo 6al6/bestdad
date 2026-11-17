@@ -1,0 +1,130 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+{{ 'landing-fx.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'landing-fx.js' | asset_url }}" defer></script>
+
+{%- capture lfx_star -%}
+  <svg viewBox="0 0 1 1" aria-hidden="true" focusable="false"><path d="{% render 'landing-fx-shape', name: 'spiky' %}"/></svg>
+{%- endcapture -%}
+{%- capture lfx_burst -%}
+  <svg viewBox="0 0 1 1" aria-hidden="true" focusable="false"><path d="{% render 'landing-fx-shape', name: 'burst' %}"/></svg>
+{%- endcapture -%}
+
+<section{% if section.settings.anchor_id != blank %} id="{{ section.settings.anchor_id | handle }}"{% endif %} class="lfx lfx-marquee lfx-marquee--{{ section.id }}{% if section.settings.show_second %} has-second{% endif %}">
+  <div class="lfx-marquee__stack">
+    {%- for band in (1..2) -%}
+      {%- liquid
+        if band == 1
+          assign band_text = section.settings.text
+          assign band_direction = section.settings.direction
+          assign band_class = 'lfx-band--one'
+        else
+          unless section.settings.show_second
+            continue
+          endunless
+          assign band_text = section.settings.text_2
+          assign band_direction = 'right'
+          if section.settings.direction == 'right'
+            assign band_direction = 'left'
+          endif
+          assign band_class = 'lfx-band--two'
+        endif
+        assign items = band_text | newline_to_br | split: '<br />'
+      -%}
+      <div
+        class="lfx-band {{ band_class }}{% if section.settings.spin_separator %} is-spin{% endif %}"
+        data-lfx-marquee
+        data-speed="{{ section.settings.speed }}"
+        data-direction="{{ band_direction }}"
+        data-boost="{{ section.settings.scroll_boost }}"
+        {% if band == 2 %}aria-hidden="true"{% endif %}
+      >
+        {%- if band == 1 -%}
+          <p class="visually-hidden">{{ items | join: ' · ' | strip_newlines }}</p>
+        {%- endif -%}
+        <div class="lfx-band__track" aria-hidden="true">
+          {%- for copy in (1..2) -%}
+            <div class="lfx-band__group">
+              {%- for repeat in (1..4) -%}
+                {%- for item in items -%}
+                  {%- assign clean_item = item | strip -%}
+                  {%- if clean_item != blank -%}
+                    <span class="lfx-band__item">{{ clean_item }}</span>
+                    <span class="lfx-band__sep">
+                      {%- case section.settings.separator -%}
+                        {%- when 'image' -%}
+                          {%- if section.settings.separator_image != blank -%}
+                            {{ section.settings.separator_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: '', widths: '100, 200', sizes: '60px' }}
+                          {%- else -%}
+                            {{ lfx_star }}
+                          {%- endif -%}
+                        {%- when 'burst' -%}
+                          {{ lfx_burst }}
+                        {%- else -%}
+                          {{ lfx_star }}
+                      {%- endcase -%}
+                    </span>
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endfor -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .lfx-marquee--{{ section.id }} {
+    --lfx-head: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --band-size: {{ section.settings.text_size }}px;
+    --band-size-mobile: {{ section.settings.text_size_mobile }}px;
+    background: {{ section.settings.background_color }};
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    padding-block: {{ section.settings.padding | times: 0.6 | round }}px;
+  }
+  .lfx-marquee--{{ section.id }} .lfx-marquee__stack {
+    display: grid;
+    align-items: center;
+  }
+  .lfx-marquee--{{ section.id }} .lfx-band {
+    grid-area: 1 / 1;
+  }
+  .lfx-marquee--{{ section.id }} .lfx-band--one {
+    z-index: 2;
+    --band-bg: {{ section.settings.band_color }};
+    --band-fg: {{ section.settings.band_text_color }};
+    --band-border: {{ section.settings.band_border_color }};
+    --band-sep: {{ section.settings.separator_color }};
+    --band-tilt: {{ section.settings.tilt }}deg;
+    {% if section.settings.direction == 'right' %}--band-css-direction: reverse;{% endif %}
+  }
+  .lfx-marquee--{{ section.id }} .lfx-band--two {
+    z-index: 1;
+    --band-bg: {{ section.settings.band_color_2 }};
+    --band-fg: {{ section.settings.band_text_color_2 }};
+    --band-border: {{ section.settings.band_border_color_2 }};
+    --band-sep: {{ section.settings.separator_color_2 }};
+    --band-tilt: {{ section.settings.tilt_2 }}deg;
+    {% unless section.settings.direction == 'right' %}--band-css-direction: reverse;{% endunless %}
+  }
+  .lfx-marquee--{{ section.id }}.has-second { padding-block: {{ section.settings.padding | plus: 20 }}px; }
+  /* Phones: the bands are too narrow to read as a cross, so they stack into a chevron */
+  @media (max-width: 749px) {
+    .lfx-marquee--{{ section.id }} .lfx-band--two { grid-area: 2 / 1; margin-top: -4px; }
+    .lfx-marquee--{{ section.id }}.has-second { padding-block: {{ section.settings.padding | times: 0.6 | round }}px {{ section.settings.padding }}px; }
+  }
+  @media (min-width: 750px) {
+    .lfx-marquee--{{ section.id }} { padding-block: {{ section.settings.padding }}px; }
+    .lfx-marquee--{{ section.id }}.has-second { padding-block: {{ section.settings.padding | plus: 40 }}px; }
+  }
+{% endstyle %}
+
+{% schema %}{"name":"Landing FX: Marquee","tag":"section","class":"landing-section","settings":[{"type":"textarea","id":"text","label":"Text","info":"One phrase per line. A separator sits between phrases.","default":"28 missions\n28 trophy stickers\n1 Dad Achievement Poster\n0 parenting degrees required"},{"type":"select","id":"separator","label":"Separator","options":[{"value":"star","label":"Spiky star"},{"value":"burst","label":"Burst"},{"value":"image","label":"Image"}],"default":"star"},{"type":"image_picker","id":"separator_image","label":"Separator image","info":"Used when the separator is Image. Small transparent PNG, e.g. the astronaut helmet."},{"type":"checkbox","id":"spin_separator","label":"Spin the separators","default":true},{"type":"range","id":"text_size","label":"Text size (desktop)","min":20,"max":140,"step":2,"unit":"px","default":56},{"type":"range","id":"text_size_mobile","label":"Text size (mobile)","min":14,"max":80,"step":2,"unit":"px","default":30},{"type":"header","content":"Movement"},{"type":"range","id":"speed","label":"Speed","min":20,"max":300,"step":10,"unit":"px","info":"Pixels per second.","default":70},{"type":"select","id":"direction","label":"Direction","options":[{"value":"left","label":"Right to left"},{"value":"right","label":"Left to right"}],"default":"left"},{"type":"checkbox","id":"scroll_boost","label":"Speed up while the page scrolls","default":true},{"type":"range","id":"tilt","label":"Tilt","min":-8,"max":8,"step":0.5,"unit":"°","default":-3},{"type":"header","content":"Band colors"},{"type":"color","id":"band_color","label":"Band","default":"#f72828"},{"type":"color","id":"band_text_color","label":"Text","default":"#fef1d5"},{"type":"color","id":"band_border_color","label":"Border","default":"#2b2d45"},{"type":"color","id":"separator_color","label":"Separator","default":"#f6b52e"},{"type":"header","content":"Second crossing band"},{"type":"checkbox","id":"show_second","label":"Show a second band crossing the first","default":true},{"type":"textarea","id":"text_2","label":"Text","default":"Tear it out\nFollow the script\nStick the proof\nBrag responsibly"},{"type":"range","id":"tilt_2","label":"Tilt","min":-8,"max":8,"step":0.5,"unit":"°","default":2.5},{"type":"color","id":"band_color_2","label":"Band","default":"#2b2d45"},{"type":"color","id":"band_text_color_2","label":"Text","default":"#fef1d5"},{"type":"color","id":"band_border_color_2","label":"Border","default":"#2b2d45"},{"type":"color","id":"separator_color_2","label":"Separator","default":"#ee614c"},{"type":"header","content":"Section"},{"type":"color","id":"background_color","label":"Background","default":"#fef1d5"},{"type":"range","id":"padding","label":"Space above and below","min":0,"max":120,"step":4,"unit":"px","default":40},{"type":"text","id":"anchor_id","label":"Anchor ID","info":"Lets buttons jump here, e.g. gift → link to #gift."},{"type":"header","content":"Wavy divider"},{"type":"color","id":"divider_top_color","label":"Top divider color","info":"Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."},{"type":"color","id":"divider_bottom_color","label":"Bottom divider color","info":"Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."},{"type":"select","id":"divider_style","label":"Divider style","options":[{"value":"waves-1-patterned_1200x20","label":"Waves 1 (small)"},{"value":"waves-2-patterned_1200x43","label":"Waves 2 (medium)"},{"value":"waves-3-patterned_1200x84","label":"Waves 3 (large)"},{"value":"zig-zag-2-patterned_1200x37","label":"Zig-zag"},{"value":"circles-2-patterned_1200x35","label":"Circles"},{"value":"spikes-1-patterned_1200x132","label":"Spikes"}],"default":"waves-1-patterned_1200x20"},{"type":"checkbox","id":"divider_animate","label":"Animate divider","default":true}],"presets":[{"name":"Landing FX: Marquee"}]}{% endschema %}

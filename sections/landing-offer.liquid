@@ -5,7 +5,7 @@
 
 {{ 'landing-shared.css' | asset_url | stylesheet_tag }}
 
-<section class="landing-offer landing-offer--{{ section.id }}">
+<section class="landing-offer landing-offer--{{ section.id }}{% if section.settings.banner_text == blank %} landing-offer--no-banner{% endif %}">
   {%- if section.settings.banner_text != blank -%}
     <div class="landing-offer__banner">
       <p class="landing-offer__banner-text">{{ section.settings.banner_text | escape | newline_to_br }}</p>
@@ -96,6 +96,10 @@
     max-width: 600px;
     margin-inline: auto;
     padding: 13px 18px 40px;
+  }
+  .landing-offer--no-banner .landing-offer__inner { padding: 52px 18px; }
+  @media (min-width: 990px) {
+    .landing-offer--no-banner .landing-offer__inner { padding: 64px 24px; }
   }
   .landing-offer__heading {
     margin: 0;

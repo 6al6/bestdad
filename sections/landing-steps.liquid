@@ -5,7 +5,7 @@
 
 {{ 'landing-shared.css' | asset_url | stylesheet_tag }}
 
-<section class="landing-steps landing-steps--{{ section.id }}">
+<section class="landing-steps landing-steps--{{ section.id }}"{% if section.settings.anchor_id != blank %} id="{{ section.settings.anchor_id }}"{% endif %}>
   <div class="landing-steps__inner">
     {%- if section.settings.heading != blank -%}
       <h2 class="landing-steps__heading">{{ section.settings.heading }}</h2>
@@ -185,23 +185,82 @@
   "max_blocks": 8,
   "settings": [
     {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "info": "Lets a menu link jump here, e.g. /#kako-deluje"
+    },
+    {
       "type": "textarea",
       "id": "heading",
       "label": "Heading",
       "default": "Štirje koraki do zmage v fotrovanju. Brez kompliciranja."
     },
-    { "type": "header", "content": "Button" },
-    { "type": "text", "id": "button_label", "label": "Button label", "default": "Prednaroči komplet" },
-    { "type": "url", "id": "button_link", "label": "Button link" },
-    { "type": "text", "id": "note", "label": "Note under button", "default": "Za fotre, ki jim ni vseeno ❤️" },
-    { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "background_color", "label": "Background", "default": "#2b2d45" },
-    { "type": "color", "id": "text_color", "label": "Text, borders and button shadow", "default": "#fef1d5" },
-    { "type": "color", "id": "card_color", "label": "Step card", "default": "#ee614c" },
-    { "type": "color", "id": "button_bg_color", "label": "Button background", "default": "#f72828" },
-    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
-    { "type": "color", "id": "button_border_color", "label": "Button inner border", "default": "#2b2d45" },
-    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Prednaroči komplet"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Note under button",
+      "default": "Za fotre, ki jim ni vseeno ❤️"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#2b2d45"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text, borders and button shadow",
+      "default": "#fef1d5"
+    },
+    {
+      "type": "color",
+      "id": "card_color",
+      "label": "Step card",
+      "default": "#ee614c"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#f72828"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button inner border",
+      "default": "#2b2d45"
+    },
+    {
+      "type": "header",
+      "content": "Wavy divider"
+    },
     {
       "type": "color",
       "id": "divider_top_color",
@@ -219,24 +278,58 @@
       "id": "divider_style",
       "label": "Divider style",
       "options": [
-        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
-        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
-        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
-        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
-        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
-        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+        {
+          "value": "waves-1-patterned_1200x20",
+          "label": "Waves 1 (small)"
+        },
+        {
+          "value": "waves-2-patterned_1200x43",
+          "label": "Waves 2 (medium)"
+        },
+        {
+          "value": "waves-3-patterned_1200x84",
+          "label": "Waves 3 (large)"
+        },
+        {
+          "value": "zig-zag-2-patterned_1200x37",
+          "label": "Zig-zag"
+        },
+        {
+          "value": "circles-2-patterned_1200x35",
+          "label": "Circles"
+        },
+        {
+          "value": "spikes-1-patterned_1200x132",
+          "label": "Spikes"
+        }
       ],
       "default": "waves-1-patterned_1200x20"
     },
-    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+    {
+      "type": "checkbox",
+      "id": "divider_animate",
+      "label": "Animate divider",
+      "default": true
+    }
   ],
   "blocks": [
     {
       "type": "step",
       "name": "Step",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Image", "info": "Landscape, about 302 x 293." },
-        { "type": "text", "id": "title", "label": "Title", "info": "Emoji are allowed.", "default": "Step title" },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Landscape, about 302 x 293."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "Emoji are allowed.",
+          "default": "Step title"
+        },
         {
           "type": "inline_richtext",
           "id": "text",

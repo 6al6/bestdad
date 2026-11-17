@@ -2,17 +2,38 @@
 <html class="no-js" lang="{{ request.locale.iso_code }}">
   <head>
     <meta charset="utf-8">
-        {%- if request.page_type == 'index' and request.design_mode == false and request.visual_preview_mode == false -%}
+        {%- if request.page_type == 'index' and localization.country.iso_code == 'SI' and request.design_mode == false and request.visual_preview_mode == false -%}
+      {%- assign landing_url = routes.root_url | append: '/pages/landing' | replace: '//', '/' -%}
+      <meta http-equiv="refresh" content="0; url={{ landing_url }}">
+      <script>window.location.replace({{ landing_url | json }} + window.location.search);</script>
+    {%- endif -%}
+        {%- if request.page_type == 'page' and page.handle == 'landing' and localization.country.iso_code != 'SI' and request.design_mode == false and request.visual_preview_mode == false -%}
       {%- comment -%}
-        Send homepage visitors straight to the landing page. Placed first in <head>,
-        before anything else loads, so it fires as fast as possible. The meta refresh
-        covers visitors with JavaScript disabled; the script covers everyone else and
-        uses replace() so the redirect doesn't add a "back" step in browser history.
-        window.location.search is appended so ad/UTM query parameters survive.
-        Skipped inside the theme editor (design_mode / visual_preview_mode) so the
-        homepage can still be edited there. The URL keeps the language prefix
-        (e.g. /sl/pages/landing) so Slovenian visitors stay in Slovenian.
+        The Slovenian landing page is Slovenia-only. Anyone who is NOT in Slovenia
+        (e.g. after picking USA or Spain in the country switcher, or arriving via
+        ?country=XX) is sent to the English landing page /pages/dads instead.
+        /pages/dads sends Slovenia back here, so the two can never loop.
       {%- endcomment -%}
+      {%- assign dads_url = routes.root_url | append: '/pages/dads' | replace: '//', '/' -%}
+      <meta http-equiv="refresh" content="0; url={{ dads_url }}">
+      <script>window.location.replace({{ dads_url | json }} + window.location.search);</script>
+    {%- endif -%}
+        {%- if request.page_type == 'page' and template.suffix == 'landing_us_general_new' and localization.country.iso_code == 'SI' and request.design_mode == false and request.visual_preview_mode == false -%}
+      {%- assign landing_url = routes.root_url | append: '/pages/landing' | replace: '//', '/' -%}
+      <meta http-equiv="refresh" content="0; url={{ landing_url }}">
+      <script>window.location.replace({{ landing_url | json }} + window.location.search);</script>
+    {%- endif -%}
+        {%- if request.page_type == 'page' and template.suffix == 'landing_us_fx' and localization.country.iso_code == 'SI' and request.design_mode == false and request.visual_preview_mode == false -%}
+      {%- assign landing_url = routes.root_url | append: '/pages/landing' | replace: '//', '/' -%}
+      <meta http-equiv="refresh" content="0; url={{ landing_url }}">
+      <script>window.location.replace({{ landing_url | json }} + window.location.search);</script>
+    {%- endif -%}
+        {%- if request.page_type == 'page' and template.suffix == 'landing_us_sell' and localization.country.iso_code == 'SI' and request.design_mode == false and request.visual_preview_mode == false -%}
+      {%- assign landing_url = routes.root_url | append: '/pages/landing' | replace: '//', '/' -%}
+      <meta http-equiv="refresh" content="0; url={{ landing_url }}">
+      <script>window.location.replace({{ landing_url | json }} + window.location.search);</script>
+    {%- endif -%}
+        {%- if request.page_type == 'page' and template.suffix == 'landing_us_sell_b' and localization.country.iso_code == 'SI' and request.design_mode == false and request.visual_preview_mode == false -%}
       {%- assign landing_url = routes.root_url | append: '/pages/landing' | replace: '//', '/' -%}
       <meta http-equiv="refresh" content="0; url={{ landing_url }}">
       <script>window.location.replace({{ landing_url | json }} + window.location.search);</script>
@@ -43,20 +64,44 @@
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
 
+    {%- liquid
+      # SEO: brand suffix of the <title>. English pages get "Best Dad Book", other
+      # languages keep the shop name. No suffix when the title already contains the
+      # suffix or the shop name, compared without regard to letter case.
+      assign seo_title_suffix = shop.name
+      if request.locale.iso_code == 'en'
+        assign seo_title_suffix = 'Best Dad Book'
+      endif
+      assign seo_title_lower = page_title | downcase
+      assign seo_suffix_lower = seo_title_suffix | downcase
+      assign seo_shop_lower = shop.name | downcase
+      assign seo_show_suffix = true
+      if seo_title_lower contains seo_suffix_lower or seo_title_lower contains seo_shop_lower
+        assign seo_show_suffix = false
+      endif
+    -%}
     <title>
       {{ page_title }}
       {%- if current_tags %}
         &ndash; tagged "{{ current_tags | join: ', ' }}"
       {%- endif -%}
       {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %}
-        &ndash; {{ shop.name -}}
-      {%- endunless -%}
+      {%- if seo_show_suffix %}
+        &ndash; {{ seo_title_suffix -}}
+      {%- endif -%}
     </title>
 
     {% if page_description %}
       <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
+
+    {%- comment -%} SEO: internal search results stay out of Google. {%- endcomment -%}
+    {%- if request.page_type == 'search' %}
+      <meta name="robots" content="noindex">
+    {%- endif %}
+
+    {%- comment -%} SEO: product and book data for Google on the Slovenian landing page. {%- endcomment -%}
+    {%- render 'seo-landing-book-data' %}
 
     {%- render 'meta-tags' -%}
 {%- liquid
@@ -162,7 +207,9 @@
 
     {% style %}
       {{ main_font | font_face: font_display: 'swap' }}
+      {%- unless heading_font.family contains 'Dela Gothic One' %}
       {{ heading_font | font_face: font_display: 'swap' }}
+      {%- endunless %}
 
       {%- liquid
         assign main_font_bolder = main_font | font_modify: 'weight', 'bolder'
@@ -234,15 +281,29 @@
     </style>
 
     {% # theme-check-disable AssetPreload %}
-    {% unless heading_font.system? %}
-      <link
-        rel="preload"
-        as="font"
-        href="{{ heading_font | font_url }}"
-        type="font/woff2"
-        crossorigin
-      >
-    {% endunless %}
+    {%- comment -%}
+      Speed fix 18.10: Shopify's copy of Dela Gothic One is one 1.1 MB file (it carries thousands
+      of Japanese glyphs) and it was preloaded on every page. Google Fonts serves the same font
+      split by alphabet, so visitors only download the Latin part (~20 KB, incl. č š ž).
+      Loaded without blocking the page; text shows at once and swaps when the font arrives.
+      Any other heading font picked in theme settings still loads the normal way.
+    {%- endcomment -%}
+    {% if heading_font.family contains 'Dela Gothic One' %}
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" media="print" onload="this.media='all'">
+      <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap"></noscript>
+    {% else %}
+      {% unless heading_font.system? %}
+        <link
+          rel="preload"
+          as="font"
+          href="{{ heading_font | font_url }}"
+          type="font/woff2"
+          crossorigin
+        >
+      {% endunless %}
+    {% endif %}
     {% unless main_font.system? %}
       <link
         rel="preload"
@@ -277,10 +338,11 @@
     <a class="skip-link" href="#MainContent">
       {{- 'general.accessibility.skip_to_content' | t -}}
     </a>
-    {% if template.suffix == 'landing_m_v1' or template.suffix == 'landing_f_v1' or template.suffix == 'landing_g_v1' %}
+    {% if template.suffix == 'landing_m_v1' or template.suffix == 'landing_f_v1' or template.suffix == 'landing_g_v1' or template.suffix == 'landing_us_general_new' or template.suffix == 'landing_us_fx' or template.suffix == 'landing_us_sell' or template.suffix == 'landing_us_partners' or template.suffix == 'landing_us_grandma' or template.suffix == 'landing_us_sell_b' or template.suffix == 'landing_us_partners_b' or template.suffix == 'landing_us_grandma_b' %}
       {% sections 'header-group-landing' %}
-    {% elsif template.suffix == 'landing' %}
-    {% elsif template.suffix == 'landing' %}
+    {% elsif template.suffix == 'landing' or template.suffix == 'legenda' or template.suffix == 'darilo-babice' or template.suffix == 'darilo-partnerke' or template.suffix == 'darilo-frend' %}
+      {%- comment -%} SI landing pages: no site header, only the top bar from the landing header group. {%- endcomment -%}
+      {% sections 'header-group-landing' %}
     {%- comment -%} New landing page: no site header. Its own "Landing: Header bar" section is used instead. {%- endcomment -%}
       {%- comment -%} New landing page: no site header. Its own "Landing: Header bar" section is used instead. {%- endcomment -%}
     {% elsif template.suffix == 'ugc-2' %}
@@ -292,7 +354,12 @@
 
     {% render 'header-group-support' %}
     <main id="MainContent" class="overflow-hidden">
-      {{ content_for_layout }}
+      {%- comment -%} Slovenian homepage lives in its own section group; other languages keep the index template {%- endcomment -%}
+      {%- if template.name == 'index' and request.locale.iso_code == 'sl' -%}
+        {%- sections 'home-sl' -%}
+      {%- else -%}
+        {{ content_for_layout }}
+      {%- endif -%}
     </main>
 
     {%- sections 'footer-group' -%}
@@ -417,5 +484,35 @@ document.addEventListener("DOMContentLoaded", function () {
 {% endif %}
 
 
-  </body>
+      {%- comment -%}
+        18.10: the old "Landing FX: Buy bar" was rendered here for the partners and grandma pages,
+        on top of the "Landing: Sticky button" in the footer group, so phones showed two bars.
+        All landing and book product pages now use only the footer-group sticky button.
+      {%- endcomment -%}
+
+{%- comment -%} US test 20.10: add to cart goes straight to checkout (skips the cart drawer). Remove to undo. {%- endcomment -%}
+{%- if false and localization.country.iso_code == 'US' -%}
+<style>
+  html.bdb-go [class*="upcart" i], html.bdb-go [id*="upcart" i] { visibility: hidden !important; }
+  #bdb-go { position: fixed; inset: 0; z-index: 2147483647; display: none; align-items: center; justify-content: center; background: #fef1d5; color: #2b2d45; font: 700 18px/1.3 sans-serif; }
+  html.bdb-go #bdb-go { display: flex; }
+</style>
+<div id="bdb-go">Taking you to checkout…</div>
+<script>
+  document.addEventListener('submit', function (e) {
+    var form = e.target;
+    if (!form || !form.action || form.action.indexOf('/cart/add') === -1) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    document.documentElement.classList.add('bdb-go');
+    fetch('/cart/add.js', { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
+      .then(function (r) { if (!r.ok) throw r; window.location.href = '/checkout'; })
+      .catch(function () { document.documentElement.classList.remove('bdb-go'); form.submit(); });
+  }, true);
+  window.addEventListener('pageshow', function () { document.documentElement.classList.remove('bdb-go'); });
+</script>
+{%- endif -%}
+
+</body>
 </html>
+

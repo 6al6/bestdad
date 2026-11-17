@@ -5,6 +5,7 @@
  * row is wider than the screen plus one full set, then the CSS animation slides the row
  * by exactly one set width, so the loop is seamless.
  */
+if (!customElements.get('landing-strip')) {
 class LandingStrip extends HTMLElement {
   connectedCallback() {
     this.track = this.querySelector('.landing-strip__track');
@@ -42,6 +43,9 @@ class LandingStrip extends HTMLElement {
         const clone = item.cloneNode(true);
         clone.setAttribute('aria-hidden', 'true');
         clone.dataset.clone = '';
+        // Copies are decorative: keep them out of keyboard focus and drop any playing state
+        clone.querySelectorAll('a, button').forEach((el) => el.setAttribute('tabindex', '-1'));
+        clone.querySelectorAll('.is-playing').forEach((el) => el.classList.remove('is-playing'));
         this.track.append(clone);
       });
     }
@@ -52,6 +56,5 @@ class LandingStrip extends HTMLElement {
   }
 }
 
-if (!customElements.get('landing-strip')) {
-  customElements.define('landing-strip', LandingStrip);
+customElements.define('landing-strip', LandingStrip);
 }

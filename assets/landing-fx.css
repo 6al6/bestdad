@@ -1,0 +1,328 @@
+/* Landing FX — the "funky" layer on top of the landing sections.
+   Stickers, shaped image cutouts, tilted marquee bands, starburst kit, comparison table.
+   Sections set their own colors as CSS variables; motion comes from landing-fx.js.
+   Everything degrades to a static layout without JS or with reduced motion. */
+
+.lfx {
+  position: relative;
+  overflow-x: clip;
+  --lfx-ink: #2b2d45;
+}
+
+.lfx-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.lfx-heading {
+  margin: 0;
+  font-family: var(--lfx-head);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+  overflow-wrap: break-word;
+}
+
+/* ------------------------------------------------------------------ */
+/* Stickers                                                            */
+/* ------------------------------------------------------------------ */
+
+.lfx-sticker {
+  position: absolute;
+  top: var(--t);
+  left: var(--l);
+  z-index: var(--z, 30);
+  width: var(--w);
+  pointer-events: none;
+  transform:
+    translate(-50%, -50%)
+    translate3d(var(--fx-x, 0px), var(--fx-y, 0px), 0)
+    rotate(calc(var(--rot, 0deg) + var(--fx-r, 0deg)));
+  will-change: transform;
+}
+
+.lfx-sticker__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.lfx-sticker--image.has-shadow .lfx-sticker__img {
+  filter: drop-shadow(5px 6px 0 var(--sink));
+}
+
+.lfx-sticker__shape {
+  position: relative;
+  aspect-ratio: var(--ratio, 1);
+  container-type: inline-size;
+}
+
+.lfx-sticker__shape svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.lfx-sticker__fill {
+  fill: var(--sbg);
+  stroke: var(--sink);
+  stroke-width: 2.5px;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.lfx-sticker__shadow {
+  fill: var(--sink);
+}
+
+.lfx-sticker__text {
+  position: absolute;
+  inset: 16%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sfg);
+  font-family: var(--lfx-head);
+  font-size: calc(var(--fs, 15) * 1cqi);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-align: center;
+  text-transform: uppercase;
+  overflow-wrap: normal;
+}
+
+.lfx-sticker__text > span {
+  display: block;
+}
+
+.lfx-sticker--tape .lfx-sticker__text { inset: 10% 9%; }
+.lfx-sticker--spiky .lfx-sticker__text { inset: 26%; }
+.lfx-sticker--burst .lfx-sticker__text { inset: 21%; }
+
+/* Slap-on reveal: the sticker lands like it's being stuck down */
+.js-lfx .lfx-sticker.is-slap .lfx-sticker__slap {
+  opacity: 0;
+  transform: scale(1.7) rotate(-14deg);
+}
+
+.js-lfx .lfx-sticker.is-slap.is-in .lfx-sticker__slap {
+  opacity: 1;
+  transform: none;
+  transition:
+    transform 0.6s cubic-bezier(0.18, 1.7, 0.4, 1) var(--delay, 0s),
+    opacity 0.15s linear var(--delay, 0s);
+}
+
+.lfx-sticker.is-wobble .lfx-sticker__wobble {
+  animation: lfx-wobble 3.4s ease-in-out infinite;
+}
+
+@keyframes lfx-wobble {
+  0%, 100% { transform: rotate(-5deg) scale(1); }
+  50% { transform: rotate(5deg) scale(1.04); }
+}
+
+@media (max-width: 749px) {
+  .lfx-sticker {
+    top: var(--mt, var(--t));
+    left: var(--ml, var(--l));
+    width: calc(var(--w) * var(--ms, 0.6));
+  }
+
+  .lfx-sticker.is-hide-mobile {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Shaped media (image cutouts)                                        */
+/* ------------------------------------------------------------------ */
+
+.lfx-media {
+  position: relative;
+  aspect-ratio: var(--ratio, 4 / 5);
+  --lfx-outline: 3px;
+}
+
+.lfx-media__img,
+.lfx-media__outline,
+.lfx-media__shadow {
+  position: absolute;
+  inset: 0;
+  clip-path: var(--clip);
+}
+
+.lfx-media__outline,
+.lfx-media__shadow {
+  inset: calc(var(--lfx-outline) * -1);
+  background: var(--lfx-ink);
+}
+
+.lfx-media__shadow {
+  background: var(--lfx-shadow, var(--lfx-ink));
+  transform: translate(var(--lfx-offset, 12px), var(--lfx-offset, 12px));
+}
+
+.lfx-media__img {
+  overflow: hidden;
+  background: #d9d1c3;
+}
+
+.lfx-media__img img,
+.lfx-media__placeholder {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--pos, 50% 50%);
+}
+
+.lfx-media--frame .lfx-media__img {
+  border: var(--lfx-outline) solid var(--lfx-ink);
+  box-shadow: var(--lfx-offset, 12px) var(--lfx-offset, 12px) 0 var(--lfx-shadow, var(--lfx-ink));
+}
+
+/* ------------------------------------------------------------------ */
+/* Marquee bands                                                       */
+/* ------------------------------------------------------------------ */
+
+.lfx-band {
+  position: relative;
+  width: 112%;
+  margin-left: -6%;
+  background: var(--band-bg);
+  color: var(--band-fg);
+  border-block: 3px solid var(--band-border);
+  transform: rotate(var(--band-tilt, 0deg));
+  overflow: hidden;
+}
+
+.lfx-band__track {
+  display: flex;
+  width: max-content;
+  animation: lfx-marquee var(--band-duration, 40s) linear infinite;
+  animation-direction: var(--band-css-direction, normal);
+}
+
+.lfx-band.is-js .lfx-band__track {
+  animation: none;
+  will-change: transform;
+}
+
+.lfx-band__group {
+  display: flex;
+  flex: none;
+  align-items: center;
+}
+
+.lfx-band__item {
+  padding: 0.3em 0 0.24em;
+  font-family: var(--lfx-head);
+  font-size: var(--band-size-mobile, 30px);
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.lfx-band__sep {
+  display: block;
+  flex: none;
+  width: calc(var(--band-size-mobile, 30px) * 0.9);
+  height: calc(var(--band-size-mobile, 30px) * 0.9);
+  margin-inline: calc(var(--band-size-mobile, 30px) * 0.45);
+  color: var(--band-sep);
+}
+
+.lfx-band__sep svg,
+.lfx-band__sep img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.lfx-band__sep svg { fill: currentColor; }
+
+.lfx-band.is-spin .lfx-band__sep {
+  animation: lfx-spin 7s linear infinite;
+}
+
+@media (min-width: 750px) {
+  .lfx-band__item { font-size: var(--band-size, 56px); }
+  .lfx-band__sep {
+    width: calc(var(--band-size, 56px) * 0.9);
+    height: calc(var(--band-size, 56px) * 0.9);
+    margin-inline: calc(var(--band-size, 56px) * 0.45);
+  }
+}
+
+@keyframes lfx-marquee {
+  to { transform: translateX(-50%); }
+}
+
+@keyframes lfx-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ------------------------------------------------------------------ */
+/* Cards with hard offset shadow                                       */
+/* ------------------------------------------------------------------ */
+
+.lfx-card {
+  position: relative;
+  box-sizing: border-box;
+  padding: 18px 18px 20px;
+  border: 2.5px solid var(--lfx-ink);
+  background: var(--card-bg, #fff);
+  color: var(--card-fg, var(--lfx-ink));
+  box-shadow: 8px 8px 0 var(--lfx-ink);
+  text-align: center;
+}
+
+.lfx-card__title {
+  margin: 0 0 8px;
+  font-family: var(--lfx-head);
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.05;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.lfx-card__text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+@media (min-width: 990px) {
+  .lfx-card { padding: 22px 24px 24px; }
+  .lfx-card__title { font-size: 23px; }
+  .lfx-card__text { font-size: 16px; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion: everything holds still                              */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .lfx-band__track,
+  .lfx-band.is-spin .lfx-band__sep,
+  .lfx-sticker.is-wobble .lfx-sticker__wobble,
+  .lfx-spin-slow {
+    animation: none !important;
+  }
+
+  .js-lfx .lfx-sticker.is-slap .lfx-sticker__slap {
+    opacity: 1;
+    transform: none;
+  }
+}

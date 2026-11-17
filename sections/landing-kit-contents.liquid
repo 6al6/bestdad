@@ -1,0 +1,407 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+<section class="landing-kit landing-kit--{{ section.id }}"{% if section.settings.anchor_id != blank %} id="{{ section.settings.anchor_id }}"{% endif %}>
+  <div class="landing-kit__inner">
+    {%- if section.settings.heading != blank or section.settings.intro != blank -%}
+      <div class="landing-kit__intro">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="landing-kit__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.intro != blank -%}
+          <div class="landing-kit__intro-text landing-marker">{{ section.settings.intro }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="landing-kit__list" role="list">
+        {%- for block in section.blocks -%}
+          <li class="landing-kit__item" {{ block.shopify_attributes }}>
+            <div class="landing-kit__media">
+              <div class="landing-kit__image">
+                {%- if block.settings.image != blank -%}
+                  {{-
+                    block.settings.image
+                    | image_url: width: 1100
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '354, 540, 708, 1100',
+                      sizes: '(min-width: 990px) 540px, calc(100vw - 36px)',
+                      alt: block.settings.image.alt | default: block.settings.label
+                  -}}
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag: 'landing-kit__placeholder' }}
+                {%- endif -%}
+              </div>
+              {%- if block.settings.label != blank -%}
+                <p class="landing-kit__label">{{ block.settings.label | newline_to_br }}</p>
+              {%- endif -%}
+            </div>
+            {%- if block.settings.text != blank -%}
+              <div class="landing-kit__text">{{ block.settings.text }}</div>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.closing != blank -%}
+      <div class="landing-kit__closing landing-marker">{{ section.settings.closing }}</div>
+    {%- endif -%}
+    {%- if section.settings.button_label != blank -%}
+      <div class="landing-cta">
+        {% render 'landing-button', label: section.settings.button_label, link: section.settings.button_link %}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-kit__closing { margin-top: 28px; text-align: center; font-size: 19px; font-weight: 700; }
+  .landing-kit--{{ section.id }} {
+    --lk-text: {{ section.settings.text_color }};
+    --lk-border: {{ section.settings.image_border_color }};
+    --lk-label-bg: {{ section.settings.label_color }};
+    --lk-label-text: {{ section.settings.label_text_color }};
+    --lk-label-shadow: {{ section.settings.label_shadow_color }};
+    --lk-label-border: {{ section.settings.label_border_color }};
+    --lm-color: color-mix(in srgb, {{ section.settings.highlight_color }} {{ section.settings.highlight_opacity }}%, transparent);
+    background: {{ section.settings.background_color }};
+    color: var(--lk-text);
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+  }
+  .landing-kit__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 60px 18px;
+  }
+  .landing-kit__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+  }
+  .landing-kit__heading {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.05;
+    color: inherit;
+    text-transform: none;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+  .landing-kit__intro-text { font-size: 17px; line-height: 1.5; }
+  .landing-kit__intro-text p { margin: 0 0 1.5em; }
+  .landing-kit__intro-text p:last-child { margin-bottom: 0; }
+
+  .landing-kit__list {
+    display: grid;
+    gap: 52px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .landing-kit__item {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  /* The label hangs 10px below the photo, so the photo wrapper is the positioning box */
+  .landing-kit__media { position: relative; isolation: isolate; }
+  /* Photo goes below the label's orange box (z-index -1), which goes below the beige label */
+  .landing-kit__image {
+    position: relative;
+    z-index: -2;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    box-sizing: border-box;
+    border: 1.4px solid var(--lk-border);
+    border-radius: 8px;
+    background: #f9ecc4;
+  }
+  .landing-kit__image img,
+  .landing-kit__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .landing-kit__placeholder { fill: var(--lk-label-text); opacity: 0.4; }
+
+  /* Sticker label: beige box with an offset orange box behind it */
+  .landing-kit__label {
+    position: absolute;
+    left: 20px;
+    bottom: -10px;
+    max-width: calc(100% - 50px);
+    margin: 0;
+    padding: 10px 13px;
+    border: 1.75px solid var(--lk-label-border);
+    background: var(--lk-label-bg);
+    color: var(--lk-label-text);
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-size: 16px;
+    line-height: 1.12;
+    overflow-wrap: break-word;
+  }
+  .landing-kit__label::before {
+    content: '';
+    position: absolute;
+    inset: -1.75px;
+    z-index: -1;
+    border: 1.75px solid var(--lk-label-border);
+    background: var(--lk-label-shadow);
+    transform: translate(10px, 11px);
+  }
+
+  .landing-kit__text { font-size: 17px; line-height: 1.5; }
+  .landing-kit__text p { margin: 0 0 1.5em; }
+  .landing-kit__text p:last-child { margin-bottom: 0; }
+  .landing-kit__text strong,
+  .landing-kit__text b { font-weight: 700; }
+
+  @media (min-width: 990px) {
+    .landing-kit__inner { max-width: 1200px; padding: 64px 24px; gap: 48px; }
+    .landing-kit__intro { max-width: 800px; margin-inline: auto; }
+    .landing-kit__list { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 48px; row-gap: 64px; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Kit contents",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 10,
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "info": "Lets a menu link jump here, e.g. /#kako-deluje"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Fotrovski komplet za ustvarjanje spominov"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Text under the heading",
+      "info": "Use Underline to highlight a phrase with the marker color.",
+      "default": "<p><u>Kaj vsebuje komplet:</u></p>"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#2b2d45"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Heading and text",
+      "default": "#fef1d5"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "Marker highlight",
+      "default": "#ee614c"
+    },
+    {
+      "type": "range",
+      "id": "highlight_opacity",
+      "label": "Marker opacity (%)",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "image_border_color",
+      "label": "Photo border",
+      "default": "#fef1d5"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label background",
+      "default": "#fef1d5"
+    },
+    {
+      "type": "color",
+      "id": "label_text_color",
+      "label": "Label text",
+      "default": "#2b2d45"
+    },
+    {
+      "type": "color",
+      "id": "label_shadow_color",
+      "label": "Box behind the label",
+      "default": "#ee614c"
+    },
+    {
+      "type": "color",
+      "id": "label_border_color",
+      "label": "Label borders",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Wavy divider"
+    },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        {
+          "value": "waves-1-patterned_1200x20",
+          "label": "Waves 1 (small)"
+        },
+        {
+          "value": "waves-2-patterned_1200x43",
+          "label": "Waves 2 (medium)"
+        },
+        {
+          "value": "waves-3-patterned_1200x84",
+          "label": "Waves 3 (large)"
+        },
+        {
+          "value": "zig-zag-2-patterned_1200x37",
+          "label": "Zig-zag"
+        },
+        {
+          "value": "circles-2-patterned_1200x35",
+          "label": "Circles"
+        },
+        {
+          "value": "spikes-1-patterned_1200x132",
+          "label": "Spikes"
+        }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_animate",
+      "label": "Animate divider",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "closing",
+      "label": "Closing line"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo",
+          "info": "Square, at least 1100 x 1100 px."
+        },
+        {
+          "type": "textarea",
+          "id": "label",
+          "label": "Label on the photo",
+          "info": "A new line in the box starts a new line on the label. Leave blank for no label.",
+          "default": "Label"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text under the photo",
+          "info": "Use Bold for emphasis.",
+          "default": "<p>Text</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Kit contents",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "label": "Komični priročnik\nz 28 misijami",
+            "text": "<p>Ne obljubljamo popolnega očetovstva ampak 28 priložnosti, da se <strong>fotr pojavi, nekaj izpelje in je zares zraven.</strong> Otrok dobi fotra. Telefon malo miru. Ni treba, da je popolno. Mora se samo zgoditi.</p>"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "label": "28 bleščečih\nnalepk",
+            "text": "<p><strong>Za vsako opravljeno misijo ena bleščeča trofeja.</strong> Fotr in otrok jo skupaj nalepita na plakat in z njo proslavita uspešen podvig. Tudi očki rabijo kakšno medaljo.</p>"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "label": "Fotrovski megaplakat\nskupnih dosežkov",
+            "text": "<p>Fotrovski megaplakat ni samo prostor za nalepke. Ko visi na steni ob otrokovi postelji, postane zemljevid skupnih podvigov. <strong>Vsaka nalepka otroka spomni, da je bil oči zraven</strong>,<strong> da sta nekaj doživela skupaj</strong> in da ju čaka še naslednja misija.</p>"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "label": "Božičkovo pismo\ns kuverto s\nSevernega pola",
+            "text": "<p>Božiček otroka v pismu spodbudi, da<strong> igrače, s katerimi se ne igra več, podari naprej</strong>. Če očija ne posluša, bo mogoče Božička. Osebno.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

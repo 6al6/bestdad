@@ -589,6 +589,37 @@ html { scroll-behavior: smooth; }
     padding: 2px 8px;
     line-height: 1.4;
   }
+
+.predstava-page .pf-last-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--coral-deep);
+    border: 1px solid var(--coral);
+    border-radius: 999px;
+    padding: 2px 8px 2px 7px;
+    line-height: 1.4;
+  }
+.predstava-page .pf-last-badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--coral);
+    animation: pf-last-pulse 1.6s ease-in-out infinite;
+  }
+@keyframes pf-last-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(238,97,76,0.55); }
+  50% { box-shadow: 0 0 0 4px rgba(238,97,76,0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .predstava-page .pf-last-badge::before { animation: none; }
+}
 </style>
 
 <div class="predstava-page">
@@ -636,8 +667,8 @@ html { scroll-behavior: smooth; }
 <div class="pf-facts-strip">
   <div class="pf-wrap">
     <div class="pf-fact">Premiera 6.&nbsp;11.&nbsp;2026 &middot; Mengeš</div>
-    <div class="pf-fact">21 predstav do konca leta</div>
-    <div class="pf-fact">20 mest po Sloveniji</div>
+    <div class="pf-fact">25 predstav do konca leta</div>
+    <div class="pf-fact">22 mest po Sloveniji</div>
   </div>
 </div>
 
@@ -722,7 +753,7 @@ html { scroll-behavior: smooth; }
         </div>
                   <div class="pf-venue-row">
           <div class="pf-venue-date">tor.<span class="pf-day">3</span>NOV</div>
-          <div class="pf-venue-main"><span class="pf-city">Slovenske Konjice</span><span class="pf-venue-time">20:00</span></div>
+          <div class="pf-venue-main"><span class="pf-city">Slovenske Konjice</span><span class="pf-last-badge">Zadnje vstopnice</span><span class="pf-venue-time">20:00</span></div>
           <a class="pf-venue-cta" href="https://spasteater.kupikarto.si/dogodek.php?&dogId=3406&page=7" target="_blank" rel="noopener">Nakup kart</a>
         </div>
                   <div class="pf-venue-row">
@@ -746,28 +777,33 @@ html { scroll-behavior: smooth; }
           <span class="pf-venue-soldout">RAZPRODANO</span>
         </div>
         <div class="pf-venue-row">
-          <div class="pf-venue-date">pet.<span class="pf-day">9</span>NOV</div>
-          <div class="pf-venue-main"><span class="pf-city">Mengeš</span><span class="pf-premiere-badge">Premiera</span><span class="pf-venue-time">19:00</span></div>
-          <a class="pf-venue-cta" href="https://spasteater.kupikarto.si/dogodek.php?&dogId=3454&page=8" target="_blank" rel="noopener">Nakup kart</a>
+          <div class="pf-venue-date">pon.<span class="pf-day">9</span>NOV</div>
+          <div class="pf-venue-main"><span class="pf-city">Mengeš</span><span class="pf-premiere-badge">Dodatni termin</span><span class="pf-venue-time">17:00</span></div>
+          <a class="pf-venue-cta" href="https://spasteater.kupikarto.si/dogodek.php?&dogId=3514&page=5" target="_blank" rel="noopener">Nakup kart</a>
+        </div>
+        <div class="pf-venue-row">
+          <div class="pf-venue-date">pon.<span class="pf-day">9</span>NOV</div>
+          <div class="pf-venue-main"><span class="pf-city">Mengeš</span><span class="pf-venue-time">20:00</span></div>
+          <span class="pf-venue-soldout">RAZPRODANO</span>
         </div>
          <div class="pf-venue-row">
           <div class="pf-venue-date">sre.<span class="pf-day">11</span>NOV</div>
           <div class="pf-venue-main"><span class="pf-city">Celje</span><span class="pf-venue-time">20:00</span></div>
-          <a class="pf-venue-cta" href="https://spasteater.kupikarto.si/dogodek.php?&dogId=3410&page=8" target="_blank" rel="noopener">Nakup kart</a>
+          <span class="pf-venue-soldout">RAZPRODANO</span>
         </div>
                   <div class="pf-venue-row">
           <div class="pf-venue-date">čet.<span class="pf-day">12</span>NOV</div>
-          <div class="pf-venue-main"><span class="pf-city">Sv. Duh</span><span class="pf-venue-time">20:00</span></div>
+          <div class="pf-venue-main"><span class="pf-city">Sv. Duh</span><span class="pf-last-badge">Zadnje vstopnice</span><span class="pf-venue-time">20:00</span></div>
           <a class="pf-venue-cta" href="https://spasteater.kupikarto.si/dogodek.php?&dogId=3427&page=8" target="_blank" rel="noopener">Nakup kart</a>
         </div>
                   <div class="pf-venue-row">
           <div class="pf-venue-date">sre.<span class="pf-day">18</span>NOV</div>
-          <div class="pf-venue-main"><span class="pf-city">Velenje</span><span class="pf-venue-time">20:00</span></div>
+          <div class="pf-venue-main"><span class="pf-city">Velenje</span><span class="pf-last-badge">Zadnje vstopnice</span><span class="pf-venue-time">20:00</span></div>
           <a class="pf-venue-cta" href="https://spasteater.kupikarto.si/dogodek.php?&dogId=3411&page=8" target="_blank" rel="noopener">Nakup kart</a>
         </div>
                   <div class="pf-venue-row">
           <div class="pf-venue-date">čet.<span class="pf-day">19</span>NOV</div>
-          <div class="pf-venue-main"><span class="pf-city">Nova Gorica</span><span class="pf-venue-time">20:00</span></div>
+          <div class="pf-venue-main"><span class="pf-city">Nova Gorica</span><span class="pf-last-badge">Zadnje vstopnice</span><span class="pf-venue-time">20:00</span></div>
           <a class="pf-venue-cta" href="https://spasteater.kupikarto.si/dogodek.php?&dogId=3412&page=8" target="_blank" rel="noopener">Nakup kart</a>
         </div>
                   <div class="pf-venue-row">
@@ -778,17 +814,17 @@ html { scroll-behavior: smooth; }
                   <div class="pf-venue-row">
           <div class="pf-venue-date">pon.<span class="pf-day">23</span>NOV</div>
           <div class="pf-venue-main"><span class="pf-city">Vrhnika</span><span class="pf-venue-time">20:00</span></div>
-          <a class="pf-venue-cta" href="https://spasteater.kupikarto.si/dogodek.php?&dogId=3413&page=9" target="_blank" rel="noopener">Nakup kart</a>
+          <span class="pf-venue-soldout">RAZPRODANO</span>
         </div>
                   <div class="pf-venue-row">
           <div class="pf-venue-date">pet.<span class="pf-day">27</span>NOV</div>
-          <div class="pf-venue-main"><span class="pf-city">Primskovo</span><span class="pf-venue-time">20:00</span></div>
-          <a class="pf-venue-cta" href="https://spasteater.kupikarto.si/dogodek.php?&dogId=3414&page=9" target="_blank" rel="noopener">Nakup kart</a>
+          <div class="pf-venue-main"><span class="pf-city">Kranj</span><span class="pf-venue-time">20:00</span></div>
+          <span class="pf-venue-soldout">RAZPRODANO</span>
         </div>
                   <div class="pf-venue-row">
           <div class="pf-venue-date">pon.<span class="pf-day">30</span>NOV</div>
           <div class="pf-venue-main"><span class="pf-city">Novo mesto</span><span class="pf-venue-time">20:00</span></div>
-          <a class="pf-venue-cta" href="https://spasteater.kupikarto.si/dogodek.php?&dogId=3415&page=9" target="_blank" rel="noopener">Nakup kart</a>
+          <span class="pf-venue-soldout">RAZPRODANO</span>
         </div>
         </div>
       </div>
@@ -807,8 +843,13 @@ html { scroll-behavior: smooth; }
           <a class="pf-venue-cta" href="https://spasteater.kupikarto.si/dogodek.php?&dogId=3417&page=9" target="_blank" rel="noopener">Nakup kart</a>
         </div>
                   <div class="pf-venue-row">
+          <div class="pf-venue-date">pon.<span class="pf-day">14</span>DEC</div>
+          <div class="pf-venue-main"><span class="pf-city">Mežica</span><span class="pf-venue-time">19:30</span></div>
+          <a class="pf-venue-cta" href="https://narodnidommezica.si/dogodki/" target="_blank" rel="noopener">Nakup kart</a>
+        </div>
+                  <div class="pf-venue-row">
           <div class="pf-venue-date">tor.<span class="pf-day">15</span>DEC</div>
-          <div class="pf-venue-main"><span class="pf-city">Brežice</span><span class="pf-venue-time">20:00</span></div>
+          <div class="pf-venue-main"><span class="pf-city">Brežice</span><span class="pf-last-badge">Zadnje vstopnice</span><span class="pf-venue-time">20:00</span></div>
           <a class="pf-venue-cta" href="https://spasteater.kupikarto.si/dogodek.php?&dogId=3418&page=10" target="_blank" rel="noopener">Nakup kart</a>
         </div>
                   <div class="pf-venue-row">

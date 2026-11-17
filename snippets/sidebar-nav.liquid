@@ -25,6 +25,15 @@
         else
           assign menu = section.settings.main_linklist
         endif
+
+        # Slovenian market: a menu named <handle>-si replaces <handle> (e.g. main-menu-si)
+        if localization.market.handle == 'si'
+          assign si_menu_handle = menu.handle | append: '-si'
+          if linklists[si_menu_handle].links.size > 0
+            assign menu = linklists[si_menu_handle]
+          endif
+        endif
+
         for link in menu.links
           render 'sidebar-nav-list-item', link: link
         endfor

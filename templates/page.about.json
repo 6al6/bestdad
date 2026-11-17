@@ -1,1 +1,382 @@
-{"sections":{"main":{"type":"main-page","disabled":true,"settings":{"max_width":"medium","display_on_card":true,"color_scheme":"scheme-14d55fec-67b4-4739-a980-2d8401e271d2","use_gradient_background":false}},"image_with_text_aDeRw7":{"type":"image-with-text","blocks":{"shape_divider_MqdEBJ":{"type":"shape_divider","settings":{"target_section":"below","target_section_color_scheme":"scheme5","style":"tilt-1-shape_1440x101","flip_horizontal":false,"enable_animation":false,"animation_direction":""}}},"block_order":["shape_divider_MqdEBJ"],"name":"t:sections.image_with_text.name","settings":{"display_on_card":false,"image":"shopify:\/\/shop_images\/about.jpg","crop":"","image_shape":"default","blob_type":1,"rotate_image":0,"image_position":"right","image_size":"half","disable_media_style":false,"title":"This was us before kids","heading_size":"heading-feature","richtext":"<p>There’s a golf course somewhere in the background, the beers in our hands are <strong>pure freedom<\/strong>, and our biggest problem that day was deciding between another round or a nap.<\/p><p>Fast forward a few years — same guys, less sleep, more snacks in our pockets, and a deep understanding of Baby Shark soundtrack.<\/p><p>Out of that chaos came <em>The Best Dad Book<\/em> — a survival manual disguised as a gift, built by dads who miss this version of themselves… but wouldn’t trade it for anything (except maybe one more uninterrupted beer).<\/p>","text_alignment":"text-left","button_link":"","button_label":"Shop Now","color_scheme":"scheme6","use_gradient_background":false}},"curved_text_kczGEW":{"type":"curved-text","disabled":true,"name":"t:sections.curved_text.name","settings":{"text":"The best dad book","link":"","custom_class":"_","custom_data_id":"_","wave_height":250,"wave_width":250,"speed":1,"mobile_text_scale":2,"desktop_text_scale":4,"font":"font-heading","enable_animation":true,"pause_on_hover":false,"direction":"rtl","color_scheme":"scheme6","use_gradient_background":false}}},"order":["main","image_with_text_aDeRw7","curved_text_kczGEW"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "landing_team_si": {
+      "type": "landing-team",
+      "blocks": {
+        "member_lado_si": {
+          "type": "member",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2026-09-15_at_18.31.04_1_ba2dc585-9897-4cae-9b99-99df1443b67e.webp",
+            "photo_focus": "face",
+            "placeholder": "initials",
+            "badge": "Avtor",
+            "name": "Lado Bizovičar",
+            "role": "Stric s televizije in fotr dveh punc",
+            "quote": "»Nisem ekspert za vzgojo. Za neumnosti pa sem kar dobro usposobljen.«",
+            "text": "<p>Sem fotr dveh punc in ukvarjam se z enakimi težavami kot drugi fotri: z zbeganostjo, nebogljenostjo, pretvarjanjem, da vem, kaj delam, in občutkom, da bom vse pomembno zamudil.</p><p>Komplet sem ustvaril zato, da nam ob vprašanju <strong>»<em>Kaj bomo danes počeli?</em>«</strong> ne bi bilo treba vedno znova izumljati odgovora. <u>Misije sem preizkusil doma. Na lastnih otrocih.</u> Nekatere so se končale s smehom, druge z neredom, najboljše pa z obojim.</p><p>Lado stoji tudi za odrsko komedijo z istim imenom.</p>",
+            "link_label": "Knjiga ali predstava? Tukaj je razlika →",
+            "link_url": "shopify://pages/knjiga-ali-predstava"
+          }
+        },
+        "member_anela_si": {
+          "type": "member",
+          "settings": {
+            "image": "shopify://shop_images/team_anela.jpg",
+            "photo_focus": "face",
+            "placeholder": "initials",
+            "badge": "",
+            "name": "Anela",
+            "role": "Ladova žena in naša najboljša priča",
+            "quote": "",
+            "text": "<p>»Doma vidim tole: o njem govorijo stari starši. O njem govorijo v vrtcu. Dober fotr je bil že prej. Zdaj to vidijo vsi.«</p><p>Ker živi z avtorjem, ni ravno nepristranska. Vidi pa vse.</p>",
+            "link_label": "",
+            "link_url": ""
+          }
+        },
+        "member_sebastjan_si": {
+          "type": "member",
+          "settings": {
+            "image": "shopify://shop_images/team_sebastjan.jpg",
+            "photo_focus": "face",
+            "placeholder": "initials",
+            "badge": "",
+            "name": "Sebastjan",
+            "role": "Ladov frend in svež fotr",
+            "quote": "",
+            "text": "<p>Ko je dobil dojenčka, je dobil tudi službo: preveriti, ali ima Ladova logika smisel tudi za fotra, ki šele začenja.</p><p>Ima. Večinoma.</p>",
+            "link_label": "",
+            "link_url": ""
+          }
+        },
+        "member_spela_si": {
+          "type": "member",
+          "settings": {
+            "photo_focus": "face",
+            "placeholder": "spaceman",
+            "badge": "",
+            "name": "Špela Ziherl",
+            "role": "Projektna vodja",
+            "quote": "",
+            "text": "<p>Ve, kaj je do kdaj, kdo je kaj pozabil in kako to popraviti, preden kdo opazi.</p><p>Skratka: rešuje nam rit.</p>",
+            "link_label": "",
+            "link_url": ""
+          }
+        },
+        "member_blaz_si": {
+          "type": "member",
+          "settings": {
+            "image": "shopify://shop_images/team_blaz_habjanic.jpg",
+            "photo_focus": "face",
+            "placeholder": "initials",
+            "badge": "",
+            "name": "Blaž Habjanič",
+            "role": "Oblikovalec",
+            "quote": "",
+            "text": "<p>Če je karkoli tukaj lepo, je kriv on.</p><p>Če je kaj postrani, je tako namenoma.</p>",
+            "link_label": "",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "member_lado_si",
+        "member_anela_si",
+        "member_sebastjan_si",
+        "member_spela_si",
+        "member_blaz_si"
+      ],
+      "name": "O nas (SI) – Lado in ekipa",
+      "settings": {
+        "market": "si",
+        "layout": "featured",
+        "eyebrow": "O nas",
+        "heading_tag": "h1",
+        "heading": "Za knjigo stoji Lado Bizovičar.",
+        "heading_accent": "",
+        "intro": "<p>Komični priročnik <strong>Jaz sem najboljši fotr na svetu</strong> je napisal Lado: stric s televizije, fotr dveh punc in človek, ki že večino življenja <span style=\"text-decoration:underline\">iz običajnih situacij dela zgodbe, predstave in neumnosti.</span></p>",
+        "team_heading": "Ekipa v ozadju",
+        "closing": "<p>Slovensko izdajo je prevedel in priredil <strong>Niko Zagode</strong>, izdal jo je Periskop d. o. o.</p>",
+        "button_label": "Poglej komplet",
+        "button_link": "shopify://pages/landing",
+        "note": "",
+        "background_color": "#2b2d45",
+        "text_color": "#fef1d5",
+        "accent_color": "#ee614c",
+        "role_color": "#2b2d45",
+        "card_color": "#fef1d5",
+        "card_text_color": "#2b2d45",
+        "border_color": "#2b2d45",
+        "shadow_color": "#f72828",
+        "placeholder_color": "#ee614c",
+        "chip_color": "#f72828",
+        "chip_text_color": "#ffffff",
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "marker_color": "#ee614c",
+        "marker_opacity": 55,
+        "patch_enable": true,
+        "patch_text": "28 misij • 28 nalepk • 1 megaplakat •",
+        "patch_position": "right",
+        "patch_spin": true,
+        "patch_color": "#f72828",
+        "patch_text_color": "#fef1d5",
+        "sticker_color": "#f5e029",
+        "sticker_text_color": "#2b2d45",
+        "sticker_tilt": 4,
+        "card_tilt": 1,
+        "ticker_text": "Ja, res je on. Ne, ni dvojnik.|Ni samo posodil obraza. On je avtor.|Misije je najprej preizkusil na svojih puncah|Ja, tudi predstava je njegova",
+        "ticker_bg_color": "#f72828",
+        "ticker_text_color": "#fef1d5",
+        "ticker_sep_color": "#f5e029",
+        "ticker_tilt": -2,
+        "ticker_reverse": false,
+        "ticker2_text": "Izberita misijo|Sledita scenariju|Nalepita dokaz slave|Ohranita spomin",
+        "ticker2_bg_color": "#fef1d5",
+        "ticker2_text_color": "#2b2d45",
+        "ticker2_sep_color": "#f72828",
+        "ticker2_tilt": 1.5,
+        "ticker2_reverse": true,
+        "ticker_separator": "✦",
+        "ticker_size": 28,
+        "ticker_speed": 60,
+        "divider_top_color": "#fef0d5",
+        "divider_bottom_color": "#ffffff",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "landing_team_en": {
+      "type": "landing-team",
+      "blocks": {
+        "member_lado_en": {
+          "type": "member",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2026-09-15_at_18.31.04_1_ba2dc585-9897-4cae-9b99-99df1443b67e.webp",
+            "photo_focus": "face",
+            "placeholder": "initials",
+            "badge": "Author",
+            "name": "Lado Bizovičar",
+            "role": "Dad of two girls. A familiar face from Slovenian TV.",
+            "quote": "“I’m no parenting expert. But I’m pretty well trained in nonsense.”",
+            "text": "<p>He has spent most of his life turning ordinary situations into stories, shows and nonsense people enjoy. He wrote this so that when a kid asks <em>“What are we doing today?”</em>, dads don’t have to invent the answer all over again.</p><p><u>He tested the missions at home. On his own kids.</u> Some ended in laughter, some in a mess, the best ones in both.</p>",
+            "link_label": "",
+            "link_url": ""
+          }
+        },
+        "member_anela_en": {
+          "type": "member",
+          "settings": {
+            "image": "shopify://shop_images/team_anela.jpg",
+            "photo_focus": "face",
+            "placeholder": "initials",
+            "badge": "Our best proof",
+            "name": "Anela",
+            "role": "Lado’s wife.",
+            "quote": "",
+            "text": "<p>“Here’s what I see at home. The grandparents talk about him. Kindergarten talks about him. He was already a good dad. Now everyone can see it.”</p><p>She lives with the guy who wrote the book, so she’s not exactly neutral. She does see everything.</p>",
+            "link_label": "",
+            "link_url": ""
+          }
+        },
+        "member_sebastjan_en": {
+          "type": "member",
+          "settings": {
+            "image": "shopify://shop_images/team_sebastjan.jpg",
+            "photo_focus": "face",
+            "placeholder": "initials",
+            "badge": "The new dad",
+            "name": "Sebastjan",
+            "role": "Lado’s friend. Recently had a baby.",
+            "quote": "",
+            "text": "<p>Becoming a dad came with a side job: read Lado’s missions with fresh new-dad eyes and confirm his stuff actually makes sense.</p><p>It does. Mostly.</p>",
+            "link_label": "",
+            "link_url": ""
+          }
+        },
+        "member_spela_en": {
+          "type": "member",
+          "settings": {
+            "photo_focus": "face",
+            "placeholder": "spaceman",
+            "badge": "Saves our asses",
+            "name": "Špela Ziherl",
+            "role": "Project manager.",
+            "quote": "",
+            "text": "<p>Knows what’s due when, who forgot what, and how to fix it before anyone notices.</p><p>She saves our asses. Weekly.</p>",
+            "link_label": "",
+            "link_url": ""
+          }
+        },
+        "member_blaz_en": {
+          "type": "member",
+          "settings": {
+            "image": "shopify://shop_images/team_blaz_habjanic.jpg",
+            "photo_focus": "face",
+            "placeholder": "initials",
+            "badge": "Makes it pretty",
+            "name": "Blaž Habjanič",
+            "role": "Designer.",
+            "quote": "",
+            "text": "<p>If anything here looks good, it’s his fault.</p><p>If anything is crooked, that was on purpose.</p>",
+            "link_label": "",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "member_lado_en",
+        "member_anela_en",
+        "member_sebastjan_en",
+        "member_spela_en",
+        "member_blaz_en"
+      ],
+      "name": "About (EN) – the people behind the product",
+      "settings": {
+        "market": "not_si",
+        "layout": "equal",
+        "eyebrow": "About us",
+        "heading_tag": "h1",
+        "heading": "The people behind the product.",
+        "heading_accent": "Meet the suspects.",
+        "intro": "<p><em><strong>I AM BEST</strong></em><strong> Dad In The World</strong> is currently made by five people. One wrote it. One watched it happen at home. One checked it makes sense to a brand-new dad. One keeps the whole thing on schedule. One makes it look good.</p>",
+        "team_heading": "",
+        "closing": "<p>We’re a small team in Slovenia. Questions, mission stories or complaints go straight to us: <a href=\"mailto:info@bestdadbook.com\">info@bestdadbook.com</a></p>",
+        "button_label": "Get the kit",
+        "button_link": "shopify://pages/dads",
+        "note": "28 missions. 28 stickers. One poster.",
+        "background_color": "#2b2d45",
+        "text_color": "#fef1d5",
+        "accent_color": "#ee614c",
+        "role_color": "#2b2d45",
+        "card_color": "#fef1d5",
+        "card_text_color": "#2b2d45",
+        "border_color": "#2b2d45",
+        "shadow_color": "#f72828",
+        "placeholder_color": "#ee614c",
+        "chip_color": "#f72828",
+        "chip_text_color": "#ffffff",
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "marker_color": "#ee614c",
+        "marker_opacity": 55,
+        "patch_enable": true,
+        "patch_text": "28 missions • 28 stickers • 1 poster •",
+        "patch_position": "right",
+        "patch_spin": true,
+        "patch_color": "#f72828",
+        "patch_text_color": "#fef1d5",
+        "sticker_color": "#f5e029",
+        "sticker_text_color": "#2b2d45",
+        "sticker_tilt": 4,
+        "card_tilt": 1,
+        "ticker_text": "Zero parenting experts involved|Tested on Lado’s own kids|Written by dads, for dads|28 missions, 0 lectures",
+        "ticker_bg_color": "#f72828",
+        "ticker_text_color": "#fef1d5",
+        "ticker_sep_color": "#f5e029",
+        "ticker_tilt": -2,
+        "ticker_reverse": false,
+        "ticker2_text": "Rip out a mission|Follow the script|Slap on the sticker|Collect the dad glory",
+        "ticker2_bg_color": "#fef1d5",
+        "ticker2_text_color": "#2b2d45",
+        "ticker2_sep_color": "#f72828",
+        "ticker2_tilt": 1.5,
+        "ticker2_reverse": true,
+        "ticker_separator": "✦",
+        "ticker_size": 28,
+        "ticker_speed": 60,
+        "divider_top_color": "#fef0d5",
+        "divider_bottom_color": "#ffffff",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "max_width": "medium",
+        "display_on_card": true,
+        "color_scheme": "scheme-14d55fec-67b4-4739-a980-2d8401e271d2",
+        "use_gradient_background": false
+      }
+    },
+    "image_with_text_aDeRw7": {
+      "type": "image-with-text",
+      "blocks": {
+        "shape_divider_MqdEBJ": {
+          "type": "shape_divider",
+          "settings": {
+            "target_section": "below",
+            "target_section_color_scheme": "scheme5",
+            "style": "tilt-1-shape_1440x101",
+            "flip_horizontal": false,
+            "enable_animation": false,
+            "animation_direction": ""
+          }
+        }
+      },
+      "block_order": [
+        "shape_divider_MqdEBJ"
+      ],
+      "disabled": true,
+      "name": "t:sections.image_with_text.name",
+      "settings": {
+        "display_on_card": false,
+        "image": "shopify://shop_images/about.jpg",
+        "crop": "",
+        "image_shape": "default",
+        "blob_type": 1,
+        "rotate_image": 0,
+        "image_position": "right",
+        "image_size": "half",
+        "disable_media_style": false,
+        "title": "This was us before kids",
+        "heading_size": "heading-feature",
+        "richtext": "<p>There’s a golf course somewhere in the background, the beers in our hands are <strong>pure freedom</strong>, and our biggest problem that day was deciding between another round or a nap.</p><p>Fast forward a few years — same guys, less sleep, more snacks in our pockets, and a deep understanding of Baby Shark soundtrack.</p><p>Out of that chaos came <em>The Best Dad Book</em> — a survival manual disguised as a gift, built by dads who miss this version of themselves… but wouldn’t trade it for anything (except maybe one more uninterrupted beer).</p>",
+        "text_alignment": "text-left",
+        "button_link": "",
+        "button_label": "Shop Now",
+        "color_scheme": "scheme6",
+        "use_gradient_background": false
+      }
+    },
+    "curved_text_kczGEW": {
+      "type": "curved-text",
+      "disabled": true,
+      "name": "t:sections.curved_text.name",
+      "settings": {
+        "text": "The best dad book",
+        "link": "",
+        "custom_class": "_",
+        "custom_data_id": "_",
+        "wave_height": 250,
+        "wave_width": 250,
+        "speed": 1,
+        "mobile_text_scale": 2,
+        "desktop_text_scale": 4,
+        "font": "font-heading",
+        "enable_animation": true,
+        "pause_on_hover": false,
+        "direction": "rtl",
+        "color_scheme": "scheme6",
+        "use_gradient_background": false
+      }
+    }
+  },
+  "order": [
+    "landing_team_si",
+    "landing_team_en",
+    "main",
+    "image_with_text_aDeRw7",
+    "curved_text_kczGEW"
+  ]
+}

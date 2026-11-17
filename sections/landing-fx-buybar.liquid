@@ -1,0 +1,41 @@
+{%- comment -%}
+  RETIRED 18.10. This was the sticky buy bar for the English landing pages. It ran next to the
+  "Landing: Sticky button" (footer group), so phones showed two bars. Every landing and book product
+  page now uses only the footer-group sticky button, whose label follows the red button of the
+  section the visitor is in. The schema stays so page templates that still list this section load fine.
+{%- endcomment -%}
+
+{% schema %}
+{
+  "name": "FX Buy bar (retired)",
+  "tag": "section",
+  "class": "landing-section",
+  "settings": [
+    { "type": "paragraph", "content": "Retired 18.10: renders nothing. The footer-group 'Landing: Sticky button' is the only sticky bar now." },
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "text", "id": "product_handle", "label": "Product handle (fallback)", "default": "the-best-dad-book" },
+    { "type": "checkbox", "id": "show_image", "label": "Show product photo", "default": true },
+    { "type": "text", "id": "title", "label": "Title", "default": "I Am Best Dad In The World" },
+    { "type": "checkbox", "id": "show_compare", "label": "Show crossed-out compare-at price", "default": true },
+    { "type": "text", "id": "subline", "label": "Small text after the price", "default": "30-day returns" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Give him the kit" },
+    { "type": "text", "id": "button_link", "label": "Button target" },
+    {
+      "type": "select",
+      "id": "show_on",
+      "label": "Show on",
+      "options": [
+        { "value": "mobile", "label": "Phones only" },
+        { "value": "both", "label": "Phones and desktop" }
+      ],
+      "default": "mobile"
+    },
+    { "type": "color", "id": "background_color", "label": "Bar background", "default": "#fef1d5" },
+    { "type": "color", "id": "text_color", "label": "Bar text", "default": "#2b2d45" },
+    { "type": "color", "id": "ink_color", "label": "Outline and shadow", "default": "#2b2d45" },
+    { "type": "color", "id": "button_bg_color", "label": "Button background", "default": "#f72828" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
+    { "type": "color", "id": "button_border_color", "label": "Button inner border", "default": "#fef1d5" }
+  ]
+}
+{% endschema %}

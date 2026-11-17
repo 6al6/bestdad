@@ -1,0 +1,667 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "landing_header_6YEAXM": {
+      "type": "landing-header",
+      "blocks": {
+        "label_QRrgxn": {
+          "type": "label",
+          "settings": {
+            "text": "NAGRADNA AKCIJA"
+          }
+        },
+        "label_Ambepd": {
+          "type": "label",
+          "settings": {
+            "text": "FOTR MESECA IN LETA"
+          }
+        }
+      },
+      "block_order": [
+        "label_QRrgxn",
+        "label_Ambepd"
+      ],
+      "name": "Landing: Header bar",
+      "settings": {
+        "background_image": "shopify://shop_images/Best_Dad_Book_Endpapers.webp",
+        "photo": "shopify://shop_images/image_7.webp",
+        "link": "",
+        "background_color": "#fef1d5",
+        "chip_color": "#ee614c",
+        "chip_text_color": "#ffffff",
+        "photo_border_color": "#2b2d45",
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "hero": {
+      "type": "legenda-hero",
+      "settings": {
+        "heading": "Ujemi vajin trenutek.",
+        "heading_accent": "In nagrado!",
+        "text": "<p><strong>Ni vama treba izvajati misije pred kamero!</strong></p><p>Ujemi trenutek, ko se z otrokom smejita, zabavata, objameta, data petko ali počneta kakšno vrhunsko fotrovsko neumnost. <span style=\"text-decoration:underline\">Bolj kot popoln posnetek nas zanima resničen trenutek.</span></p>",
+        "cta_lead": "Pošlji nam fotko ali kratek video vajinega momenta.",
+        "button_label": "Pošlji fotko ali video",
+        "button_link": "#oddaja",
+        "publish_text": "Izmed prejetih prispevkov bomo izbrali tiste, ki jih objavimo na naših družbenih omrežjih in spletni strani. Vsak mesec bomo izžrebali Fotra meseca in ob koncu akcije Fotra leta.",
+        "show_social": true,
+        "background_color": "#fef1d5",
+        "text_color": "#2b2d45",
+        "accent_color": "#ee614c",
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "button_border_color": "#fef1d5",
+        "divider_top_color": "",
+        "divider_bottom_color": "#2b2d45",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "prizes": {
+      "type": "legenda-prizes",
+      "blocks": {
+        "prize_month": {
+          "type": "prize",
+          "settings": {
+            "label": "",
+            "title": "Fotr meseca",
+            "text": "Dobi naziv Fotr meseca in fotrovsko nagrado, ki jo razkrijemo kmalu.",
+            "featured": false
+          }
+        },
+        "prize_season": {
+          "type": "prize",
+          "settings": {
+            "label": "Glavna nagrada",
+            "title": "Fotr leta",
+            "text": "Najboljši med fotri osvoji naziv Fotr leta in celo familijo odpelje na skupni podvig na naš račun. Kam? Naj za zdaj ostane presenečenje.",
+            "featured": true
+          }
+        }
+      },
+      "block_order": [
+        "prize_month",
+        "prize_season"
+      ],
+      "settings": {
+        "heading": "Nagrada ni švoh!",
+        "banner_text": "Objavljeni prispevki sodelujejo v žrebu za naziv:",
+        "background_color": "#2b2d45",
+        "text_color": "#fef1d5",
+        "card_color": "#ee614c",
+        "card_text_color": "#fef1d5",
+        "featured_card_color": "#fef1d5",
+        "featured_text_color": "#2b2d45",
+        "chip_color": "#f72828",
+        "chip_text_color": "#ffffff",
+        "divider_top_color": "",
+        "divider_bottom_color": "#fef1d5",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "odds": {
+      "type": "legenda-odds",
+      "settings": {
+        "heading": "Video šteje petkrat več!",
+        "photo_multiplier": "1×",
+        "photo_label": "Objavljena fotografija =\n1 možnost za žreb",
+        "video_multiplier": "5×",
+        "video_label": "Objavljen video =\n5 možnosti za žreb",
+        "note": "",
+        "background_color": "#fef1d5",
+        "text_color": "#2b2d45",
+        "photo_card_color": "#ffffff",
+        "video_card_color": "#ee614c",
+        "video_text_color": "#fef1d5",
+        "divider_top_color": "",
+        "divider_bottom_color": "#ffffff",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "tips": {
+      "type": "legenda-tips",
+      "blocks": {
+        "tip_photo": {
+          "type": "card",
+          "settings": {
+            "title": "📸 Fotko naredi in pošlji",
+            "text": "<ul><li>pri dobri svetlobi,</li><li>v čim višji kakovosti,</li><li>kot originalno fotografijo (ne kot posnetek zaslona, stisnjeno različico ali fotografijo, ki je bila večkrat poslana prek aplikacij),</li><li>če lahko, naj bo na njej vidna tudi knjiga, nalepka ali Fotrovski megaplakat. Ni pa nujno! Ali pač?</li></ul>"
+          }
+        },
+        "tip_video": {
+          "type": "card",
+          "settings": {
+            "title": "🎬 Video posnemi in pošlji",
+            "text": "<ul><li>pokončno,</li><li>dolg približno od 8 do 20 sekund,</li><li>pri dobri svetlobi in z naravnim zvokom,</li><li>tako, da se v njem nekaj zares zgodi: smeh, reakcija, objem, petka, ples ali vrhunska fotrovska neumnost,</li><li>če lahko, na koncu za nekaj sekund pokaži še knjigo, nalepko ali Fotrovski megaplakat. Ni pa nujno! Ali pač?</li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "tip_photo",
+        "tip_video"
+      ],
+      "settings": {
+        "anchor_id": "navodila",
+        "heading": "Kako ujeti dober trenutek?",
+        "intro": "<p>Fotko in video lahko posnameš med katero od misij, na izletu, doma ali čisto mimogrede, ko se smejita, lovita, ležita, režita ali samo ždita. Ali lepita nalepke! <strong>Ničesar ni treba posebej režirati!</strong></p>",
+        "closing": "<p><strong>Otrokovega obraza ni treba pokazati.</strong> Roke, hrbet, objem, silhueta ali pogled čez ramo so čisto dovolj.</p><p><u>Bolj kot popoln posnetek nas zanima vajin resnični trenutek.</u></p>",
+        "button_label": "Oddaj fotko ali video",
+        "button_link": "#oddaja",
+        "background_color": "#ffffff",
+        "text_color": "#2b2d45",
+        "card_color": "#fef1d5",
+        "shadow_color": "#ee614c",
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "button_border_color": "#ffffff",
+        "divider_top_color": "",
+        "divider_bottom_color": "#fef1d5",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    },
+    "form": {
+      "type": "legenda-form",
+      "settings": {
+        "anchor_id": "oddaja",
+        "heading": "Pošlji fotko ali video",
+        "lead": "Pošlješ lahko več fotk ali videov.",
+        "face_note": "<p><strong>Otrokovega obraza ni treba pokazati.</strong> Roke, hrbet, objem, silhueta ali pogled čez ramo so čisto dovolj.</p>",
+        "embed_code": "",
+        "form_tag": "Legenda – nov prispevek",
+        "name_label": "Ime in priimek",
+        "email_label": "E-poštni naslov",
+        "file_label": "Povezava do fotke ali videa",
+        "file_help": "Naloži datoteko na WeTransfer, Google Drive ali Dropbox in prilepi povezavo.",
+        "body_label": "Kratek opis trenutka",
+        "terms_heading": "Obvezno sprejetje pravil akcije:",
+        "terms_check": "Strinjam se s <a href=\"#pogoji-sodelovanja\">Pogoji sodelovanja v nagradni akciji Fotr meseca in Fotr leta</a>.",
+        "publish_heading": "Dovoljenje za objavo v akciji:",
+        "publish_check": "Dovoljujem, da Periskop d.o.o. izbrani prispevek, vključno s prikazano podobo in glasom, brez plačila javno objavi na svojih spletnih straneh ter profilih na Instagramu, Facebooku in TikToku za predstavitev akcije, prispevkov, rezultatov in nagrajencev. Objave so dostopne po vsem svetu. Dovoljenje velja med akcijo in največ 12 mesecev po njenem zaključku oziroma do preklica. Seznanjen/-a sem s <a href=\"https://najboljsifotr.si/pages/ugc-pravilnik\" target=\"_blank\" rel=\"noopener\">Pogoji uporabe uporabniških vsebin</a> in <a href=\"#politika-zasebnosti\">Politiko zasebnosti</a>.",
+        "publish_note": "V žrebu sodelujejo izbrani in objavljeni prispevki. Dovoljenje lahko kadarkoli prekličeš na <a href=\"mailto:info@najboljsifotr.si\">info@najboljsifotr.si</a>.",
+        "extra_heading": "Dodatni prostovoljni dovoljenji:",
+        "promo_check": "Dovoljujem tudi uporabo prispevka za promocijo izdelkov Jaz sem najboljši Fotr na svetu na spletnih straneh in profilih družbenih omrežij Periskop d.o.o., tudi po izteku obdobja objave za akcijo. Uporaba je brezplačna, svetovna in brez vnaprej določenega končnega datuma, dokler je potrebna za ta namen oziroma do preklica.",
+        "ads_check": "Dovoljujem tudi uporabo prispevka, vključno s prikazano podobo in glasom, v plačanih spletnih oglasih Periskop d.o.o. za izdelke Jaz sem najboljši Fotr na svetu. Uporaba je brezplačna, svetovna in brez vnaprej določenega končnega datuma, dokler je potrebna za ta namen oziroma do preklica.",
+        "extra_note": "Dodatni dovoljenji nista pogoj za sodelovanje in ne povečata možnosti za nagrado.",
+        "rights_heading": "Potrditev pravic in dovoljenj:",
+        "rights_check": "Potrjujem, da sem polnoleten/-na in imam potrebne avtorske pravice ter dovoljenja vseh prepoznavnih oseb za izbrane uporabe. Za prikazane otroke sem zakoniti zastopnik ali imam ustrezna dovoljenja zakonitih zastopnikov, vključno z drugim staršem, kadar je potrebno. Upošteval/-a sem tudi otrokovo voljo in korist.",
+        "submit_label": "Oddaj prispevek",
+        "success_title": "Hvala! Tvoj prispevek smo prejeli.",
+        "success_text": "",
+        "again_label": "Pošlji še en prispevek",
+        "guide_link": "#navodila",
+        "terms_link": "#pogoji",
+        "privacy_link": "",
+        "background_color": "#fef1d5",
+        "text_color": "#2b2d45",
+        "card_color": "#ffffff",
+        "shadow_color": "#ee614c",
+        "button_bg_color": "#f72828",
+        "button_text_color": "#ffffff",
+        "button_border_color": "#ffffff",
+        "divider_top_color": "",
+        "divider_bottom_color": "#ffffff",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true,
+        "terms_title": "Pogoji sodelovanja v nagradni akciji »Fotr meseca in Fotr leta«",
+        "privacy_title": "Politika zasebnosti"
+      },
+      "blocks": {
+        "terms_part_01": {
+          "type": "terms_part",
+          "settings": {
+            "title": "1. Organizator",
+            "text": "<p>Organizator nagradne akcije »Fotr meseca in Fotr leta« (v nadaljevanju: »akcija«) je:</p><p>PERISKOP ustvarjanje, umetnost in komuniciranje d.o.o.<br>Ulica bratov Učakar 60<br>1000 Ljubljana<br>Matična številka: 6046053000<br>ID za DDV: SI42500036<br>E-pošta: <a href=\"mailto:info@najboljsifotr.si\">info@najboljsifotr.si</a></p><p>(v nadaljevanju: »organizator«).</p>"
+          }
+        },
+        "terms_part_02": {
+          "type": "terms_part",
+          "settings": {
+            "title": "2. Trajanje akcije",
+            "text": "<p>Akcija poteka od 1. 11. 2026 do vključno 24. 6. 2027.</p><p>V okviru akcije se podeljujeta:</p><ul><li>mesečni naziv Fotr meseca in pripadajoča nagrada;</li><li>zaključni naziv Fotr leta in pripadajoča glavna nagrada.</li></ul><p>Za uvrstitev prispevka v posamezno mesečno obdobje šteje datum, ko organizator izbrani prispevek objavi na svojih družbenih omrežjih oziroma spletni strani.</p><p>Žreb za naziv Fotr meseca se izvede po zaključku posameznega koledarskega meseca oziroma v roku, ki ga za posamezen mesec določi in objavi organizator.</p><p>Zaključni žreb za naziv Fotr leta se izvede po zaključku akcije, predvidoma 24. 6. 2027.</p>"
+          }
+        },
+        "terms_part_03": {
+          "type": "terms_part",
+          "settings": {
+            "title": "3. Kdo lahko sodeluje",
+            "text": "<p>V akciji lahko sodeluje fizična oseba, starejša od 18 let, s stalnim ali začasnim prebivališčem v Republiki Sloveniji.</p><p>Sodelovanje ni pogojeno z nakupom knjige ali drugega izdelka.</p><p>V akciji ne morejo sodelovati zaposleni pri organizatorju, osebe, ki neposredno sodelujejo pri pripravi ali izvedbi akcije, ter njihovi ožji družinski člani.</p>"
+          }
+        },
+        "terms_part_04": {
+          "type": "terms_part",
+          "settings": {
+            "title": "4. Način sodelovanja",
+            "text": "<p>Udeleženec sodeluje tako, da prek obrazca oziroma drugega kanala, ki ga določi organizator, odda fotografijo ali videoposnetek, ki prikazuje resničen skupni trenutek očeta z otrokom oziroma otroki.</p><p>Prispevek je lahko povezan z eno od misij iz knjige Jaz sem najboljši fotr na svetu, lahko pa nastane tudi neodvisno od njih.</p><p>Udeleženec lahko odda več različnih fotografij ali videoposnetkov.</p><p>Vsak prispevek, ki ga organizator izbere in objavi, se za namene akcije obravnava kot samostojen prispevek.</p><p>Udeleženec z oddajo prispevka potrjuje, da je avtor oddanega materiala oziroma da ima vse potrebne pravice in dovoljenja za njegovo oddajo, objavo in uporabo v skladu s temi pogoji.</p>"
+          }
+        },
+        "terms_part_05": {
+          "type": "terms_part",
+          "settings": {
+            "title": "5. Izbor prispevkov in objava",
+            "text": "<p>Oddaja fotografije ali videoposnetka še ne pomeni, da bo prispevek objavljen ali vključen v nagradno akcijo.</p><p>Organizator med prejetimi fotografijami in videoposnetki izbere prispevke, ki jih lahko objavi na svojih spletnih straneh, družbenih omrežjih in drugih kanalih projekta Jaz sem najboljši fotr na svetu.</p><p>Pri izboru lahko organizator upošteva zlasti:</p><ul><li>pristnost in izvirnost prispevka;</li><li>zanimivost in humor;</li><li>povezanost z namenom in vrednotami projekta;</li><li>tehnično kakovost in uporabnost materiala;</li><li>primernost vsebine za javno objavo.</li></ul><p>Organizator ni dolžan objaviti vseh prejetih prispevkov in svoje odločitve o izboru ni dolžan posebej obrazložiti.</p><p>Organizator lahko izbrani material za potrebe objave tehnično in oblikovno prilagodi, na primer obreže, skrajša, spremeni format, doda podnapise, grafične elemente ali ga drugače prilagodi posameznemu komunikacijskemu kanalu, pri čemer ne sme bistveno spremeniti pomena oziroma konteksta prispevka.</p>"
+          }
+        },
+        "terms_part_06": {
+          "type": "terms_part",
+          "settings": {
+            "title": "6. Fotr meseca",
+            "text": "<p>V posameznem mesečnem žrebu sodelujejo vsi veljavni prispevki, ki jih organizator v okviru akcije objavi v posameznem koledarskem mesecu.</p><p>Izžrebani udeleženec prejme naziv <strong>Fotr meseca</strong> in pripadajočo nagrado, katere vsebina in vrednost bosta določeni in objavljeni naknadno, pred izvedbo posameznega mesečnega žreba.</p><p>Posamezni udeleženec lahko v času trajanja akcije sodeluje v več mesečnih žrebih, če organizator objavi njegove različne prispevke.</p>"
+          }
+        },
+        "terms_part_07": {
+          "type": "terms_part",
+          "settings": {
+            "title": "7. Fotr leta",
+            "text": "<p>V zaključnem žrebu za naziv Fotr leta sodelujejo vsi veljavni prispevki, ki jih organizator objavi v celotnem obdobju trajanja akcije od 1. 11. 2026 do vključno 24. 6. 2027.</p><p>Izžrebani udeleženec prejme naziv <strong>Fotr leta</strong> in glavno nagrado.</p><p>Vrsta, vsebina in vrednost glavne nagrade bodo določene in objavljene pred izvedbo zaključnega žreba.</p><p>Organizator bo informacije o glavni nagradi objavil na spletni strani oziroma drugih uradnih kanalih projekta Jaz sem najboljši fotr na svetu.</p>"
+          }
+        },
+        "terms_part_08": {
+          "type": "terms_part",
+          "settings": {
+            "title": "8. Število vstopov v žreb",
+            "text": "<p>Vsaka objavljena fotografija šteje kot en vstop v ustrezni mesečni žreb in en vstop v zaključni žreb za Fotra leta.</p><p>Vsak objavljen videoposnetek šteje kot pet vstopov v ustrezni mesečni žreb in pet vstopov v zaključni žreb za Fotra leta.</p><p>Če udeleženec odda več različnih prispevkov in jih organizator objavi, se vsak objavljeni prispevek obravnava ločeno.</p><p>Isti prispevek, poslan večkrat, se upošteva samo enkrat.</p><p>Prispevek, ki je sodeloval v mesečnem žrebu, ostane upravičen tudi do sodelovanja v zaključnem žrebu za naziv Fotr leta.</p><p>Dobitnik naziva Fotr meseca lahko sodeluje tudi v zaključnem žrebu za naziv Fotr leta.</p>"
+          }
+        },
+        "terms_part_09": {
+          "type": "terms_part",
+          "settings": {
+            "title": "9. Izvedba žrebanja",
+            "text": "<p>Žrebanje izvede organizator oziroma komisija, ki jo imenuje organizator.</p><p>Žreb se izvede na način, ki zagotavlja naključen izbor med vsemi veljavnimi vstopi v posameznem žrebu.</p><p>O izvedbi žrebanja organizator vodi ustrezno evidenco oziroma zapisnik.</p><p>Organizator lahko ob glavnem nagrajencu izžreba tudi enega ali več rezervnih nagrajencev za primer, da prvotno izžrebani nagrajenec ne izpolnjuje pogojev, se v predpisanem roku ne odzove ali nagrade ne more oziroma ne želi prevzeti.</p><p>Rezultati žrebanja so dokončni.</p>"
+          }
+        },
+        "terms_part_10": {
+          "type": "terms_part",
+          "settings": {
+            "title": "10. Nagrade",
+            "text": "<p>Dobitnik naziva Fotr meseca prejme:</p><ul><li>mesečno nagrado, katere vsebina in vrednost bosta objavljeni naknadno, pred izvedbo posameznega mesečnega žreba.</li></ul><p>Dobitnik naziva Fotr leta prejme:</p><ul><li>glavno nagrado v obliki skupnega družinskega doživetja oziroma dogodivščine, katere natančna vsebina, obseg, vrednost in pogoji koriščenja bodo objavljeni naknadno, pred izvedbo zaključnega žreba.</li></ul><p>Nagrad ni mogoče zahtevati oziroma izplačati v denarju ali jih zamenjati za drugo nagrado, razen če organizator zaradi objektivnih okoliščin zagotovi drugo nagrado primerljive vrste in vrednosti.</p><p>Če je glede na vrednost posamezne nagrade v skladu z veljavno davčno zakonodajo treba obračunati in plačati akontacijo dohodnine oziroma izpolniti druge davčne obveznosti, jih organizator izvede v skladu z veljavnimi predpisi.</p><p>Nagrajenec mora organizatorju v takem primeru pravočasno posredovati podatke, ki so potrebni za izpolnitev zakonskih in davčnih obveznosti.</p>"
+          }
+        },
+        "terms_part_11": {
+          "type": "terms_part",
+          "settings": {
+            "title": "11. Obvestilo nagrajencem in prevzem nagrade",
+            "text": "<p>Nagrajenec bo o nagradi obveščen na e-poštni naslov oziroma prek drugega kontaktnega podatka, ki ga je navedel ob oddaji prispevka.</p><p>Nagrajenec mora organizatorju v roku 15 dni od prejema obvestila posredovati zahtevane podatke oziroma potrditi prevzem nagrade.</p><p>Če se nagrajenec v navedenem roku ne odzove, ne posreduje zahtevanih podatkov, ne izpolnjuje pogojev sodelovanja ali nagrade ne želi prevzeti, lahko organizator nagrado podeli rezervnemu nagrajencu.</p><p>Za prevzem nagrade lahko organizator zahteva dokazilo o identiteti ter podatke, potrebne za dostavo nagrade in izpolnitev morebitnih davčnih obveznosti.</p>"
+          }
+        },
+        "terms_part_12": {
+          "type": "terms_part",
+          "settings": {
+            "title": "12. Dovoljenje za uporabo fotografij in videoposnetkov",
+            "text": "<p>Udeleženec z oddajo prispevka organizatorju dovoljuje uporabo izbranega in objavljenega prispevka za namene izvedbe, predstavitve in promocije akcije Fotr meseca in Fotr leta ter projekta Jaz sem najboljši fotr na svetu, v obsegu, opredeljenem v teh pogojih.</p><p>Dovoljenje lahko vključuje objavo izbranega prispevka na:</p><ul><li>spletnih straneh organizatorja in projekta;</li><li>družbenih omrežjih organizatorja in projekta;</li><li>e-poštnih in drugih digitalnih komunikacijskih kanalih projekta;</li><li>drugih lastnih komunikacijskih kanalih, neposredno povezanih z akcijo oziroma projektom.</li></ul><p>Dovoljenje velja za čas trajanja akcije in za razumno obdobje po njenem zaključku, potrebno za predstavitev rezultatov, nagrajencev in izvedene akcije.</p><p>Organizator lahko material tehnično in oblikovno prilagodi za posamezen komunikacijski kanal, na primer ga obreže, skrajša, podnaslovi, spremeni format ali mu doda grafične elemente, ne sme pa ga uporabiti na način, ki bi bil žaljiv, zavajajoč, ponižujoč ali škodljiv za udeleženca oziroma otroka.</p><p>Uporaba posameznega prispevka za plačano oglaševanje, ki presega običajno predstavitev in promocijo same nagradne akcije, se uredi z ustreznim dodatnim dovoljenjem, kadar je to potrebno.</p>"
+          }
+        },
+        "terms_part_13": {
+          "type": "terms_part",
+          "settings": {
+            "title": "13. Otroci in druge osebe na posnetku",
+            "text": "<p>Ker lahko prispevki prikazujejo otroke, mora udeleženec pred oddajo prispevka zagotoviti, da ima za njegovo oddajo in predvideno javno objavo ustrezno dovoljenje oziroma soglasje zakonitega zastopnika otroka.</p><p>Če je udeleženec sam zakoniti zastopnik otroka, z oddajo prispevka potrjuje, da soglaša z uporabo in objavo prispevka v obsegu, določenem s temi pogoji.</p><p>Če udeleženec ni edini zakoniti zastopnik otroka oziroma če so glede zastopanja otroka podane posebne okoliščine, je sam odgovoren za zagotovitev vseh soglasij, ki so potrebna za zakonito oddajo in uporabo prispevka.</p><p>Udeleženec mora zagotoviti tudi ustrezna dovoljenja vseh drugih prepoznavnih oseb, ki so prikazane na fotografiji ali videoposnetku.</p><p>Organizator lahko pred objavo oziroma podelitvijo nagrade zahteva dodatno potrditev ali dokazilo o potrebnih dovoljenjih oziroma soglasjih.</p><p>Če organizator ugotovi ali utemeljeno sumi, da potrebna dovoljenja oziroma soglasja niso zagotovljena, lahko prispevek zavrne, odstrani iz objave ali izloči iz nagradne akcije.</p>"
+          }
+        },
+        "terms_part_14": {
+          "type": "terms_part",
+          "settings": {
+            "title": "14. Vsebina prispevkov",
+            "text": "<p>Prispevek mora biti primeren za javno objavo in skladen z namenom akcije.</p><p>Organizator lahko zavrne oziroma izloči zlasti prispevek, ki:</p><ul><li>prikazuje nevarno, nasilno, ponižujoče ali neprimerno ravnanje;</li><li>vsebuje intimne ali za javno objavo neprimerne prizore;</li><li>neupravičeno posega v zasebnost ali pravice drugih oseb;</li><li>krši avtorske, osebnostne ali druge pravice tretjih oseb;</li><li>vsebuje vsebino, za katero udeleženec nima potrebnih pravic oziroma dovoljenj;</li><li>vsebuje nezakonito, žaljivo, sovražno ali diskriminatorno vsebino;</li><li>je očitno lažen, zavajajoč ali prirejen na način, ki je v nasprotju z namenom akcije;</li><li>je tehnično neuporaben za objavo;</li><li>je drugače v nasprotju s temi pogoji ali namenom akcije.</li></ul>"
+          }
+        },
+        "terms_part_15": {
+          "type": "terms_part",
+          "settings": {
+            "title": "15. Osebni podatki",
+            "text": "<p>Upravljavec osebnih podatkov je:</p><p>PERISKOP ustvarjanje, umetnost in komuniciranje d.o.o., Ulica bratov Učakar 60, 1000 Ljubljana.</p><p>Organizator lahko za namen izvedbe akcije obdeluje zlasti:</p><ul><li>ime in priimek udeleženca;</li><li>e-poštni naslov in druge posredovane kontaktne podatke;</li><li>oddane fotografije in videoposnetke;</li><li>opis oziroma druge podatke, ki jih udeleženec posreduje ob oddaji;</li><li>podatke o potrebnih dovoljenjih in soglasjih;</li><li>podatke o sodelovanju in žrebanju;</li><li>podatke, potrebne za podelitev in dostavo nagrade;</li><li>podatke, potrebne za izpolnitev zakonskih in davčnih obveznosti.</li></ul><p>Osebni podatki se obdelujejo zlasti za:</p><ul><li>sprejem in pregled prispevkov;</li><li>izvedbo nagradne akcije;</li><li>izbor in objavo ustreznih prispevkov;</li><li>izvedbo žrebanj;</li><li>obveščanje nagrajencev;</li><li>podelitev in dostavo nagrad;</li><li>zagotavljanje skladnosti s temi pogoji;</li><li>izpolnjevanje zakonskih in davčnih obveznosti.</li></ul><p>Podrobnejše informacije o obdelavi osebnih podatkov, pravnih podlagah, obdobjih hrambe, prejemnikih podatkov ter pravicah posameznikov so navedene v <a href=\"#politika-zasebnosti\">Politiki zasebnosti</a>, objavljeni na spletni strani projekta.</p><p>Za vprašanja glede varstva osebnih podatkov in uveljavljanje pravic lahko udeleženci pišejo na:</p><p><a href=\"mailto:info@najboljsifotr.si\">info@najboljsifotr.si</a></p>"
+          }
+        },
+        "terms_part_16": {
+          "type": "terms_part",
+          "settings": {
+            "title": "16. Izločitev udeleženca ali prispevka",
+            "text": "<p>Organizator lahko udeleženca oziroma posamezni prispevek izloči iz akcije, če:</p><ul><li>udeleženec ne izpolnjuje pogojev sodelovanja;</li><li>je prispevek nepopoln, neustrezen ali tehnično neuporaben;</li><li>obstaja utemeljen dvom glede avtorstva, pravic ali dovoljenj za uporabo prispevka;</li><li>so bili ob sodelovanju navedeni napačni ali zavajajoči podatki;</li><li>udeleženec poskuša vplivati na rezultat žrebanja ali drugače zlorabiti mehanizem akcije;</li><li>prispevek oziroma sodelovanje krši te pogoje ali veljavno zakonodajo.</li></ul>"
+          }
+        },
+        "terms_part_17": {
+          "type": "terms_part",
+          "settings": {
+            "title": "17. Spremembe in prekinitev akcije",
+            "text": "<p>Organizator lahko v primeru okoliščin, na katere nima razumnega vpliva, oziroma iz utemeljenih tehničnih, pravnih ali organizacijskih razlogov akcijo spremeni, začasno prekine ali predčasno zaključi.</p><p>Spremembe ne smejo neupravičeno posegati v že pridobljene pravice udeležencev.</p><p>O bistvenih spremembah pogojev oziroma akcije bo organizator udeležence obvestil na spletni strani <a href=\"https://www.najboljsifotr.si\">www.najboljsifotr.si</a> oziroma prek drugega ustreznega komunikacijskega kanala.</p>"
+          }
+        },
+        "terms_part_18": {
+          "type": "terms_part",
+          "settings": {
+            "title": "18. Družbena omrežja",
+            "text": "<p>Akcija ni sponzorirana, podprta, upravljana ali drugače neposredno povezana z družbenimi omrežji, na katerih organizator objavlja prispevke, razen če je pri posamezni aktivnosti izrecno navedeno drugače.</p><p>Udeleženec svoje podatke in prispevke posreduje organizatorju in ne upravljavcem posameznih družbenih omrežij.</p>"
+          }
+        },
+        "terms_part_19": {
+          "type": "terms_part",
+          "settings": {
+            "title": "19. Končne določbe",
+            "text": "<p>Z oddajo prispevka in sodelovanjem v akciji udeleženec potrjuje, da je seznanjen s temi pogoji sodelovanja in jih sprejema.</p><p>Za vprašanja glede akcije lahko udeleženci pišejo na:</p><p><a href=\"mailto:info@najboljsifotr.si\">info@najboljsifotr.si</a></p><p>Ti pogoji so objavljeni na spletni strani <a href=\"https://www.najboljsifotr.si\">www.najboljsifotr.si</a> in veljajo od dneva njihove objave.</p>"
+          }
+        },
+        "terms_part_20": {
+          "type": "terms_part",
+          "settings": {
+            "title": "",
+            "text": "<p>V Ljubljani, 20. 10. 2026</p><p>PERISKOP ustvarjanje, umetnost in komuniciranje d.o.o.</p>"
+          }
+        },
+        "privacy_part_01": {
+          "type": "privacy_part",
+          "settings": {
+            "title": "",
+            "text": "<p><em>Zadnja posodobitev: 5. oktober 2026</em></p><p>Ta politika zasebnosti pojasnjuje, kako družba PERISKOP ustvarjanje, umetnost in komuniciranje d.o.o., Ulica bratov Učakar 60, 1000 Ljubljana, Slovenija (v nadaljevanju: »PERISKOP d.o.o.«, »mi«, »nas« ali »upravljavec«), kot upravljavec spletnega mesta in spletne trgovine Jaz sem najboljši fotr na svetu, zbira, uporablja, posreduje, hrani in varuje osebne podatke obiskovalcev, uporabnikov in kupcev.</p><p>Za vprašanja v zvezi z zasebnostjo in varstvom osebnih podatkov smo dosegljivi na:</p><p>E-pošta: <a href=\"mailto:info@najboljsifotr.si\">info@najboljsifotr.si</a></p><p>Osebne podatke obdelujemo v skladu s Splošno uredbo o varstvu podatkov (Uredba (EU) 2016/679 – GDPR), Zakonom o varstvu osebnih podatkov (ZVOP-2), Zakonom o elektronskih komunikacijah (ZEKom-2) in drugo veljavno zakonodajo.</p>"
+          }
+        },
+        "privacy_part_02": {
+          "type": "privacy_part",
+          "settings": {
+            "title": "1. Katere osebne podatke zbiramo",
+            "text": "<p>»Osebni podatki« so informacije, ki se nanašajo na določenega ali določljivega posameznika.</p><p>Glede na način uporabe spletnega mesta oziroma spletne trgovine lahko zbiramo naslednje kategorije osebnih podatkov:</p><p><strong>A. Kontaktni podatki</strong></p><p>Ime in priimek, e-poštni naslov, telefonska številka, naslov za račun in naslov za dostavo.</p><p><strong>B. Podatki o naročilih, plačilih in transakcijah</strong></p><p>Podatke o naročenih izdelkih, zgodovini naročil, vračilih, reklamacijah, zamenjavah in preklicih ter podatke, potrebne za izvedbo in evidentiranje plačila.</p><p>Plačila obdelujejo ponudniki plačilnih storitev. Celotnih podatkov o plačilnih karticah sami ne hranimo, kadar jih neposredno obdeluje izbrani ponudnik plačilnih storitev.</p><p><strong>C. Podatki o uporabniškem računu</strong></p><p>Če spletna trgovina omogoča ustvarjanje uporabniškega računa, lahko obdelujemo podatke, povezane z računom, kot so prijavni podatki, nastavitve in preference.</p><p><strong>D. Komunikacija z nami</strong></p><p>Obdelujemo lahko podatke, ki nam jih posreduješ, ko nas kontaktiraš, na primer ob vprašanjih, reklamacijah, zahtevah za podporo, povratnih informacijah ali drugi komunikaciji z nami.</p><p><strong>E. Tehnični podatki in podatki o uporabi</strong></p><p>Obdelujemo lahko podatke, kot so naslov IP, identifikatorji naprave, vrsta naprave in brskalnika, podatki o omrežju ter podatki o uporabi spletnega mesta, kot so obiskane strani, kliki in druge interakcije.</p><p>Ti podatki se lahko zbirajo s piškotki in podobnimi tehnologijami. Nenujne piškotke in podobne tehnologije uporabljamo le na podlagi tvoje privolitve, kadar je ta zahtevana.</p><p><strong>F. Podatki za neposredno trženje</strong></p><p>Če se prijaviš na prejemanje naših marketinških sporočil oziroma če za takšno komunikacijo obstaja druga ustrezna pravna podlaga, lahko obdelujemo tvoj e-poštni naslov, podatke o prijavi oziroma odjavi ter podatke o interakciji s poslanimi sporočili.</p>"
+          }
+        },
+        "privacy_part_03": {
+          "type": "privacy_part",
+          "settings": {
+            "title": "2. Od kod pridobivamo osebne podatke",
+            "text": "<p>Osebne podatke lahko pridobivamo:</p><ul><li>neposredno od tebe, na primer ob oddaji naročila, ustvarjanju uporabniškega računa, prijavi na e-novice, izpolnitvi obrazca ali komunikaciji z nami;</li><li>samodejno ob uporabi spletnega mesta, zlasti prek piškotkov in podobnih tehnologij;</li><li>od ponudnikov storitev, ki sodelujejo pri delovanju spletne trgovine, obdelavi plačil, dostavi, analitiki, marketingu ali drugih funkcijah spletnega mesta;</li><li>od oglaševalskih in marketinških partnerjev, kadar za takšno obdelavo obstaja ustrezna pravna podlaga.</li></ul>"
+          }
+        },
+        "privacy_part_04": {
+          "type": "privacy_part",
+          "settings": {
+            "title": "3. Zakaj obdelujemo osebne podatke in na kateri pravni podlagi",
+            "text": "<p>Osebne podatke obdelujemo samo, kadar za to obstaja ustrezna pravna podlaga.</p><p><strong>A. Izvedba naročila in pogodbe</strong></p><p>Osebne podatke obdelujemo za:</p><ul><li>sprejem in obdelavo naročila;</li><li>izvedbo plačila;</li><li>pripravo in dostavo izdelkov;</li><li>obveščanje o stanju naročila;</li><li>komunikacijo v zvezi z naročilom;</li><li>obravnavo vračil, reklamacij in drugih zahtev kupcev;</li><li>zagotavljanje podpore kupcem.</li></ul><p>Pravna podlaga: izvajanje pogodbe oziroma izvajanje ukrepov na zahtevo posameznika pred sklenitvijo pogodbe (člen 6(1)(b) GDPR).</p><p><strong>B. Izpolnjevanje zakonskih obveznosti</strong></p><p>Določene osebne podatke moramo obdelovati in hraniti zaradi računovodskih, davčnih, potrošniških in drugih zakonskih obveznosti.</p><p>Pravna podlaga: izpolnitev zakonske obveznosti (člen 6(1)(c) GDPR).</p><p><strong>C. Delovanje, varnost in izboljševanje storitev</strong></p><p>Osebne podatke lahko obdelujemo za zagotavljanje varnega in učinkovitega delovanja spletnega mesta, preprečevanje in odkrivanje zlorab, zaščito naših pravic ter odpravljanje tehničnih težav.</p><p>Kadar je ustrezno, takšna obdelava temelji na naših zakonitih interesih, če nad njimi ne prevladajo interesi ali temeljne pravice in svoboščine posameznika.</p><p>Pravna podlaga: zakoniti interesi (člen 6(1)(f) GDPR).</p><p><strong>D. E-novice in neposredno trženje</strong></p><p>Če se prijaviš na e-novice oziroma drugo marketinško komunikacijo, lahko tvoje podatke uporabljamo za pošiljanje novic, informacij o izdelkih, ponudb, promocijskih akcij in drugih marketinških vsebin.</p><p>Kadar zakon zahteva privolitev, takšna sporočila pošiljamo na podlagi tvoje privolitve.</p><p>Privolitev lahko kadar koli prekličeš s klikom na povezavo za odjavo v prejetem e-sporočilu oziroma tako, da nam pišeš na <a href=\"mailto:info@najboljsifotr.si\">info@najboljsifotr.si</a>.</p><p>Kadar veljavna zakonodaja dovoljuje neposredno trženje obstoječim kupcem za naše podobne izdelke ali storitve brez posebne predhodne privolitve, ti bomo vedno omogočili jasno, brezplačno in enostavno možnost zavrnitve takšnega komuniciranja.</p><p><strong>E. Analitika in oglaševanje</strong></p><p>Nenujne analitične in oglaševalske tehnologije uporabljamo na podlagi tvoje privolitve, kadar jo zahteva zakon.</p><p>Svojo privolitev lahko kadar koli spremeniš ali prekličeš prek nastavitev piškotkov na spletnem mestu.</p>"
+          }
+        },
+        "privacy_part_05": {
+          "type": "privacy_part",
+          "settings": {
+            "title": "4. Komu lahko posredujemo osebne podatke",
+            "text": "<p>Osebne podatke lahko v obsegu, ki je potreben za posamezen namen, posredujemo oziroma omogočimo dostop naslednjim kategorijam prejemnikov:</p><ul><li>ponudniku platforme za spletno trgovino, kot je Shopify;</li><li>ponudnikom plačilnih storitev;</li><li>izvajalcem dostave, logistike in izpolnjevanja naročil;</li><li>ponudnikom gostovanja, IT-storitev in tehnične podpore;</li><li>ponudnikom podpore uporabnikom;</li><li>ponudnikom storitev e-poštnega marketinga;</li><li>ponudnikom analitičnih in oglaševalskih storitev, kadar za takšno obdelavo obstaja ustrezna pravna podlaga;</li><li>računovodskim, pravnim in drugim strokovnim izvajalcem;</li><li>državnim organom in drugim upravičenim osebam, kadar posredovanje zahteva veljavna zakonodaja.</li></ul><p>Ponudnikom storitev osebne podatke omogočimo oziroma posredujemo samo v obsegu, ki je potreben za izvajanje njihovih storitev.</p>"
+          }
+        },
+        "privacy_part_06": {
+          "type": "privacy_part",
+          "settings": {
+            "title": "5. Shopify",
+            "text": "<p>Naša spletna trgovina uporablja platformo Shopify.</p><p>Shopify lahko v okviru zagotavljanja svojih storitev obdeluje določene osebne podatke obiskovalcev in kupcev, zlasti podatke, potrebne za delovanje spletne trgovine, košarice, blagajne, naročil in povezanih funkcij.</p><p>Za posamezne obdelave osebnih podatkov lahko veljajo tudi Shopifyjevi pogoji in pravila zasebnosti.</p>"
+          }
+        },
+        "privacy_part_07": {
+          "type": "privacy_part",
+          "settings": {
+            "title": "6. Piškotki in podobne tehnologije",
+            "text": "<p>Na spletnem mestu uporabljamo piškotke in podobne tehnologije.</p><p>Piškotki so majhne datoteke, ki se shranijo na napravi obiskovalca in omogočajo delovanje določenih funkcij spletnega mesta ter, kadar uporabnik v to privoli, analitiko in oglaševanje.</p><p><strong>A. Nujno potrebni piškotki</strong></p><p>Ti omogočajo osnovno delovanje spletnega mesta in spletne trgovine, na primer delovanje košarice, blagajne, varnostnih funkcij in shranjevanje osnovnih nastavitev.</p><p>Za uporabo tehnologij, ki so nujno potrebne za zagotovitev storitve, ki jo uporabnik izrecno zahteva, privolitev ni potrebna.</p><p><strong>B. Analitični piškotki</strong></p><p>Analitični piškotki nam pomagajo razumeti, kako obiskovalci uporabljajo spletno mesto, in izboljševati njegovo delovanje.</p><p>Uporabljamo jih le na podlagi privolitve, kadar je ta zahtevana.</p><p><strong>C. Oglaševalski oziroma trženjski piškotki</strong></p><p>Oglaševalski oziroma trženjski piškotki in podobne tehnologije se lahko uporabljajo za merjenje učinkovitosti oglaševanja, pripisovanje konverzij ter druge oglaševalske funkcije.</p><p>Aktivirajo se le na podlagi tvoje privolitve, kadar je ta zahtevana.</p><p>Glede na dejansko konfiguracijo spletnega mesta lahko uporabljamo storitve, kot so:</p><ul><li>Google Analytics;</li><li>Google Ads;</li><li>Meta Pixel;</li><li>Microsoft Clarity;</li><li>Klaviyo;</li><li>Shopifyjeve analitične in marketinške funkcije.</li></ul><p>Končni seznam uporabljenih piškotkov in podobnih tehnologij mora biti vedno usklajen z dejansko konfiguracijo spletnega mesta.</p><p>Svoje nastavitve glede nenujnih piškotkov lahko kadar koli spremeniš oziroma svojo privolitev prekličeš prek nastavitev piškotkov na spletnem mestu.</p>"
+          }
+        },
+        "privacy_part_08": {
+          "type": "privacy_part",
+          "settings": {
+            "title": "7. Prenosi osebnih podatkov v tretje države",
+            "text": "<p>Nekateri naši ponudniki storitev lahko osebne podatke obdelujejo zunaj Evropskega gospodarskega prostora (EGP).</p><p>Kadar pride do prenosa osebnih podatkov v državo zunaj EGP, zagotovimo ustrezno pravno podlago in zaščitne ukrepe, kot jih zahteva veljavna zakonodaja.</p><p>Ti lahko vključujejo odločbo Evropske komisije o ustreznosti, standardne pogodbene klavzule Evropske komisije ali druge mehanizme, ki jih dovoljuje GDPR.</p><p>Za dodatne informacije o zaščitnih ukrepih pri prenosih osebnih podatkov nam lahko pišeš na <a href=\"mailto:info@najboljsifotr.si\">info@najboljsifotr.si</a>.</p>"
+          }
+        },
+        "privacy_part_09": {
+          "type": "privacy_part",
+          "settings": {
+            "title": "8. Kako dolgo hranimo osebne podatke",
+            "text": "<p>Osebnih podatkov ne hranimo dlje, kot je potrebno za namen, za katerega so bili zbrani, razen kadar daljše obdobje hrambe zahteva zakon oziroma je potrebno zaradi uveljavljanja ali obrambe pravnih zahtevkov.</p><p>Obdobje hrambe določamo glede na:</p><ul><li>namen obdelave;</li><li>trajanje pogodbenega razmerja;</li><li>zakonsko določene roke hrambe;</li><li>zastaralne roke za uveljavljanje ali obrambo pravnih zahtevkov;</li><li>čas veljavnosti privolitve, kadar obdelava temelji na privolitvi.</li></ul><p>Ko osebnih podatkov ne potrebujemo več in za njihovo nadaljnjo hrambo ne obstaja ustrezna pravna podlaga, jih izbrišemo ali ustrezno anonimiziramo.</p>"
+          }
+        },
+        "privacy_part_10": {
+          "type": "privacy_part",
+          "settings": {
+            "title": "9. Varnost osebnih podatkov",
+            "text": "<p>Za varovanje osebnih podatkov uporabljamo ustrezne tehnične in organizacijske ukrepe, namenjene preprečevanju nepooblaščenega dostopa, izgube, zlorabe, spremembe ali neupravičenega razkritja osebnih podatkov.</p><p>Pri izbiri zaščitnih ukrepov upoštevamo naravo, obseg, okoliščine in namene obdelave ter tveganja za pravice in svoboščine posameznikov.</p><p>Kljub temu noben način elektronskega prenosa ali shranjevanja podatkov ne more zagotavljati popolne varnosti.</p>"
+          }
+        },
+        "privacy_part_11": {
+          "type": "privacy_part",
+          "settings": {
+            "title": "10. Tvoje pravice",
+            "text": "<p>V skladu z GDPR in drugo veljavno zakonodajo imaš, kadar so izpolnjeni zakonski pogoji:</p><ul><li>pravico do dostopa do svojih osebnih podatkov;</li><li>pravico do popravka netočnih ali nepopolnih osebnih podatkov;</li><li>pravico do izbrisa osebnih podatkov;</li><li>pravico do omejitve obdelave;</li><li>pravico do ugovora obdelavi osebnih podatkov;</li><li>pravico do prenosljivosti podatkov, kadar so za to izpolnjeni pogoji;</li><li>pravico do preklica privolitve, kadar obdelava temelji na privolitvi.</li></ul><p>Preklic privolitve ne vpliva na zakonitost obdelave, izvedene na podlagi privolitve pred njenim preklicem.</p><p>Zahtevo za uveljavljanje svojih pravic lahko pošlješ na:</p><p><a href=\"mailto:info@najboljsifotr.si\">info@najboljsifotr.si</a></p><p>Pred obravnavo zahteve lahko od tebe zahtevamo dodatne informacije, če so potrebne za preverjanje tvoje identitete in preprečevanje nepooblaščenega dostopa do osebnih podatkov.</p><p>Na zahteve bomo odgovorili v rokih, ki jih določa veljavna zakonodaja.</p><p>Če meniš, da tvoje osebne podatke obdelujemo v nasprotju s predpisi o varstvu osebnih podatkov, imaš pravico vložiti pritožbo pri:</p><p>Informacijski pooblaščenec Republike Slovenije<br>Dunajska cesta 22<br>1000 Ljubljana<br>Slovenija</p>"
+          }
+        },
+        "privacy_part_12": {
+          "type": "privacy_part",
+          "settings": {
+            "title": "11. Podatki otrok",
+            "text": "<p>Spletna trgovina in možnosti spletnega nakupa niso namenjene otrokom.</p><p>Čeprav je izdelek Jaz sem najboljši fotr na svetu povezan z družinskimi aktivnostmi in vključuje vsebine, namenjene skupnim aktivnostim staršev in otrok, so naročila ter druge pravne in komercialne interakcije prek spletne trgovine namenjene odraslim osebam.</p><p>Osebnih podatkov otrok zavestno ne zbiramo neposredno za namene spletnega nakupa ali neposrednega trženja.</p><p>Če ugotoviš, da nam je otrok brez ustrezne pravne podlage posredoval osebne podatke, nam piši na <a href=\"mailto:info@najboljsifotr.si\">info@najboljsifotr.si</a>, da lahko primer preverimo in ustrezno ukrepamo.</p><p>Če prek spletnega mesta, e-pošte, družbenih omrežij ali drugih kanalov omogočamo pošiljanje fotografij, videoposnetkov ali drugih vsebin, na katerih so otroci, na primer v okviru promocijskih aktivnosti, nagradnih iger ali projektov Fotr meseca in Fotr leta, lahko za takšno obdelavo veljajo dodatna pravila oziroma pogoji sodelovanja.</p><p>O pogojih obdelave in uporabe takšnih vsebin bodo sodelujoči ustrezno obveščeni ob njihovi oddaji oziroma pred njihovo uporabo.</p>"
+          }
+        },
+        "privacy_part_13": {
+          "type": "privacy_part",
+          "settings": {
+            "title": "12. Spletna mesta in storitve tretjih oseb",
+            "text": "<p>Naše spletno mesto lahko vsebuje povezave do spletnih mest, aplikacij ali storitev tretjih oseb.</p><p>Za obdelavo osebnih podatkov, ki jo tretje osebe izvajajo kot samostojni upravljavci, veljajo njihove lastne politike zasebnosti.</p><p>Priporočamo, da se pred uporabo njihovih storitev seznaniš z njihovimi pravili glede varstva osebnih podatkov.</p>"
+          }
+        },
+        "privacy_part_14": {
+          "type": "privacy_part",
+          "settings": {
+            "title": "13. Spremembe politike zasebnosti",
+            "text": "<p>To politiko zasebnosti lahko občasno posodobimo zaradi sprememb naših postopkov, storitev, tehnologij, ponudnikov storitev ali veljavne zakonodaje.</p><p>Veljavna različica politike zasebnosti bo objavljena na tej strani skupaj z datumom zadnje posodobitve.</p><p>Če bodo spremembe bistvene, bomo o njih obvestili na primeren način, kadar to zahteva veljavna zakonodaja.</p>"
+          }
+        },
+        "privacy_part_15": {
+          "type": "privacy_part",
+          "settings": {
+            "title": "14. Upravljavec in kontakt",
+            "text": "<p>Upravljavec osebnih podatkov je:</p><p>PERISKOP ustvarjanje, umetnost in komuniciranje d.o.o.<br>PERISKOP d.o.o.<br>Ulica bratov Učakar 60<br>1000 Ljubljana<br>Slovenija</p><p>Matična številka: 6046053000<br>ID za DDV: SI42500036</p><p>Za vprašanja glede obdelave osebnih podatkov in za uveljavljanje svojih pravic nam lahko pišeš na:</p><p><a href=\"mailto:info@najboljsifotr.si\">info@najboljsifotr.si</a></p>"
+          }
+        }
+      },
+      "block_order": [
+        "terms_part_01",
+        "terms_part_02",
+        "terms_part_03",
+        "terms_part_04",
+        "terms_part_05",
+        "terms_part_06",
+        "terms_part_07",
+        "terms_part_08",
+        "terms_part_09",
+        "terms_part_10",
+        "terms_part_11",
+        "terms_part_12",
+        "terms_part_13",
+        "terms_part_14",
+        "terms_part_15",
+        "terms_part_16",
+        "terms_part_17",
+        "terms_part_18",
+        "terms_part_19",
+        "terms_part_20",
+        "privacy_part_01",
+        "privacy_part_02",
+        "privacy_part_03",
+        "privacy_part_04",
+        "privacy_part_05",
+        "privacy_part_06",
+        "privacy_part_07",
+        "privacy_part_08",
+        "privacy_part_09",
+        "privacy_part_10",
+        "privacy_part_11",
+        "privacy_part_12",
+        "privacy_part_13",
+        "privacy_part_14",
+        "privacy_part_15"
+      ]
+    },
+    "terms": {
+      "type": "landing-faq",
+      "blocks": {
+        "term_1": {
+          "type": "question",
+          "settings": {
+            "title": "1. Organizator",
+            "answer": "<p>Organizator nagradne akcije je [polno ime podjetja], s sedežem na naslovu [naslov], matična številka [matična številka], davčna številka [davčna številka], e-pošta [e-poštni naslov].</p>"
+          }
+        },
+        "term_2": {
+          "type": "question",
+          "settings": {
+            "title": "2. Trajanje akcije",
+            "answer": "<p>Akcija poteka od [datum in ura začetka] do [datum in ura zaključka]. Za uvrstitev v posamezno obdobje šteje datum objave prispevka na družbenem omrežju ali spletni strani organizatorja.</p><p>Mesečni žreb se izvede [dan in ura] po koncu posameznega koledarskega meseca. Sezonski žreb se izvede [dan in ura] po zaključku akcije.</p>"
+          }
+        },
+        "term_3": {
+          "type": "question",
+          "settings": {
+            "title": "3. Kdo lahko sodeluje",
+            "answer": "<p>Sodeluje lahko fizična oseba, starejša od 18 let, s stalnim prebivališčem v [Sloveniji oziroma drugih dovoljenih državah]. Sodelovanje ni pogojeno z nakupom.</p><p>Zaposleni pri organizatorju, njihovi ožji družinski člani in osebe, ki neposredno sodelujejo pri pripravi ali izvedbi akcije, ne morejo sodelovati.</p>"
+          }
+        },
+        "term_4": {
+          "type": "question",
+          "settings": {
+            "title": "4. Način sodelovanja",
+            "answer": "<p>Udeleženec prek obrazca na spletni strani odda svojo fotografijo ali video, na katerem je prikazan resničen trenutek z otrokom oziroma otroki. Prispevek je lahko povezan z eno od misij iz knjige ali pa nastane neodvisno od njih.</p><p>Vsaka fotografija ali video, ki ga organizator izbere in objavi, se obravnava kot samostojen prispevek. Udeleženec potrjuje, da je avtor oddanega materiala oziroma da ima za njegovo uporabo vsa potrebna dovoljenja.</p>"
+          }
+        },
+        "term_5": {
+          "type": "question",
+          "settings": {
+            "title": "5. Izbor prispevkov in objava",
+            "answer": "<p>Organizator med prejetimi fotografijami in videi izbere prispevke, ki jih objavi na svojih družbenih omrežjih in spletni strani. Objava prispevka ni avtomatična.</p><p>Organizator lahko pri izboru upošteva pristnost, zanimivost, humor, kakovost, tehnično uporabnost in povezanost prispevka s projektom <em>Jaz sem najboljši fotr na svetu</em>. Organizator lahko izbrani material tehnično prilagodi za objavo, na primer obreže, skrajša, podnaslovi ali spremeni njegovo obliko.</p>"
+          }
+        },
+        "term_6": {
+          "type": "question",
+          "settings": {
+            "title": "6. Sodelovanje v posameznih žrebih",
+            "answer": "<p>V žrebu sodelujejo samo prispevki, ki jih organizator izbere in objavi.</p><p><strong>Mesečni žreb:</strong> V mesečnem žrebu sodelujejo vsi ustrezni prispevki, objavljeni v posameznem koledarskem mesecu. Izžrebanec prejme naziv Fotr meseca in [mesečna nagrada].</p><p><strong>Sezonski žreb:</strong> V sezonskem žrebu sodelujejo vsi ustrezni prispevki, objavljeni od začetka do konca akcije. Izžrebanec prejme naziv Fotr sezone in [glavna nagrada].</p>"
+          }
+        },
+        "term_7": {
+          "type": "question",
+          "settings": {
+            "title": "7. Število vstopov v žreb",
+            "answer": "<p>Vsak objavljen prispevek lahko sodeluje v enem mesečnem in enem sezonskem žrebu.</p><ul><li>Objavljena fotografija šteje kot en vstop v posamezni žreb.</li><li>Objavljen video šteje kot pet vstopov v posamezni žreb.</li></ul><p>Če udeleženec odda več različnih prispevkov in so ti objavljeni, se vsak objavljen prispevek obravnava ločeno. Isti prispevek, poslan večkrat, se v posameznem žrebu upošteva samo enkrat.</p><p>[Določiti je treba, ali lahko ista oseba v istem obdobju osvoji več kot eno nagrado.]</p>"
+          }
+        },
+        "term_8": {
+          "type": "question",
+          "settings": {
+            "title": "8. Izvedba žreba",
+            "answer": "<p>Žreb izvede [organizator oziroma imenovana komisija] na način, ki zagotavlja naključen izbor med veljavnimi vstopi. O izvedbi žreba se vodi evidenca.</p><p>Organizator lahko izžreba tudi rezervnega nagrajenca za primer, da izžrebanec nagrade ne prevzame v določenem roku.</p>"
+          }
+        },
+        "term_9": {
+          "type": "question",
+          "settings": {
+            "title": "9. Nagrade",
+            "answer": "<ul><li>Fotr meseca prejme [točen opis nagrade in vrednost].</li><li>Fotr sezone prejme [točen opis glavne nagrade in vrednost].</li></ul><p>Nagrade niso izplačljive v denarju in jih ni mogoče zamenjati za drugo nagrado, razen če organizator iz utemeljenega razloga zagotovi enakovredno nadomestno nagrado.</p><p>Če vrednost nagrade presega 42 evrov, organizator uredi zakonsko zahtevano davčno obravnavo. Nagrajenec mora organizatorju pravočasno posredovati podatke, potrebne za izpolnitev davčnih obveznosti.</p>"
+          }
+        },
+        "term_10": {
+          "type": "question",
+          "settings": {
+            "title": "10. Obvestilo nagrajencem in prevzem nagrade",
+            "answer": "<p>Nagrajenci bodo o nagradi obveščeni na e-poštni naslov, ki so ga navedli ob oddaji prispevka. Če se nagrajenec v [število] dneh ne odzove, lahko organizator nagrado podeli rezervnemu nagrajencu.</p><p>Za prevzem nagrade lahko organizator zahteva dokazilo o identiteti in podatke, potrebne za dostavo oziroma davčno obravnavo nagrade.</p>"
+          }
+        },
+        "term_11": {
+          "type": "question",
+          "settings": {
+            "title": "11. Dovoljenje za uporabo fotografij in videov",
+            "answer": "<p>Udeleženec z oddajo prispevka organizatorju podeli neizključno dovoljenje za objavo izbranega prispevka na:</p><ul><li>spletni strani organizatorja;</li><li>družbenih omrežjih organizatorja;</li><li>drugih kanalih, povezanih s projektom <em>Jaz sem najboljši fotr na svetu</em>.</li></ul><p>Dovoljenje velja [čas trajanja], za območje [Slovenija oziroma ves svet]. Organizator lahko izbrani material tehnično prilagodi, obreže, skrajša, podnaslovi in oblikovno prilagodi za objavo.</p><p>[Določiti je treba, ali dovoljenje vključuje tudi plačano oglaševanje.]</p><p>Organizator materiala ne sme uporabiti na način, ki bi bil žaljiv, zavajajoč ali škodljiv za udeleženca oziroma otroka.</p>"
+          }
+        },
+        "term_12": {
+          "type": "question",
+          "settings": {
+            "title": "12. Otroci in druge osebe na posnetku",
+            "answer": "<p>Udeleženec mora imeti vsa potrebna soglasja zakonitih zastopnikov za objavo prepoznavnega otroka. Udeleženec mora imeti dovoljenje vseh drugih prepoznavnih oseb na fotografiji ali videu.</p><p>Organizator lahko pred objavo zahteva dodatno pisno soglasje. Če potrebna soglasja niso zagotovljena, organizator prispevka ne objavi in ga ne vključi v žreb.</p>"
+          }
+        },
+        "term_13": {
+          "type": "question",
+          "settings": {
+            "title": "13. Vsebina prispevkov",
+            "answer": "<p>Prispevek mora biti primeren za javno objavo in povezan z namenom akcije. Organizator lahko izloči prispevek, ki:</p><ul><li>prikazuje nevarno ali ponižujoče ravnanje;</li><li>vsebuje intimne ali neprimerne prizore;</li><li>posega v zasebnost drugih oseb;</li><li>krši avtorske ali druge pravice;</li><li>vsebuje vsebino, za katero udeleženec nima potrebnih dovoljenj;</li><li>je tehnično neuporaben za objavo.</li></ul>"
+          }
+        },
+        "term_14": {
+          "type": "question",
+          "settings": {
+            "title": "14. Osebni podatki",
+            "answer": "<p>Upravljavec osebnih podatkov je [polno ime podjetja]. Organizator obdeluje podatke, ki jih udeleženec odda prek obrazca, zlasti ime, e-poštni naslov, poslani material, opis prispevka, podatke o soglasjih in podatke, potrebne za izvedbo žreba ter podelitev nagrade.</p><p>Podatki se uporabljajo za:</p><ul><li>izvedbo nagradne akcije;</li><li>pregled in izbor prispevkov;</li><li>objavo izbranih prispevkov;</li><li>obveščanje nagrajencev;</li><li>izpolnjevanje zakonskih in davčnih obveznosti.</li></ul><p>Podrobnosti o pravni podlagi, obdobju hrambe, pravicah posameznika in načinu uveljavljanja pravic so navedene v [povezava do politike zasebnosti]. Za vprašanja glede osebnih podatkov piši na [e-poštni naslov].</p>"
+          }
+        },
+        "term_15": {
+          "type": "question",
+          "settings": {
+            "title": "15. Izločitev in spremembe akcije",
+            "answer": "<p>Organizator lahko izloči prispevek, če je nepopoln, neustrezen, tehnično neuporaben ali če obstaja utemeljen dvom o pravicah oziroma dovoljenjih za njegovo uporabo.</p><p>Organizator lahko akcijo iz upravičenih tehničnih, pravnih ali organizacijskih razlogov spremeni, začasno prekine ali predčasno zaključi. O spremembah obvesti na spletni strani [povezava].</p>"
+          }
+        },
+        "term_16": {
+          "type": "question",
+          "settings": {
+            "title": "16. Končne določbe",
+            "answer": "<p>S sodelovanjem udeleženec potrjuje, da je prebral in sprejema te pogoje sodelovanja.</p><p>Akcija ni povezana z družbenimi omrežji, na katerih se lahko objavijo prispevki, in je ta omrežja ne sponzorirajo, ne podpirajo in ne upravljajo.</p><p>Za vprašanja glede akcije piši na [e-poštni naslov].</p><p>V [kraj], [datum]<br/>[polno ime podjetja]</p>"
+          }
+        }
+      },
+      "block_order": [
+        "term_1",
+        "term_2",
+        "term_3",
+        "term_4",
+        "term_5",
+        "term_6",
+        "term_7",
+        "term_8",
+        "term_9",
+        "term_10",
+        "term_11",
+        "term_12",
+        "term_13",
+        "term_14",
+        "term_15",
+        "term_16"
+      ],
+      "disabled": true,
+      "settings": {
+        "anchor_id": "pogoji",
+        "title": "Pogoji sodelovanja",
+        "intro": "v nagradni akciji »Fotr meseca in Fotr leta«",
+        "two_columns_desktop": false,
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "card_color": "#ffffff",
+        "border_color": "#000000",
+        "shadow_color": "#ee614c",
+        "divider_top_color": "",
+        "divider_bottom_color": "",
+        "divider_style": "waves-1-patterned_1200x20",
+        "divider_animate": true
+      }
+    }
+  },
+  "order": [
+    "landing_header_6YEAXM",
+    "hero",
+    "prizes",
+    "odds",
+    "tips",
+    "form",
+    "terms"
+  ]
+}

@@ -1,0 +1,16 @@
+{%- doc -%}
+  Clip paths for Landing FX shaped images (wavy cutouts, scallops, bursts...).
+  Render once per section that uses shaped media. Repeated copies on the same page are identical,
+  so duplicate ids are harmless. Kept off-screen instead of display:none, because a clipPath inside
+  display:none is ignored by some browsers.
+{%- enddoc -%}
+<svg class="lfx-defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    {%- assign lfx_shapes = 'burst,spiky,soft-burst,scallop,circle,wavy,blob,arch,tape' | split: ',' -%}
+    {%- for lfx_shape in lfx_shapes -%}
+      <clipPath id="lfx-clip-{{ lfx_shape }}" clipPathUnits="objectBoundingBox">
+        <path d="{% render 'landing-fx-shape', name: lfx_shape %}"/>
+      </clipPath>
+    {%- endfor -%}
+  </defs>
+</svg>

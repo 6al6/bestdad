@@ -5,6 +5,7 @@
  * Cart contract (same as the theme's quick buy): POST to theme.routes.cart_add_url, then
  * dispatch `shapes:cart:afteradditem` on <body> so the cart drawer refreshes and opens.
  */
+if (!customElements.get('landing-product')) {
 class LandingProduct extends HTMLElement {
   connectedCallback() {
     this.form = this.querySelector('form');
@@ -14,15 +15,36 @@ class LandingProduct extends HTMLElement {
     this.errorEl = this.querySelector('[data-error]');
     this.variantSelect = this.querySelector('select[name="id"]');
 
+    this.main = this.querySelector('[data-main]');
+    this.count = this.querySelector('[data-count]');
+    this.total = this.querySelectorAll('.landing-product__image').length;
+
     this.querySelector('[data-thumbs]')?.addEventListener('click', (event) => {
       const thumb = event.target.closest('[data-index]');
-      if (thumb) this.showImage(Number(thumb.dataset.index));
+      if (thumb) this.showImage(Number(thumb.dataset.index), true);
     });
+
+    // Swipe mode: the main gallery is a horizontal scroll-snap row (set in the section CSS).
+    // Keep thumbnails and the counter in sync with the photo in view.
+    this.main?.addEventListener('scroll', () => {
+      if (!this.isSwipe()) return;
+      const index = Math.round(this.main.scrollLeft / Math.max(1, this.main.clientWidth));
+      if (index !== this.current) this.showImage(index, false);
+    }, { passive: true });
     this.variantSelect?.addEventListener('change', () => this.updateVariant());
     this.form?.addEventListener('submit', (event) => this.addToCart(event));
   }
 
-  showImage(index) {
+  isSwipe() {
+    return Boolean(this.main) && getComputedStyle(this.main).overflowX !== 'hidden';
+  }
+
+  showImage(index, scroll = true) {
+    this.current = index;
+    if (scroll && this.isSwipe()) {
+      this.main.scrollTo({ left: index * this.main.clientWidth, behavior: 'smooth' });
+    }
+    if (this.count) this.count.textContent = `${index + 1} / ${this.total}`;
     this.querySelectorAll('.landing-product__image').forEach((image, i) => {
       image.classList.toggle('is-active', i === index);
     });
@@ -103,6 +125,5 @@ class LandingProduct extends HTMLElement {
   }
 }
 
-if (!customElements.get('landing-product')) {
-  customElements.define('landing-product', LandingProduct);
+customElements.define('landing-product', LandingProduct);
 }

@@ -1,0 +1,347 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+  assign button_link = section.settings.button_link | default: '#product'
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+
+<section class="landing-howto landing-howto--{{ section.id }}{% if section.settings.desktop_columns == '3' %} landing-howto--cols-3{% endif %}">
+  <div class="landing-howto__inner">
+    {%- if section.settings.heading != blank or section.settings.intro != blank -%}
+      <div class="landing-howto__intro">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="landing-howto__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.intro != blank -%}
+          <div class="landing-howto__intro-text landing-marker">{{ section.settings.intro }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="landing-howto__list" role="list">
+        {%- for block in section.blocks -%}
+          <li class="landing-howto__item" {{ block.shopify_attributes }}>
+            <div class="landing-howto__card">
+              {%- if block.settings.image != blank -%}
+                {{-
+                  block.settings.image
+                  | image_url: width: 900
+                  | image_tag: class: 'landing-howto__image', loading: 'lazy', widths: '302, 604, 900', sizes: '(min-width: 1200px) 280px, 302px', alt: block.settings.image.alt | default: block.settings.title
+                -}}
+              {%- endif -%}
+              <div class="landing-howto__body">
+                {%- if block.settings.title != blank -%}
+                  <h3 class="landing-howto__title">{{ block.settings.title }}</h3>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <p class="landing-howto__text">{{ block.settings.text }}</p>
+                {%- endif -%}
+              </div>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank or section.settings.note != blank -%}
+      <div class="landing-howto__cta">
+        {% render 'landing-button', label: section.settings.button_label, link: button_link %}
+        {%- if section.settings.note != blank -%}
+          <p class="landing-howto__note">{{ section.settings.note }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .landing-howto--{{ section.id }} {
+    --lh-text: {{ section.settings.text_color }};
+    --lb-bg: {{ section.settings.button_bg_color }};
+    --lb-text: {{ section.settings.button_text_color }};
+    --lb-border: {{ section.settings.button_border_color }};
+    --lb-shadow: {{ section.settings.text_color }};
+    --lb-shadow-width: 3px;
+    --lb-border-width: 2px;
+    --lb-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --lm-color: color-mix(in srgb, {{ section.settings.highlight_color }} {{ section.settings.highlight_opacity }}%, transparent);
+    background: {{ section.settings.background_color }};
+    color: var(--lh-text);
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    text-align: center;
+  }
+  .landing-howto__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 52px 12px;
+  }
+  .landing-howto__heading {
+    max-width: 800px;
+    margin: 0 auto;
+    padding-inline: 6px;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.05;
+    text-transform: none;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+  .landing-howto__intro { display: flex; flex-direction: column; gap: 24px; width: 100%; }
+  .landing-howto__intro-text {
+    padding-inline: 6px;
+    font-size: 17px;
+    line-height: 1.5;
+    color: {{ section.settings.intro_color }};
+  }
+  .landing-howto__intro-text p { margin: 0; }
+  .landing-howto__list {
+    display: grid;
+    gap: 40px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  /* Room for the offset black card */
+  .landing-howto__item {
+    isolation: isolate;
+    margin: 0 16px 16px 0;
+  }
+  .landing-howto__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 22px 22px 26px;
+    border: 2px solid var(--lh-text);
+    background: {{ section.settings.card_color }};
+  }
+  .landing-howto__card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    border: 2px solid var(--lh-text);
+    background: #000;
+    transform: translate(14px, 16px);
+  }
+  .landing-howto__image {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 293px;
+    border: 1.5px solid var(--lh-text);
+    border-radius: 6px;
+    background: #d9d9d9;
+    object-fit: cover;
+  }
+  .landing-howto__body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+  }
+  .landing-howto__title {
+    margin: 0;
+    font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    font-weight: 400;
+    font-size: 27px;
+    line-height: 1.05;
+    text-transform: none;
+    letter-spacing: 0;
+    overflow-wrap: break-word;
+  }
+  .landing-howto__text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .landing-howto__cta {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-left: 6px;
+    margin-right: 6px;
+  }
+  .landing-howto__note {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  /* Desktop: everything is centered. The cards are a centered wrapping row, so a last
+     row with fewer cards stays centered. 16px per card is room for the offset black card. */
+  @media (min-width: 750px) {
+    .landing-howto__inner { align-items: center; max-width: 1000px; }
+    .landing-howto__heading { width: 100%; }
+    .landing-howto__list { display: flex; flex-wrap: wrap; justify-content: center; width: 100%; gap: 24px; }
+    .landing-howto__item { flex: 0 0 calc((100% - 40px) / 2 - 16px); }
+    .landing-howto__cta { width: 100%; max-width: 420px; margin-inline: auto; }
+  }
+  @media (min-width: 1200px) {
+    .landing-howto__inner { max-width: 1500px; padding-inline: 24px; }
+    .landing-howto__item { flex-basis: calc((100% - 120px) / 4 - 16px); }
+  }
+  /* 3 columns from desktop width: 6-track grid, each card spans 2 tracks so a short last row can be centered */
+  @media (min-width: 990px) {
+    .landing-howto--cols-3 .landing-howto__inner { max-width: 1140px; }
+    .landing-howto--cols-3 .landing-howto__list { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .landing-howto--cols-3 .landing-howto__item { grid-column: span 2; }
+    .landing-howto--cols-3 .landing-howto__item:nth-child(3n + 1):nth-last-child(2) { grid-column: 2 / span 2; }
+    .landing-howto--cols-3 .landing-howto__item:nth-child(3n + 1):last-child { grid-column: 3 / span 2; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing: Steps + intro",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Pet korakov do zmage v fotrovanju. Brez kompliciranja."
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Text under the heading",
+      "info": "Use Underline to put the marker color behind a phrase. Leave blank for none.",
+      "default": "<p><u>Kako uporabljati komplet:</u></p>"
+    },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "desktop_columns",
+      "label": "Cards per row on large screens",
+      "info": "3 per row from 990px wide, 4 per row from 1200px. Tablets show 2 per row.",
+      "options": [
+        { "value": "4", "label": "4" },
+        { "value": "3", "label": "3" }
+      ],
+      "default": "4"
+    },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Prednaroči zdaj" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Leave blank to scroll to the product section (anchor #product)." },
+    { "type": "text", "id": "note", "label": "Note under button", "default": "Epsko darilo za vse fotre ❤️" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#2b2d45" },
+    { "type": "color", "id": "text_color", "label": "Text, borders and button shadow", "default": "#fef1d5" },
+    { "type": "color", "id": "card_color", "label": "Step card", "default": "#ee614c" },
+    { "type": "color", "id": "intro_color", "label": "Text under the heading", "default": "#2b2d45" },
+    { "type": "color", "id": "highlight_color", "label": "Marker highlight", "default": "#fef1d5" },
+    {
+      "type": "range",
+      "id": "highlight_opacity",
+      "label": "Marker opacity (%)",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "default": 100
+    },
+    { "type": "color", "id": "button_bg_color", "label": "Button background", "default": "#f72828" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
+    { "type": "color", "id": "button_border_color", "label": "Button inner border", "default": "#2b2d45" },
+    { "type": "header", "content": "Wavy divider" },
+    {
+      "type": "color",
+      "id": "divider_top_color",
+      "label": "Top divider color",
+      "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."
+    },
+    {
+      "type": "color",
+      "id": "divider_bottom_color",
+      "label": "Bottom divider color",
+      "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."
+    },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Landscape, about 302 x 293." },
+        { "type": "text", "id": "title", "label": "Title", "info": "Emoji are allowed.", "default": "Step title" },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "Step description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing: Steps + intro",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "title": "📖 #1 - Izberita misijo",
+            "text": "V priročniku fotra čaka 28 misij. Ikone mu povedo, katera danes ne bo uničila stanovanja, otroka ali njegovega mentalnega zdravja. Ko jo najde, iztrga stran. Ja, res!"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "🎯 #2 - Sledita scenariju in ne pozabita na zabavo",
+            "text": "Otroštvo mine. Tista čudna, zabavna, rahlo kaotična stvar, ki sta jo naredila otrok in fotr? To ostane."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "🏅 #3 - Nalepita dokaz slave",
+            "text": "Opravljeno misijo proslavita z bleščečo nalepko na Fotrovskem megaplakatu."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "🖼️ #4 - Vajini spomini na očeh",
+            "text": "Plakat obesita ob otrokovo posteljo. Vsak dan ga spomni: »<em>To sva naredila midva z očijem.</em>«"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "📱 #5 - Poročajta familji in frendom",
+            "text": "QR kode vodijo do pripravljenih poročil dogodivščin za družino in prijatelje. Hvalisanje je precej lažje, ko je že napisano."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

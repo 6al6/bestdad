@@ -1,0 +1,153 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+{{ 'landing-fx.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'landing-fx.js' | asset_url }}" defer></script>
+
+{%- capture lfx_yes -%}
+  <svg class="lfx-cmp__icon lfx-cmp__icon--yes" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><circle cx="20" cy="20" r="17.5"/><path d="M11.5 20.5l6 6 11-13"/></svg>
+{%- endcapture -%}
+{%- capture lfx_no -%}
+  <svg class="lfx-cmp__icon lfx-cmp__icon--no" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><circle cx="20" cy="20" r="17.5"/><path d="M13.5 13.5l13 13M26.5 13.5l-13 13"/></svg>
+{%- endcapture -%}
+
+<section class="lfx lfx-cmp lfx-cmp--{{ section.id }}">
+  <div class="lfx-cmp__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="lfx-heading lfx-cmp__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.intro != blank -%}
+      <p class="lfx-cmp__intro">{{ section.settings.intro }}</p>
+    {%- endif -%}
+
+    <div class="lfx-cmp__wrap">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'sticker' -%}
+          {% render 'landing-fx-sticker', block: block %}
+        {%- endif -%}
+      {%- endfor -%}
+      <table class="lfx-cmp__table">
+        <caption class="visually-hidden">{{ section.settings.heading }}</caption>
+        <thead>
+          <tr>
+            <td class="lfx-cmp__corner"></td>
+            <th scope="col" class="lfx-cmp__head lfx-cmp__head--us">
+              {%- if section.settings.col_a_logo != blank -%}
+                {{ section.settings.col_a_logo | image_url: width: 400 | image_tag: class: 'lfx-cmp__logo', loading: 'lazy', widths: '200, 400', sizes: '160px', alt: section.settings.col_a_label }}
+              {%- else -%}
+                {{ section.settings.col_a_label }}
+              {%- endif -%}
+            </th>
+            <th scope="col" class="lfx-cmp__head lfx-cmp__head--them">{{ section.settings.col_b_label }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'row' -%}
+              <tr {{ block.shopify_attributes }}>
+                <th scope="row" class="lfx-cmp__label">{{ block.settings.label }}</th>
+                <td class="lfx-cmp__cell lfx-cmp__cell--us">
+                  {%- if block.settings.a == 'yes' -%}{{ lfx_yes }}<span class="visually-hidden">{{ section.settings.yes_label }}</span>{%- else -%}{{ lfx_no }}<span class="visually-hidden">{{ section.settings.no_label }}</span>{%- endif -%}
+                </td>
+                <td class="lfx-cmp__cell lfx-cmp__cell--them">
+                  {%- if block.settings.b == 'yes' -%}{{ lfx_yes }}<span class="visually-hidden">{{ section.settings.yes_label }}</span>{%- else -%}{{ lfx_no }}<span class="visually-hidden">{{ section.settings.no_label }}</span>{%- endif -%}
+                </td>
+              </tr>
+            {%- endif -%}
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+
+    {%- if section.settings.button_label != blank -%}
+      <div class="lfx-cmp__cta">
+        {% render 'landing-button', label: section.settings.button_label, link: section.settings.button_link %}
+        {%- if section.settings.note != blank -%}<p class="lfx-cmp__note">{{ section.settings.note }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .lfx-cmp--{{ section.id }} {
+    --lfx-head: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --lfx-ink: {{ section.settings.ink_color }};
+    --lb-bg: {{ section.settings.button_bg_color }};
+    --lb-text: {{ section.settings.button_text_color }};
+    --lb-border: {{ section.settings.button_border_color }};
+    --lb-shadow: {{ section.settings.ink_color }};
+    --lb-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    text-align: center;
+  }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__inner { max-width: 940px; margin-inline: auto; padding: 56px 14px 64px; }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__heading { font-size: 36px; line-height: 1.02; }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__intro { max-width: 540px; margin: 14px auto 0; font-size: 17px; line-height: 1.45; }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__wrap { position: relative; margin: 36px 10px 0 0; }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    filter: drop-shadow(10px 10px 0 var(--lfx-ink));
+  }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__table th,
+  .lfx-cmp--{{ section.id }} .lfx-cmp__table td {
+    border: 2.5px solid var(--lfx-ink);
+    background: {{ section.settings.table_color }};
+    color: {{ section.settings.table_text_color }};
+  }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__table .lfx-cmp__corner { width: 46%; border-top-color: transparent; border-left-color: transparent; background: transparent; }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__head {
+    padding: 14px 6px;
+    font-family: var(--lfx-head);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__table .lfx-cmp__head--us,
+  .lfx-cmp--{{ section.id }} .lfx-cmp__table .lfx-cmp__cell--us {
+    background: {{ section.settings.highlight_color }};
+    color: {{ section.settings.highlight_text_color }};
+  }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__head--us { font-size: 18px; }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__logo { display: block; width: 100%; max-width: 150px; height: auto; margin-inline: auto; }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__label {
+    padding: 14px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.3;
+    text-align: left;
+  }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__cell { padding: 10px 4px; text-align: center; vertical-align: middle; }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__icon { display: block; width: 32px; height: 32px; margin-inline: auto; fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__icon--yes { stroke: {{ section.settings.yes_color }}; }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__icon--no { stroke: {{ section.settings.no_color }}; }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__cell--us .lfx-cmp__icon { stroke: {{ section.settings.highlight_text_color }}; }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__cta { display: flex; flex-direction: column; gap: 12px; max-width: 420px; margin: 48px auto 0; }
+  .lfx-cmp--{{ section.id }} .lfx-cmp__note { margin: 0; font-size: 15px; }
+
+  @media (min-width: 750px) {
+    .lfx-cmp--{{ section.id }} .lfx-cmp__inner { padding: 96px 32px 104px; }
+    .lfx-cmp--{{ section.id }} .lfx-cmp__heading { font-size: 54px; }
+    .lfx-cmp--{{ section.id }} .lfx-cmp__intro { font-size: 19px; }
+    .lfx-cmp--{{ section.id }} .lfx-cmp__wrap { margin-top: 48px; }
+    .lfx-cmp--{{ section.id }} .lfx-cmp__table .lfx-cmp__corner { width: 50%; }
+    .lfx-cmp--{{ section.id }} .lfx-cmp__head { padding: 22px 12px; font-size: 20px; }
+    .lfx-cmp--{{ section.id }} .lfx-cmp__head--us { font-size: 26px; }
+    .lfx-cmp--{{ section.id }} .lfx-cmp__label { padding: 18px 22px; font-size: 17px; }
+    .lfx-cmp--{{ section.id }} .lfx-cmp__icon { width: 40px; height: 40px; }
+  }
+{% endstyle %}
+
+{% schema %}
+{"name":"Landing FX: Comparison","tag":"section","class":"landing-section","max_blocks":14,"settings":[{"type":"text","id":"heading","label":"Heading","default":"The kit vs. winging it."},{"type":"text","id":"intro","label":"Intro"},{"type":"header","content":"Columns"},{"type":"text","id":"col_a_label","label":"Highlighted column","default":"The kit"},{"type":"image_picker","id":"col_a_logo","label":"Highlighted column logo","info":"Optional. Replaces the label."},{"type":"text","id":"col_b_label","label":"Other column","default":"Winging it"},{"type":"text","id":"yes_label","label":"Screen reader text: yes","default":"Yes"},{"type":"text","id":"no_label","label":"Screen reader text: no","default":"No"},{"type":"header","content":"Button"},{"type":"text","id":"button_label","label":"Button label","default":"Get the kit"},{"type":"url","id":"button_link","label":"Button link"},{"type":"text","id":"note","label":"Note under button"},{"type":"header","content":"Colors"},{"type":"color","id":"background_color","label":"Background","default":"#fef1d5"},{"type":"color","id":"text_color","label":"Text","default":"#2b2d45"},{"type":"color","id":"table_color","label":"Table","default":"#ffffff"},{"type":"color","id":"table_text_color","label":"Table text","default":"#2b2d45"},{"type":"color","id":"highlight_color","label":"Highlighted column","default":"#ee614c"},{"type":"color","id":"highlight_text_color","label":"Highlighted column text","default":"#ffffff"},{"type":"color","id":"yes_color","label":"Check","default":"#2b2d45"},{"type":"color","id":"no_color","label":"Cross","default":"#f72828"},{"type":"color","id":"ink_color","label":"Lines and hard shadow","default":"#2b2d45"},{"type":"color","id":"button_bg_color","label":"Button background","default":"#f72828"},{"type":"color","id":"button_text_color","label":"Button text","default":"#ffffff"},{"type":"color","id":"button_border_color","label":"Button inner border","default":"#fef1d5"},{"type":"header","content":"Wavy divider"},{"type":"color","id":"divider_top_color","label":"Top divider color","info":"Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it."},{"type":"color","id":"divider_bottom_color","label":"Bottom divider color","info":"Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it."},{"type":"select","id":"divider_style","label":"Divider style","options":[{"value":"waves-1-patterned_1200x20","label":"Waves 1 (small)"},{"value":"waves-2-patterned_1200x43","label":"Waves 2 (medium)"},{"value":"waves-3-patterned_1200x84","label":"Waves 3 (large)"},{"value":"zig-zag-2-patterned_1200x37","label":"Zig-zag"},{"value":"circles-2-patterned_1200x35","label":"Circles"},{"value":"spikes-1-patterned_1200x132","label":"Spikes"}],"default":"waves-1-patterned_1200x20"},{"type":"checkbox","id":"divider_animate","label":"Animate divider","default":true}],"blocks":[{"type":"row","name":"Row","settings":[{"type":"text","id":"label","label":"Label","default":"A plan for Saturday, 7:02 a.m."},{"type":"select","id":"a","label":"Highlighted column","options":[{"value":"yes","label":"Check"},{"value":"no","label":"Cross"}],"default":"yes"},{"type":"select","id":"b","label":"Other column","options":[{"value":"yes","label":"Check"},{"value":"no","label":"Cross"}],"default":"no"}]},{"type":"sticker","name":"Sticker","settings":[{"type":"select","id":"kind","label":"Sticker type","options":[{"value":"image","label":"Image (PNG cut-out)"},{"value":"burst","label":"Text: burst"},{"value":"spiky","label":"Text: spiky star"},{"value":"soft-burst","label":"Text: soft burst"},{"value":"scallop","label":"Text: scalloped circle"},{"value":"circle","label":"Text: circle"},{"value":"tape","label":"Text: tape"},{"value":"blob","label":"Text: blob"}],"default":"burst"},{"type":"image_picker","id":"image","label":"Image","info":"Used when the type is Image. Transparent PNG or WebP works best (astronaut, moon, plane...)."},{"type":"textarea","id":"text","label":"Text","info":"Used for text stickers. Line breaks are kept.","default":"28 missions"},{"type":"range","id":"text_size","label":"Text size","min":6,"max":30,"step":1,"default":15},{"type":"header","content":"Position (desktop)"},{"type":"range","id":"left","label":"Horizontal position","min":-10,"max":110,"step":2,"unit":"%","default":96},{"type":"range","id":"top","label":"Vertical position","min":-30,"max":130,"step":2,"unit":"%","default":-4},{"type":"range","id":"size","label":"Width","min":40,"max":420,"step":5,"unit":"px","default":150},{"type":"range","id":"rotate","label":"Tilt","min":-45,"max":45,"step":1,"unit":"°","default":-8},{"type":"range","id":"layer","label":"Layer","info":"Higher sits on top.","min":1,"max":60,"step":1,"default":30},{"type":"header","content":"Position (mobile)"},{"type":"range","id":"mobile_left","label":"Horizontal position","min":-10,"max":110,"step":2,"unit":"%","default":88},{"type":"range","id":"mobile_top","label":"Vertical position","min":-30,"max":130,"step":2,"unit":"%","default":-6},{"type":"range","id":"mobile_scale","label":"Size on mobile","min":30,"max":120,"step":5,"unit":"%","default":60},{"type":"checkbox","id":"hide_mobile","label":"Hide on mobile","default":false},{"type":"header","content":"Motion"},{"type":"select","id":"motion","label":"While scrolling","options":[{"value":"none","label":"Stay still"},{"value":"spin","label":"Rotate"},{"value":"drift","label":"Float up and down"},{"value":"travel","label":"Travel sideways"},{"value":"wobble","label":"Wobble (always)"}],"default":"spin"},{"type":"range","id":"strength","label":"Motion strength","min":10,"max":200,"step":10,"unit":"%","default":100},{"type":"checkbox","id":"reverse","label":"Reverse direction","default":false},{"type":"checkbox","id":"slap","label":"Slap on when it scrolls into view","default":true},{"type":"header","content":"Colors"},{"type":"color","id":"bg","label":"Sticker color","default":"#f6b52e"},{"type":"color","id":"fg","label":"Text","default":"#2b2d45"},{"type":"color","id":"outline","label":"Outline and shadow","default":"#2b2d45"},{"type":"checkbox","id":"shadow","label":"Hard shadow","default":true}]}],"presets":[{"name":"Landing FX: Comparison","blocks":[{"type":"row"},{"type":"row"},{"type":"row"}]}]}
+{% endschema %}

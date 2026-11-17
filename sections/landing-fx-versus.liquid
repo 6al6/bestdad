@@ -1,0 +1,374 @@
+{%- doc -%}
+  "The kit vs. everything else" comparison. Each Option block is one alternative a dad might try instead
+  (googling, scrolling, ...) with what it costs him and what he gets. The kit row closes the table, highlighted,
+  with the live product price. Desktop: a three-column table. Phones: every row becomes a card.
+{%- enddoc -%}
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_main_font
+  assign vs_product = section.settings.product
+  if vs_product == blank and section.settings.product_handle != blank
+    assign vs_product = all_products[section.settings.product_handle]
+  endif
+  assign vs_price = ''
+  if vs_product != blank
+    assign vs_price = vs_product.selected_or_first_available_variant.price | money
+  endif
+  assign kit_cost = section.settings.kit_cost | replace: '[price]', vs_price
+-%}
+
+{{ 'landing-shared.css' | asset_url | stylesheet_tag }}
+{{ 'landing-fx.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'landing-fx.js' | asset_url }}" defer></script>
+
+<section class="lfx lfx-vs lfx-vs--{{ section.id }}">
+  <div class="lfx-vs__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="lfx-heading lfx-vs__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.intro != blank -%}
+      <p class="lfx-vs__intro">{{ section.settings.intro }}</p>
+    {%- endif -%}
+
+    <div class="lfx-vs__wrap">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'sticker' -%}
+          {% render 'landing-fx-sticker', block: block %}
+        {%- endif -%}
+      {%- endfor -%}
+
+      <table class="lfx-vs__table">
+        <caption class="visually-hidden">{{ section.settings.heading }}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{{ section.settings.col_option }}</th>
+            <th scope="col">{{ section.settings.col_cost }}</th>
+            <th scope="col">{{ section.settings.col_result }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'option' -%}
+              <tr class="lfx-vs__row" {{ block.shopify_attributes }}>
+                <th scope="row" class="lfx-vs__option">
+                  <span class="lfx-vs__x" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                  </span>
+                  <span>{{ block.settings.label }}</span>
+                </th>
+                <td class="lfx-vs__cell" data-label="{{ section.settings.col_cost | escape }}">{{ block.settings.cost }}</td>
+                <td class="lfx-vs__cell" data-label="{{ section.settings.col_result | escape }}">{{ block.settings.result }}</td>
+              </tr>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if section.settings.kit_label != blank -%}
+            <tr class="lfx-vs__row lfx-vs__row--kit">
+              <th scope="row" class="lfx-vs__option">
+                <span class="lfx-vs__tick" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
+                </span>
+                <span>{{ section.settings.kit_label }}</span>
+              </th>
+              <td class="lfx-vs__cell" data-label="{{ section.settings.col_cost | escape }}">{{ kit_cost }}</td>
+              <td class="lfx-vs__cell" data-label="{{ section.settings.col_result | escape }}">{{ section.settings.kit_result }}</td>
+            </tr>
+          {%- endif -%}
+        </tbody>
+      </table>
+    </div>
+
+    {%- if section.settings.button_label != blank -%}
+      <div class="lfx-vs__cta">
+        {% render 'landing-button', label: section.settings.button_label, link: section.settings.button_link %}
+        {%- if section.settings.note != blank -%}<p class="lfx-vs__note">{{ section.settings.note }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% render 'landing-divider' %}
+
+{% style %}
+  .lfx-vs--{{ section.id }} {
+    --lfx-head: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --lfx-ink: {{ section.settings.ink_color }};
+    --vs-table: {{ section.settings.table_color }};
+    --vs-table-text: {{ section.settings.table_text_color }};
+    --vs-head: {{ section.settings.head_color }};
+    --vs-head-text: {{ section.settings.head_text_color }};
+    --vs-kit: {{ section.settings.kit_color }};
+    --vs-kit-text: {{ section.settings.kit_text_color }};
+    --vs-x: {{ section.settings.x_color }};
+    --lb-bg: {{ section.settings.button_bg_color }};
+    --lb-text: {{ section.settings.button_text_color }};
+    --lb-border: {{ section.settings.button_border_color }};
+    --lb-shadow: {{ section.settings.ink_color }};
+    --lb-font: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    font-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    text-align: center;
+  }
+  .lfx-vs--{{ section.id }} .lfx-vs__inner { max-width: 1040px; margin-inline: auto; padding: 56px 16px 64px; }
+  .lfx-vs--{{ section.id }} .lfx-vs__heading { font-size: 36px; line-height: 1.02; }
+  .lfx-vs--{{ section.id }} .lfx-vs__intro { max-width: 560px; margin: 14px auto 0; font-size: 17px; line-height: 1.45; }
+  .lfx-vs--{{ section.id }} .lfx-vs__wrap { position: relative; margin: 36px 8px 0 0; text-align: left; }
+  .lfx-vs--{{ section.id }} .lfx-vs__table { width: 100%; border-collapse: separate; border-spacing: 0; }
+  .lfx-vs--{{ section.id }} .lfx-vs__x,
+  .lfx-vs--{{ section.id }} .lfx-vs__tick {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: 2px solid var(--lfx-ink);
+    border-radius: 50%;
+    background: var(--vs-x);
+  }
+  .lfx-vs--{{ section.id }} .lfx-vs__tick { background: var(--vs-kit-text); }
+  .lfx-vs--{{ section.id }} .lfx-vs__x svg,
+  .lfx-vs--{{ section.id }} .lfx-vs__tick svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 3.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .lfx-vs--{{ section.id }} .lfx-vs__tick svg { stroke: var(--vs-kit); }
+  .lfx-vs--{{ section.id }} .lfx-vs__option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--lfx-head);
+    font-weight: 400;
+    line-height: 1.08;
+    text-transform: none;
+  }
+
+  /* Phones: one card per option */
+  .lfx-vs--{{ section.id }} .lfx-vs__table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .lfx-vs--{{ section.id }} .lfx-vs__table,
+  .lfx-vs--{{ section.id }} .lfx-vs__table tbody { display: block; }
+  .lfx-vs--{{ section.id }} .lfx-vs__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 14px;
+    margin-bottom: 16px;
+    padding: 14px 14px 16px;
+    border: 2.5px solid var(--lfx-ink);
+    background: var(--vs-table);
+    color: var(--vs-table-text);
+    box-shadow: 6px 6px 0 var(--lfx-ink);
+  }
+  .lfx-vs--{{ section.id }} .lfx-vs__row:nth-child(odd) { transform: rotate(-0.6deg); }
+  .lfx-vs--{{ section.id }} .lfx-vs__row:nth-child(even) { transform: rotate(0.6deg); }
+  .lfx-vs--{{ section.id }} .lfx-vs__row .lfx-vs__option { grid-column: 1 / -1; font-size: 20px; }
+  .lfx-vs--{{ section.id }} .lfx-vs__cell { display: block; font-size: 15px; line-height: 1.35; }
+  .lfx-vs--{{ section.id }} .lfx-vs__cell::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+  .lfx-vs--{{ section.id }} .lfx-vs__row--kit {
+    margin-top: 26px;
+    margin-bottom: 0;
+    padding: 18px 16px 20px;
+    border-width: 3px;
+    background: var(--vs-kit);
+    color: var(--vs-kit-text);
+    box-shadow: 8px 8px 0 var(--lfx-ink);
+    transform: rotate(-1deg) !important;
+  }
+  .lfx-vs--{{ section.id }} .lfx-vs__row--kit .lfx-vs__option { font-size: 26px; }
+  .lfx-vs--{{ section.id }} .lfx-vs__row--kit .lfx-vs__cell { font-size: 16px; font-weight: 700; }
+  .lfx-vs--{{ section.id }} .lfx-vs__row--kit .lfx-vs__cell::before { opacity: 0.85; }
+  .lfx-vs--{{ section.id }} .lfx-vs__cta { display: flex; flex-direction: column; gap: 12px; max-width: 420px; margin: 44px auto 0; }
+  .lfx-vs--{{ section.id }} .lfx-vs__note { margin: 0; font-size: 15px; }
+
+  /* Desktop: a real three-column table */
+  @media (min-width: 750px) {
+    .lfx-vs--{{ section.id }} .lfx-vs__inner { padding: 96px 32px 104px; }
+    .lfx-vs--{{ section.id }} .lfx-vs__heading { font-size: 54px; }
+    .lfx-vs--{{ section.id }} .lfx-vs__intro { font-size: 19px; }
+    .lfx-vs--{{ section.id }} .lfx-vs__wrap { margin-top: 48px; filter: drop-shadow(10px 10px 0 var(--lfx-ink)); }
+    .lfx-vs--{{ section.id }} .lfx-vs__table { display: table; table-layout: fixed; border-collapse: collapse; }
+    .lfx-vs--{{ section.id }} .lfx-vs__table thead { position: static; display: table-header-group; width: auto; height: auto; overflow: visible; clip: auto; }
+    .lfx-vs--{{ section.id }} .lfx-vs__table tbody { display: table-row-group; }
+    .lfx-vs--{{ section.id }} .lfx-vs__table thead th {
+      padding: 16px 20px;
+      border: 2.5px solid var(--lfx-ink);
+      background: var(--vs-head);
+      color: var(--vs-head-text);
+      font-family: var(--lfx-head);
+      font-size: 18px;
+      font-weight: 400;
+      text-align: left;
+      text-transform: uppercase;
+    }
+    .lfx-vs--{{ section.id }} .lfx-vs__table thead th:first-child { width: 38%; }
+    .lfx-vs--{{ section.id }} .lfx-vs__row,
+    .lfx-vs--{{ section.id }} .lfx-vs__row--kit {
+      display: table-row;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      box-shadow: none;
+      transform: none !important;
+    }
+    .lfx-vs--{{ section.id }} .lfx-vs__row > * {
+      padding: 18px 20px;
+      border: 2.5px solid var(--lfx-ink);
+      background: var(--vs-table);
+      color: var(--vs-table-text);
+      vertical-align: middle;
+    }
+    .lfx-vs--{{ section.id }} .lfx-vs__row .lfx-vs__option { display: table-cell; font-size: 21px; }
+    .lfx-vs--{{ section.id }} .lfx-vs__option > span { vertical-align: middle; }
+    .lfx-vs--{{ section.id }} .lfx-vs__option .lfx-vs__x,
+    .lfx-vs--{{ section.id }} .lfx-vs__option .lfx-vs__tick { margin-right: 12px; }
+    .lfx-vs--{{ section.id }} .lfx-vs__cell { display: table-cell; font-size: 17px; }
+    .lfx-vs--{{ section.id }} .lfx-vs__cell::before { display: none; }
+    .lfx-vs--{{ section.id }} .lfx-vs__row--kit > * {
+      padding-block: 24px;
+      border-width: 3px;
+      background: var(--vs-kit);
+      color: var(--vs-kit-text);
+    }
+    .lfx-vs--{{ section.id }} .lfx-vs__row--kit .lfx-vs__option { font-size: 30px; }
+    .lfx-vs--{{ section.id }} .lfx-vs__row--kit .lfx-vs__cell { font-size: 19px; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Landing FX: Versus",
+  "tag": "section",
+  "class": "landing-section",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The kit vs. everything else you’d try." },
+    { "type": "text", "id": "intro", "label": "Intro", "default": "Every dad has a plan B. Here’s what it costs." },
+    { "type": "header", "content": "Column titles" },
+    { "type": "text", "id": "col_option", "label": "First column", "default": "Instead of…" },
+    { "type": "text", "id": "col_cost", "label": "Second column", "default": "It costs you" },
+    { "type": "text", "id": "col_result", "label": "Third column", "default": "You get" },
+    { "type": "header", "content": "The kit row (last, highlighted)" },
+    { "type": "text", "id": "kit_label", "label": "Name", "default": "The kit", "info": "Leave empty to hide the row." },
+    { "type": "text", "id": "kit_cost", "label": "It costs you", "default": "[price]. Once.", "info": "[price] is replaced with the live product price." },
+    { "type": "text", "id": "kit_result", "label": "You get", "default": "28 missions, a wall of stickers and “Remember when we…”" },
+    { "type": "product", "id": "product", "label": "Product for [price]" },
+    { "type": "text", "id": "product_handle", "label": "Product handle (fallback)", "default": "the-best-dad-book" },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Get the kit" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "note", "label": "Note under button" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#fef1d5" },
+    { "type": "color", "id": "text_color", "label": "Heading and intro", "default": "#2b2d45" },
+    { "type": "color", "id": "table_color", "label": "Option rows", "default": "#ffffff" },
+    { "type": "color", "id": "table_text_color", "label": "Option row text", "default": "#2b2d45" },
+    { "type": "color", "id": "head_color", "label": "Column titles (desktop)", "default": "#2b2d45" },
+    { "type": "color", "id": "head_text_color", "label": "Column title text", "default": "#fef1d5" },
+    { "type": "color", "id": "kit_color", "label": "Kit row", "default": "#ee614c" },
+    { "type": "color", "id": "kit_text_color", "label": "Kit row text", "default": "#ffffff" },
+    { "type": "color", "id": "x_color", "label": "X marks", "default": "#f72828" },
+    { "type": "color", "id": "ink_color", "label": "Outlines and hard shadows", "default": "#2b2d45" },
+    { "type": "color", "id": "button_bg_color", "label": "Button background", "default": "#f72828" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
+    { "type": "color", "id": "button_border_color", "label": "Button inner border", "default": "#fef1d5" },
+    { "type": "header", "content": "Wavy divider" },
+    { "type": "color", "id": "divider_top_color", "label": "Top divider color", "info": "Pick the color of the section ABOVE to show a wavy edge at the top. Use Clear to remove it." },
+    { "type": "color", "id": "divider_bottom_color", "label": "Bottom divider color", "info": "Pick the color of the section BELOW to show a wavy edge at the bottom. Use Clear to remove it." },
+    {
+      "type": "select",
+      "id": "divider_style",
+      "label": "Divider style",
+      "options": [
+        { "value": "waves-1-patterned_1200x20", "label": "Waves 1 (small)" },
+        { "value": "waves-2-patterned_1200x43", "label": "Waves 2 (medium)" },
+        { "value": "waves-3-patterned_1200x84", "label": "Waves 3 (large)" },
+        { "value": "zig-zag-2-patterned_1200x37", "label": "Zig-zag" },
+        { "value": "circles-2-patterned_1200x35", "label": "Circles" },
+        { "value": "spikes-1-patterned_1200x132", "label": "Spikes" }
+      ],
+      "default": "waves-1-patterned_1200x20"
+    },
+    { "type": "checkbox", "id": "divider_animate", "label": "Animate divider", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "option",
+      "name": "Option",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Instead of…", "default": "Googling “things to do with kids”" },
+        { "type": "text", "id": "cost", "label": "It costs you", "default": "47 minutes and 16 open tabs" },
+        { "type": "text", "id": "result", "label": "You get", "default": "A Pinterest craft nobody finishes" }
+      ]
+    },
+    {
+      "type": "sticker",
+      "name": "Sticker",
+      "settings": [
+        { "type": "select", "id": "kind", "label": "Sticker type", "options": [
+          { "value": "image", "label": "Image (PNG cut-out)" },
+          { "value": "burst", "label": "Text: burst" },
+          { "value": "spiky", "label": "Text: spiky star" },
+          { "value": "soft-burst", "label": "Text: soft burst" },
+          { "value": "scallop", "label": "Text: scalloped circle" },
+          { "value": "circle", "label": "Text: circle" },
+          { "value": "tape", "label": "Text: tape" },
+          { "value": "blob", "label": "Text: blob" }
+        ], "default": "burst" },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Used when the type is Image." },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Spoiler:\nthe kit\nwins." },
+        { "type": "range", "id": "text_size", "label": "Text size", "min": 6, "max": 30, "step": 1, "default": 14 },
+        { "type": "header", "content": "Position (desktop)" },
+        { "type": "range", "id": "left", "label": "Horizontal position", "min": -10, "max": 110, "step": 2, "unit": "%", "default": 100 },
+        { "type": "range", "id": "top", "label": "Vertical position", "min": -30, "max": 130, "step": 2, "unit": "%", "default": -8 },
+        { "type": "range", "id": "size", "label": "Width", "min": 40, "max": 420, "step": 5, "unit": "px", "default": 160 },
+        { "type": "range", "id": "rotate", "label": "Tilt", "min": -45, "max": 45, "step": 1, "unit": "°", "default": 12 },
+        { "type": "range", "id": "layer", "label": "Layer", "min": 1, "max": 60, "step": 1, "default": 35 },
+        { "type": "header", "content": "Position (mobile)" },
+        { "type": "range", "id": "mobile_left", "label": "Horizontal position", "min": -10, "max": 110, "step": 2, "unit": "%", "default": 88 },
+        { "type": "range", "id": "mobile_top", "label": "Vertical position", "min": -30, "max": 130, "step": 2, "unit": "%", "default": -4 },
+        { "type": "range", "id": "mobile_scale", "label": "Size on mobile", "min": 30, "max": 120, "step": 5, "unit": "%", "default": 55 },
+        { "type": "checkbox", "id": "hide_mobile", "label": "Hide on mobile", "default": false },
+        { "type": "header", "content": "Motion" },
+        { "type": "select", "id": "motion", "label": "While scrolling", "options": [
+          { "value": "none", "label": "Stay still" },
+          { "value": "spin", "label": "Rotate" },
+          { "value": "drift", "label": "Float up and down" },
+          { "value": "travel", "label": "Travel sideways" },
+          { "value": "wobble", "label": "Wobble (always)" }
+        ], "default": "spin" },
+        { "type": "range", "id": "strength", "label": "Motion strength", "min": 10, "max": 200, "step": 10, "unit": "%", "default": 70 },
+        { "type": "checkbox", "id": "reverse", "label": "Reverse direction", "default": false },
+        { "type": "checkbox", "id": "slap", "label": "Slap on when it scrolls into view", "default": true },
+        { "type": "header", "content": "Colors" },
+        { "type": "color", "id": "bg", "label": "Sticker color", "default": "#f6b52e" },
+        { "type": "color", "id": "fg", "label": "Text", "default": "#2b2d45" },
+        { "type": "color", "id": "outline", "label": "Outline and shadow", "default": "#2b2d45" },
+        { "type": "checkbox", "id": "shadow", "label": "Hard shadow", "default": true }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing FX: Versus",
+      "blocks": [
+        { "type": "option" },
+        { "type": "option", "settings": { "label": "Scrolling your phone on the couch", "cost": "The whole Saturday", "result": "“Dad, you’re boring.”" } },
+        { "type": "sticker" }
+      ]
+    }
+  ]
+}
+{% endschema %}

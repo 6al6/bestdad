@@ -180,7 +180,16 @@
                 <div class="flex flex-wrap justify-start gap-10 {% if forloop.last %}lg:justify-end{% else %}{% if forloop.first %}lg:justify-start{% else %}lg:justify-center{% endif %}{% endif %}">
                   {%- if block.settings.linklist_1 != blank %}
                     <div class="w-full  flex-1">
-                      {% assign link_list = block.settings.linklist_1 %}
+                      {%- liquid
+                        assign link_list = block.settings.linklist_1
+                        # Slovenian market: a menu named <handle>-si replaces <handle> (e.g. footer-menu-product-si)
+                        if localization.market.handle == 'si'
+                          assign si_menu_handle = link_list.handle | append: '-si'
+                          if linklists[si_menu_handle].links.size > 0
+                            assign link_list = linklists[si_menu_handle]
+                          endif
+                        endif
+                      -%}
                       {% if block.settings.show_menu_headings %}
                         <h2 class="font-heading mb-4 break-all text-base">
                           {{ link_list.title }}
@@ -202,7 +211,16 @@
                   {%- endif -%}
                   {%- if block.settings.linklist_2 != blank %}
                     <div class="w-full  flex-1">
-                      {% assign link_list = block.settings.linklist_2 %}
+                      {%- liquid
+                        assign link_list = block.settings.linklist_2
+                        # Slovenian market: a menu named <handle>-si replaces <handle> (e.g. footer-menu-product-si)
+                        if localization.market.handle == 'si'
+                          assign si_menu_handle = link_list.handle | append: '-si'
+                          if linklists[si_menu_handle].links.size > 0
+                            assign link_list = linklists[si_menu_handle]
+                          endif
+                        endif
+                      -%}
                       {% if block.settings.show_menu_headings %}
                         <h2 class="font-heading mb-4 break-all text-base">
                           {{ link_list.title }}
@@ -224,7 +242,16 @@
                   {%- endif -%}
                   {%- if block.settings.linklist_3 != blank %}
                     <div class="w-full flex-1">
-                      {% assign link_list = block.settings.linklist_3 %}
+                      {%- liquid
+                        assign link_list = block.settings.linklist_3
+                        # Slovenian market: a menu named <handle>-si replaces <handle> (e.g. footer-menu-product-si)
+                        if localization.market.handle == 'si'
+                          assign si_menu_handle = link_list.handle | append: '-si'
+                          if linklists[si_menu_handle].links.size > 0
+                            assign link_list = linklists[si_menu_handle]
+                          endif
+                        endif
+                      -%}
                       {% if block.settings.show_menu_headings %}
                         <h2 class="font-heading mb-4 break-all text-base">
                           {{ link_list.title }}

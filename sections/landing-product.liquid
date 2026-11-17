@@ -17,6 +17,11 @@
       endif
     endfor
   endif
+  # Gallery images set on this section replace the product images (per page graphics)
+  assign gallery = section.blocks | where: 'type', 'gallery_image' | map: 'settings' | map: 'image' | compact
+  if gallery.size == 0
+    assign gallery = product.images
+  endif
   assign heading_font = settings.type_heading_font
   assign body_font = settings.type_main_font
   assign is_dark = false
@@ -114,9 +119,10 @@
         </div>
       </div>
 
-      <div class="landing-product__gallery">
-        <div class="landing-product__main">
-          {%- for image in product.images -%}
+      <div class="landing-product__gallery{% if section.settings.gallery_swipe %} lp-swipe{% endif %}{% if section.settings.gallery_bleed %} lp-bleed{% endif %}{% unless section.settings.gallery_thumbs_mobile %} lp-no-thumbs{% endunless %}">
+        <div class="landing-product__stage">
+        <div class="landing-product__main" data-main>
+          {%- for image in gallery -%}
             {%- liquid
               assign image_class = 'landing-product__image'
               if forloop.first
@@ -137,10 +143,14 @@
             {{ 'product-1' | placeholder_svg_tag: 'landing-product__image is-active' }}
           {%- endfor -%}
         </div>
+        {%- if section.settings.gallery_swipe and gallery.size > 1 -%}
+          <span class="landing-product__count" data-count aria-hidden="true">1 / {{ gallery.size }}</span>
+        {%- endif -%}
+        </div>
 
-        {%- if product.images.size > 1 -%}
+        {%- if gallery.size > 1 -%}
           <div class="landing-product__thumbs" data-thumbs>
-            {%- for image in product.images -%}
+            {%- for image in gallery -%}
               <button
                 type="button"
                 class="landing-product__thumb{% if forloop.first %} is-active{% endif %}"
@@ -259,6 +269,10 @@
                 <p>{{ section.settings.price_note }}</p>
               {%- endif -%}
             </div>
+          {%- endif -%}
+
+          {%- if section.settings.alt_link_text != blank -%}
+            <p class="landing-product__alt"><a href="{{ section.settings.alt_link_url | default: '#' }}">{{ section.settings.alt_link_text }}</a></p>
           {%- endif -%}
         </div>
 
@@ -497,6 +511,40 @@
   }
   .landing-product__thumb.is-active { opacity: 1; }
   .landing-product__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .landing-product__stage { position: relative; }
+  .landing-product__count { display: none; }
+
+  /* Phones and tablets: swipeable, optionally edge-to-edge gallery (section settings) */
+  @media (max-width: 989px) {
+    .lp-swipe .landing-product__main {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .lp-swipe .landing-product__main::-webkit-scrollbar { display: none; }
+    .lp-swipe .landing-product__image { display: block; flex: 0 0 100%; scroll-snap-align: center; scroll-snap-stop: always; }
+    .lp-swipe .landing-product__count {
+      display: block;
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(43, 45, 69, 0.82);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.2;
+      pointer-events: none;
+    }
+    .lp-bleed.landing-product__gallery { padding-inline: 0; }
+    .lp-bleed .landing-product__main { border-radius: 0; border-inline: 0; }
+    .lp-bleed .landing-product__thumbs { padding-inline: 10px; }
+    .lp-no-thumbs .landing-product__thumbs { display: none; }
+  }
 
   /* Text */
   .landing-product__lead {
@@ -554,6 +602,8 @@
   .landing-product__error:empty { display: none; }
   .landing-product__notes { display: flex; flex-direction: column; gap: 2px; text-align: center; font-size: 16px; line-height: 1.45; }
   .landing-product__notes p { margin: 0; }
+  .landing-product__alt { margin: 4px 0 0; text-align: center; font-size: 15px; line-height: 1.4; }
+  .landing-product__alt a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 
   /* Trust icons */
   .landing-product__trust { display: flex; gap: 6px; margin: var(--lp-trust-mt) 0 0; padding: 0; list-style: none; color: var(--lp-soft); }
@@ -771,6 +821,8 @@
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Prednaroči komplet" },
     { "type": "text", "id": "shipping_note", "label": "Note under button (line 1)", "default": "Odprema prednaročil: 20.10." },
     { "type": "text", "id": "price_note", "label": "Note under button (line 2)", "default": "* Najnižja cena v 30 dneh" },
+    { "type": "inline_richtext", "id": "alt_link_text", "label": "Other edition link text", "info": "Optional small link under the button, e.g. to the English edition. Leave empty to hide." },
+    { "type": "url", "id": "alt_link_url", "label": "Other edition link" },
     { "type": "header", "content": "Bottom bar" },
     {
       "type": "checkbox",
@@ -830,6 +882,10 @@
     { "type": "color", "id": "gallery_border_color", "label": "Gallery borders" },
     { "type": "color", "id": "button_bg_color", "label": "Button background" },
     { "type": "color", "id": "button_text_color", "label": "Button text" },
+    { "type": "header", "content": "Gallery on phones" },
+    { "type": "checkbox", "id": "gallery_swipe", "label": "Swipe through photos", "info": "Photos slide sideways with a finger, with a 1 / 10 counter. Thumbnails still work.", "default": false },
+    { "type": "checkbox", "id": "gallery_bleed", "label": "Photos edge to edge", "info": "The main photo uses the full screen width.", "default": false },
+    { "type": "checkbox", "id": "gallery_thumbs_mobile", "label": "Show thumbnails", "default": true },
     { "type": "header", "content": "Wavy divider" },
     {
       "type": "color",
@@ -923,6 +979,19 @@
           "default": "star"
         },
         { "type": "text", "id": "text", "label": "Text", "default": "Trust message" }
+      ]
+    },
+    {
+      "type": "gallery_image",
+      "name": "Gallery image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "When any gallery image is set, the gallery shows these instead of the product images."
+        },
+        { "type": "text", "id": "label", "label": "Note (not shown)", "info": "Reminder of which graphic goes here." }
       ]
     }
   ],
